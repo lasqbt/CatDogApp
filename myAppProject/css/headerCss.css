@@ -1,0 +1,45 @@
+/* Header */
+.title{
+	margin-top: 7px;
+}
+.title:before, .title:after {
+  content: "";
+  width: 20%;
+  height: 1px;
+  position: absolute;
+}
+.title:before {
+  background: -webkit-linear-gradient(right,rgba(0,175,237,1),rgba(0,216,247,0)); 
+  background: -o-linear-gradient(left,rgba(0,175,237,1),rgba(0,216,247,0)); 
+  background: -moz-linear-gradient(left,rgba(0,175,237,1),rgba(0,216,247,0));
+  background: linear-gradient(to left, rgba(0,175,237,1),rgba(0,216,247,0)); 
+  left: 31%;
+}
+.title:after {
+  background: -webkit-linear-gradient(left,rgba(0,175,237,1),rgba(0,216,247,0)); 
+  background: -o-linear-gradient(right,rgba(0,175,237,1),rgba(0,216,247,0)); 
+  background: -moz-linear-gradient(right,rgba(0,175,237,1),rgba(0,216,247,0));
+  background: linear-gradient(to right,rgba(0,175,237,1),rgba(0,216,247,0)); 
+  right: 29%;
+} 
+
+.us_uer4{
+	width: 25px;
+	height: 25px;
+	background-image: url(../images/login_ico.png);
+	background-position: -125px -95px;
+	position: absolute;
+	margin: -3px 5px;
+}
+
+.fontCss{
+	text-align: center;
+}
+
+.fontSpanCss{
+	color: blueviolet;
+}
+	
+header{
+	margin-top: 5px;
+}

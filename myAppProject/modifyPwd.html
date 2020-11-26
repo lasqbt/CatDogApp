@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>检修管理平台</title>
+	<!--必要样式-->
+	<link type="text/css" rel="stylesheet" href="css/mui.css" />
+	<link type="text/css" rel="stylesheet" href="css/modifyPwd.css" />
+	<link type="text/css" rel="stylesheet" href="css/headerCss.css" />
+	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
+	<link type="text/css" rel="stylesheet" href="css/layer.css">
+    <script type="text/javascript" src="js/layer.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<div style="margin-left: 3%;">
+				<header>
+					<span class="us_uer4" onclick="goBack();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">修改密码</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="logo_box">
+					<h3 style="font-size: 1.5rem;"></h3>
+					<div class="input_outer" id="accountDiv">
+						<span class="u_user"></span>
+						<input name="password" id="password" onfocus="$('#accountDiv').addClass('shineCss')" onblur="$('#accountDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px;" type="password" maxlength="10" placeholder="请输入1-10位旧密码">
+					</div>
+					<div class="input_outer" id="pwdDiv">
+						<span class="us_uer2"></span>
+						<input name="newPassword" id="newPassword" onfocus="$('#pwdDiv').addClass('shineCss')" onblur="$('#pwdDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important; background: none;border: none;margin-top: 2px;"value="" maxlength="10" type="password" placeholder="请输入1-10位新密码">
+					</div>
+					<div class="input_outer" id="codeDiv">
+						<span class="us_uer3"></span>
+						<input type="password" id="newRePassword" onfocus="$('#codeDiv').addClass('shineCss')" onblur="$('#codeDiv').removeClass('shineCss')" autocomplete="off" name="newRePassword" value="" style="color: #008DF3 !important; background: none;border: none;margin-top: 2px;" placeholder="请确认1-10位新密码" class="text" maxlength="10">
+					</div>
+					<div class="mb2"><a class="act-but submit loginBox" href="javascript:void(0)" onclick="modifyPwd()" style="color: #FFFFFF">确认修改</a></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript" src="js/showLoading.js"></script>
+	<script src="js/mui.enterfocus.js"></script>
+	<script type="text/javascript"> 
+		var jObj = JSON.parse(localStorage.getItem("userInfo"));
+        function modifyPwd(){
+            var password = $("#password").val();
+            var newPassword = $("#newPassword").val();
+            var newRePassword = $("#newRePassword").val();
+            if(password==''){
+				mui.alert('请输入旧密码');
+            }else if(newPassword==''){
+				mui.alert('请输入新密码');
+            }else if(newRePassword==''){
+                mui.alert('请确认密码');
+            }else if(newRePassword == newPassword){
+				mui.showLoading("修改中,请稍后...","div"); 
+				mui.ajax(path2+'/user/modifyUserPwd',{
+					type : 'post',        		
+					data:{newPassword:newPassword,newRePassword:newRePassword,password:password,id:jObj.id},
+					dataType : "json",
+					success : function(data) {
+						mui.hideLoading();
+						if(data.code=='0'){
+							mui.alert("修改成功，请重新登录","提升","好的",function(){
+								mui.openWindow({
+									url: 'login.html',
+									id: 'login',
+									show: {
+										aniShow: 'pop-in'
+									},
+									styles: {
+										popGesture: 'hide'
+									},
+									waiting: {
+										autoShow: false
+									}
+								});
+							},true);
+						}else{
+							mui.alert(data.msg);
+						}
+					}
+				 });
+            }else{
+				mui.alert('两次输入的新密码不一致！请重新输入！');
+            }
+        }
+		function goBack(){
+			mui.openWindow({
+				url: 'checkPage.html',
+				id: 'checkPage',
+				show: {
+					aniShow: 'pop-in'
+				},
+				styles: {
+					popGesture: 'hide'
+				},
+				waiting: {
+					autoShow: false
+				}
+			});
+		}
+	</script>
+</html>

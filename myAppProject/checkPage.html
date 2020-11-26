@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>检修管理平台</title>
+	<!--必要样式-->
+	<link type="text/css" rel="stylesheet" href="css/checkPage.css" />
+	<link type="text/css" rel="stylesheet" href="css/headerCss.css" />
+	<link type="text/css" rel="stylesheet" href="css/layer.css">
+    <script type="text/javascript" src="js/layer.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<div style="margin-left: 3%;">
+				<header>
+					<span class="us_uer4" onclick="goBack();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">选择平台</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<table>
+					<tr>
+						<td class="tdCss">
+							<div class="mb2">
+								<a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">
+									<img src="images/moveCarImg.png" style="width: 66px;height: 65px;">
+									<br>
+									<span>调车指挥</span>
+								</a>
+							</div>
+						</td>
+						<td class="tdCss">
+							<div class="mb2">
+								<a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">
+									<img src="images/repairImg.png">
+									<br>
+									<span>检修应用</span>
+								</a>
+							</div>
+							
+						</td>
+					</tr>
+					<tr>
+						<td class="tdCss">
+							<div class="mb2">
+								<a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">
+									<img src="images/countImg.png" style="width: 66px;height: 65px;">
+									<br>
+									<span>管理看板</span>
+								</a>
+							</div>
+						</td>
+						<td class="tdCss">
+							<div class="mb2">
+								<a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">
+									<img src="images/systemImg.png" style="width: 66px;height: 65px;">
+									<br>
+									<span>后台维护</span>
+								</a>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div class="aDiv">
+					<a href="javascript:void(0)" onclick="modifyPwd()" style="text-decoration: none;">
+						<span class="modifyPwd">修改密码</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.enterfocus.js"></script>
+	<script>
+		function goBack(){
+			mui.openWindow({
+				url: 'login.html',
+				id: 'login',
+				show: {
+					aniShow: 'pop-in'
+				}
+			});
+		}
+		function modifyPwd(){
+			mui.openWindow({
+				url: 'modifyPwd.html',
+				id: 'modifyPwd',
+				show: {
+					aniShow: 'pop-in'
+				}
+			});
+		}
+		
+		function login(){
+			mui.alert("点你妹");
+		}
+	</script>
+</html>
