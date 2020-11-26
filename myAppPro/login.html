@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>检修管理平台</title>
+	<!--必要样式-->
+	<link type="text/css" rel="stylesheet" href="css/mui.css" />
+	<link type="text/css" rel="stylesheet" href="css/component.css" />
+	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<div class="logo_box">
+				<h3 style="font-size: 1.5rem;">乌鲁木齐检修管理平台</h3>
+				<div style="margin-left: 5%;margin-top: 30px;">
+					<div class="input_outer" id="accountDiv">
+						<span class="u_user"></span>
+						<input name="loginAccount" id="loginAccount" onfocus="$('#accountDiv').addClass('shineCss')" onblur="$('#accountDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px;" type="text" maxlength="15" placeholder="请输入账号">
+					</div>
+					<div class="input_outer" id="pwdDiv">
+						<span class="us_uer2"></span>
+						<input name="password" id="password" onfocus="$('#pwdDiv').addClass('shineCss')" onblur="$('#pwdDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px; "value="" maxlength="15" type="password" placeholder="请输入密码">
+					</div>
+					<div class="input_outer" id="codeDiv">
+						<span class="us_uer3"></span>
+						<input type="text" id="codeInfo" onfocus="$('#codeDiv').addClass('shineCss')" onblur="$('#codeDiv').removeClass('shineCss')" autocomplete="off" name="codeInfo" value="" style="background: none;border: none;margin-top: 2px;" placeholder="请输入验证码" class="input-val" maxlength="6">
+						<canvas id="canvas"  class="canvasCss"></canvas>
+					</div>
+					<div class="mb2"><a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">登录</a></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript" src="js/showLoading.js"></script>
+	<script src="js/mui.enterfocus.js"></script>
+	<script src="js/app.js"></script>
+	<script type="text/javascript"> 
+		// 验证码的生成和提交验证
+        var show_num = [];
+        draw(show_num);
+        $("#canvas").on('click',function(){
+            draw(show_num);
+        })
+        function login(){
+            var val = $("#codeInfo").val().toLowerCase();
+            var password = $("#password").val();
+            var loginAccount = $("#loginAccount").val();
+            var num = show_num.join("");
+            if(loginAccount==''){
+				mui.alert('请输入用户账号');
+            }else if(password==''){
+				mui.alert('请输入用户密码');
+            }else if(val==''){
+                mui.alert('请输入六位验证码');
+            }else if(val == num){
+				mui.showLoading("登录中,请稍后...","div"); 
+				mui.ajax(path2+'/loginValidate',{
+				    data:{userid:loginAccount,password: password},
+					async:true,
+					dataType:'json',   
+					type:'post',
+					success:function(data){
+						mui.hideLoading();
+						var code = data.code;
+						if(code=='0'){
+							//放入共享池
+							localStorage.setItem("userInfo",JSON.stringify(data.userInfo)); 
+							mui.openWindow({
+								url: 'checkPage.html',
+								id: 'checkPage',
+								show: {
+									aniShow: 'pop-in'
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								waiting: {
+									autoShow: false
+								}
+							}); 
+						}else{
+							mui.alert(data.msg);
+						} 
+					},
+					error:function(data){
+						mui.alert(data);
+						
+						mui.alert('请求失败');
+					}
+				}); 
+            }else{
+				mui.alert('验证码错误！请重新输入！');
+                $(".input-val").val('');
+                draw(show_num);
+            }
+        }
+	    function draw(show_num) {
+	        var canvas_width=$('#canvas').width();
+	        var canvas_height=$('#canvas').height();
+	        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+	        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+	        canvas.width = canvas_width;
+	        canvas.height = canvas_height;
+	        //var sCode = "A,B,C,E,F,G,H,K,L,M,N,P,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9";
+	        var sCode = "1,2,3,4,5,6,7,8,9,0";
+	        var aCode = sCode.split(",");
+	        var aLength = aCode.length;//获取到数组的长度
+	        
+	        for (var i = 0; i <= 5; i++) {
+	            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+	            var deg = Math.random() * 30 * Math.PI / 180;//0-30
+	            var txt = aCode[j];//得到随机的一个内容
+	            show_num[i] = txt.toLowerCase();
+	            var x = 10 + i * 20;//文字在canvas上的x坐标
+	            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+	            context.font = "bold 23px 微软雅黑";
+	 
+	            context.translate(x, y);
+	            context.rotate(deg);
+	 
+	            context.fillStyle = randomColor();
+	            context.fillText(txt, 0, 0);
+	 
+	            context.rotate(-deg);
+	            context.translate(-x, -y);
+	        }
+	        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.stroke();
+	        }
+	        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            var x = Math.random() * canvas_width;
+	            var y = Math.random() * canvas_height;
+	            context.moveTo(x, y);
+	            context.lineTo(x + 1, y + 1);
+	            context.stroke();
+	        }
+	    }
+	 
+	    function randomColor() {//得到随机的颜色值
+	        var r = Math.floor(Math.random() * 256);
+	        var g = Math.floor(Math.random() * 256);
+	        var b = Math.floor(Math.random() * 256);
+	        return "rgb(" + r + "," + g + "," + b + ")";
+	    }
+		
+		
+		
+		(function($, doc) {
+			$.init({
+				statusBarBackground: '#f7f7f7'
+			});
+			$.plusReady(function() {
+				plus.screen.lockOrientation("portrait-primary");
+				var settings = app.getSettings();
+				var state = app.getState();
+				var mainPage = plus.webview.getWebviewById("main");
+				var main_loaded_flag = false;
+				if(!mainPage){
+					mainPage = $.preload({
+						"id": 'main',
+						"url": 'main.html'
+					});
+				}else{
+					main_loaded_flag = true;
+				}
+				
+				mainPage.addEventListener("loaded",function () {
+					main_loaded_flag = true;
+				});
+				var toMain = function() {
+					//使用定时器的原因：
+					//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
+					var id = setInterval(function () {
+						if(main_loaded_flag){
+							clearInterval(id);
+							$.fire(mainPage, 'show', null);
+							mainPage.show("pop-in");
+						}
+					},20);
+				};
+				// close splash
+				setTimeout(function() {
+					//关闭 splash
+					plus.navigator.closeSplashscreen();
+				}, 600);
+				//
+				window.addEventListener('resize', function() {
+					oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+				}, false);
+				//
+				var backButtonPress = 0;
+				$.back = function(event) {
+					backButtonPress++;
+					if (backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+			});
+		}(mui, document));
+	</script>
+</html>
