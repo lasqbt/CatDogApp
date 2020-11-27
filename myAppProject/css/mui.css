@@ -2296,15 +2296,15 @@ input[type='submit']:enabled:active, input[type='submit'].mui-active:enabled,
     position: absolute;
     right: 0;
     bottom: 0;
-    left: 15px;
-
-    height: 1px;
+    left: 15px; 
+	right: 20px;/*菜单下的横线 原来没有这一行 liu aishen*/
+    height: 1px; 
 
     content: '';
     -webkit-transform: scaleY(.5);
             transform: scaleY(.5);
 
-    background-color: #c8c7cc;
+    background-color: #007AFF; /*菜单下的横线颜色  liu aishen*/
 }
 .mui-table-view-cell.mui-radio input[type=radio], .mui-table-view-cell.mui-checkbox input[type=checkbox]
 {
@@ -2342,7 +2342,7 @@ input[type='submit']:enabled:active, input[type='submit'].mui-active:enabled,
 }
 .mui-table-view-cell > a:not(.mui-btn).mui-active
 {
-    background-color: #eee;
+    background-color: #a9b6ff; /*点击子菜单的背景颜色 原来是#eee  liu ai shen*/
 }
 .mui-table-view-cell p
 {
@@ -3689,14 +3689,14 @@ select:focus
             transform: rotate(45deg);
 
     border-radius: 3px;
-    background: #f7f7f7;
+    background: #007AFF;/*liu ai shen  菜单弹出框下的倒三角的背景色*/
 }
 .mui-popover .mui-popover-arrow.mui-bottom
 {
     top: 100%;
     left: -26px;
 
-    margin-top: -1px;
+    margin-top: 0px; /*liu ai shen  菜单弹出框下的倒三角的距离*/
 }
 .mui-popover .mui-popover-arrow.mui-bottom:after
 {
