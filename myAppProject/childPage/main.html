@@ -37,7 +37,7 @@
 	</head>
 	<body style="margin:0px; padding:0px;">
 		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
-			<header style="width: 100%;height: 4%;z-index: 99999999;">
+			<header style="width: 100%;height: 4%;z-index: 99999999;" id="headerDiv">
 				<span class="us_uer4" onclick="goBack();"></span>
 				<div class="fontCss">
 					<span class="fontSpanCss">检修平台</span>
@@ -47,7 +47,7 @@
 		
 		
 		
-			<div class="mui-content" style="height: 88%;z-index: -111;margin-top: 1px;background: none;">
+			<div class="mui-content" style="height: 93%;z-index: -111;margin-top: 1px;background: none;">
 				<iframe id="iframeInfo" src="" frameborder="0" scrolling="auto" allowtransparency="true" width="100%" height="100%" ></iframe>
 			</div>
 	<!-- 		<nav class="mui-bar mui-bar-tab ">
@@ -98,14 +98,26 @@
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script>
 		mui.init({
-			swipeBack:true //启用右滑关闭功能
+			swipeBack:true ,//启用右滑关闭功能
 		});
+		
+		/* mui.init({
+			subpages: [{  
+			        url: '../childPage/messageIndex.html',//子页面HTML地址，支持本地地址和网络地址  
+			        id: '11111111', //子页面标志  
+			        styles: {  
+			            top:'45px', //mui标题栏默认高度为45px
+			            bottom:'50px',//子页面底部位置  
+			            },  
+			      }]
+		}); */
 		//正确代码
 		/* $('#msgManager').on('tap', function() {  
 		    mui.alert("我被点了");
 		}) */	
 		document.getElementById("msgManager").addEventListener('tap', function() {
-			//document.getElementById("Popover_3").style.display='none';
+			document.getElementById("headerDiv").style.display='none';
+			
 			$("#iframeInfo").attr("src","../childPage/messageIndex.html");
 		});
 		document.getElementById("baseInfo").addEventListener('tap', function() {
@@ -119,9 +131,10 @@
 			$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
 		});
 		function goBack(){
+			var id = generateUUID()+"-checkPage";
 			mui.openWindow({
 				url: '../checkPage.html',
-				id: 'checkPage',
+				id: id,
 				show: {
 					aniShow: 'pop-in'
 				},

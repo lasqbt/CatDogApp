@@ -10,95 +10,121 @@
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="../css/mui.css">
 		<link rel="stylesheet" href="../css/messageIndex.css">
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
 		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
 		<script type="text/javascript" src="../js/jquery.min.js"></script>
 	</head>
 
-	<body style="background-color:transparent;">
-		<!-- <div class="mui-input-row">
-		<input readonly="readonly" type="text" value="" id="start_date" placeholder="请选择开始时间">  
-		</div>  
-		<div class="mui-input-row">  
-		<input readonly="readonly" type="text" value="" id="end_date" placeholder="请选择结束时间">  
-		</div> -->
- 			<div class="mui-input-group liCss">
+	<body style="background-color:transparent;margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="goBack();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">消息管理</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="liCss">
 				<div class="mui-input-row">
-					<label class="fontCss">消息类型</label>
+					<label class="lableCss">消息类型</label>
 					<a class="mui-navigate-right">
 						<span class="mui-badge1">
-						<select class="mui-h5 fontCss" style="margin:auto;border-radius: 5px;">
-							<option value="1">我发送的和我接收的</option>
-							<option value="2">我发送的</option>
-							<option value="3">我接收的</option>
-						</select>
-						</span> 
+							<select class="mui-h5" id="queryUserFlag" style="margin:auto;border-radius: 5px;background-color: transparent;">
+								<option value="">我发送的和我接收的</option>
+								<option value="2">我发送的</option>
+								<option value="3">我接收的</option>
+							</select>
+						</span>
 					</a>
 				</div> 
 				<div class="mui-input-row">
-					<label class="fontCss">开始时间</label>
+					<label class="lableCss">开始时间</label>
 					<input readonly="readonly" type="text" value="" id="start_date" placeholder="请选择开始时间">  
 				</div>  
 				<div class="mui-input-row">  
-					<label class="fontCss">结束时间</label>
+					<label class="lableCss">结束时间</label>
 					<input readonly="readonly" type="text" value="" id="end_date" placeholder="请选择结束时间">  
 				</div> 
+				<div class="mui-input-row">
+					<label class="lableCss">是否已读</label>
+					<select class="mui-h5" id="isRead" style="float: left; width: 100px;margin:auto;border-radius: 5px;background-color: transparent;">
+						<option value="">全部</option>
+						<option value="1">已读</option>
+						<option value="0">未读</option>
+					</select>
+				</div> 
+				<div style="float: right;margin-top: -40px;margin-right: 20px;">
+					<button type="button" id="search" class="mui-btn mui-btn-primary mui-icon mui-icon-search">
+						搜索
+					</button>
+				</div>
 			</div>
-		<ul class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个日常检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个定期检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个年度检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
- 			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-			<li class="mui-table-view-cell liCss">
-				<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
-			</li>
-		</ul>
+			<ul class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个日常检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个定期检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个年度检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+				<li class="mui-table-view-cell liCss">
+					<a href="" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">你有一个运用检修任务</a>
+				</li>
+			</ul>
+		</div>
 	</body>
 	<style>
-		.mui-badge1{padding:0px; width:65%; float:right; line-height:42px; font-size:14px;}
+		.mui-badge1{
+			padding:0px; 
+			width:65%; 
+			float:right; 
+			line-height:42px; 
+			font-size:14px;
+		}
+		.lableCss{
+			color: #929292;
+		}
 		.mui-table-view-cell:after{	
 		    background-color: transparent; /*ul的背景颜色*/
 		}
@@ -108,6 +134,12 @@
 		.mui-table-view:before{
 		    background-color: transparent; /*ul最上面的横线  liu aishen*/
 		}
+		.mui-input-group::after{
+			background-color: transparent;
+		}
+		.mui-input-group::before{
+			background-color: transparent;
+		}
 		.liCss{
 			background-color:rgba(39,40,34,0.2);
 			border-radius: 5px;
@@ -115,6 +147,19 @@
 			margin: 0 auto;
 			/* border: 1px solid #929292; */
 			margin-top: 2px;
+		}
+		
+		input::-webkit-input-placeholder{
+		    color:#929292;
+		}
+		input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+		    color:#929292;
+		}
+		input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+		    color:#929292;
+		}
+		input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+		    color:#929292;
 		}
 	</style>
 	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
@@ -127,30 +172,17 @@
 			swipeBack:true //启用右滑关闭功能
 		});
 		
-/* 		document.getElementById("pickDateBtn").addEventListener('tap', function() {
-			console.log(1)
-		    var dDate = new Date();
-		    //设置当前日期（不设置默认当前日期）
-		    dDate.setFullYear(2016, 7, 16);
-		    var minDate = new Date();
-		    //最小时间
-		    minDate.setFullYear(2010, 0, 1);
-		    var maxDate = new Date();
-		    //最大时间
-		    maxDate.setFullYear(2016, 11, 31);
-		    plus.nativeUI.pickDate(function(e) {
-		        var d = e.date;
-		        mui.toast('您选择的日期是:' + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
-		    }, function(e) {
-		        mui.toast("您没有选择日期");
-		    }, {
-		        title: '请选择日期',
-		        date: dDate,
-		        minDate: minDate,
-		        maxDate: maxDate
-		    });
+		//搜索
+		document.getElementById("search").addEventListener('tap',function() {
+			var isRead = $("#isRead").val();
+			var queryUserFlag = $("#queryUserFlag").val();
+			var startTime = $("#start_date").val();
+			var endTime = $("#end_date").val();
+			mui.alert(isRead);
+			mui.alert(queryUserFlag);
+			mui.alert(startTime);
+			mui.alert(endTime);
 		});
-		 */
 		//日期选择
 		document.getElementById("start_date").addEventListener('tap',function() {
 			getDate('start_date');
@@ -196,6 +228,23 @@
 			},
 			function(e) {
 				console.log("未选择时间：" + e.message);
+			});
+		}
+		
+		function goBack(){
+			var id = generateUUID()+"-main";
+			mui.openWindow({
+				url: '../childPage/main.html',
+				id: id,
+				show: {
+					aniShow: 'pop-in'
+				},
+				styles: {
+					popGesture: 'hide'
+				},
+				waiting: {
+					autoShow: false
+				}
 			});
 		}
 	</script>
