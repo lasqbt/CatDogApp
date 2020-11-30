@@ -51,6 +51,7 @@
             var val = $("#codeInfo").val().toLowerCase();
             var password = $("#password").val();
             var loginAccount = $("#loginAccount").val();
+			var appSessionIdInfo = generateUUID()+"sid";
             var num = show_num.join("");
             if(loginAccount==''){
 				mui.alert('请输入用户账号');
@@ -61,7 +62,7 @@
             }else if(val == num){
 				mui.showLoading("登录中,请稍后...","div"); 
 				mui.ajax(path2+'/loginValidate',{
-				    data:{userid:loginAccount,password: password},
+				    data:{userid:loginAccount,password: password,appSessionIdInfo:appSessionIdInfo},
 					async:true,
 					dataType:'json',   
 					type:'post',
@@ -71,6 +72,7 @@
 						if(code=='0'){
 							//放入共享池
 							localStorage.setItem("userInfo",JSON.stringify(data.userInfo)); 
+							localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
 							mui.openWindow({
 								url: 'checkPage.html',
 								id: 'checkPage',
@@ -89,8 +91,7 @@
 						} 
 					},
 					error:function(data){
-						mui.alert(data);
-						
+						//mui.alert(data);
 						mui.alert('请求失败');
 					}
 				}); 
