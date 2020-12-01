@@ -187,7 +187,7 @@
 							 var dataInfo = data.data;
 							 var count = data.count;
 							 for(var v=0; v<dataInfo.length;v++){
-								 html = html + '<li class="mui-table-view-cell liCss">';
+								 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
 								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
 								 if(dataInfo[v].msgInfo.length>6){
 									 html = html + dataInfo[v].msgInfo.substring(0,6)+"...<span style='float:right;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd hh:mm:ss")+"</span>";
@@ -234,6 +234,29 @@
 				mui.alert(startTime);
 				mui.alert(endTime);
 			});
+			
+			mui('#ulInfo').on('tap','li',function(v){
+				var targetUrl = this.id;
+				console.log("你要跳转的地址是："+targetUrl);
+				  /* var id = generateUUID()+"-messageDetail";
+				  mui.openWindow({
+				  	url: '../childPage/main.html',
+				  	id: id,
+				  	show: {
+				  		aniShow: 'pop-in'
+				  	},
+				  	styles: {
+				  		popGesture: 'hide'
+				  	},
+				  	waiting: {
+				  		autoShow: false
+				  	},
+					extras: {
+						tid: id
+					}
+				  }); */
+			})
+			
 			//日期选择
 			document.getElementById("start_date").addEventListener('tap',function() {
 				getDate('start_date');
