@@ -11,7 +11,8 @@
 		<script type="text/javascript" src="../js/jquery.min.js"></script>
 		<!--标准mui.css-->
 		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
-		<link rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
 		<style>
 			.mui-bar-popover {
 				width: 30%;
@@ -33,23 +34,61 @@
 				-o-background-size: cover;
 				background-position: center 0; */
 			}
+			
+			.mui-badge1{
+				padding:0px; 
+				width:65%; 
+				float:right; 
+				line-height:42px; 
+				font-size:14px;
+			}
+			.lableCss{
+				color: #929292;
+			}
+			.mui-table-view-cell:after{	
+			    background-color: transparent; /*ul的背景颜色*/
+			}
+			.mui-table-view:after{
+			    background-color: transparent; /*ul最下面的横线  liu aishen*/
+			}
+			.mui-table-view:before{
+			    background-color: transparent; /*ul最上面的横线  liu aishen*/
+			}
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				border-radius: 5px;
+				width: 96%;
+				margin: 0 auto;
+				/* border: 1px solid #929292; */
+				margin-top: 2px;
+			}
+			
+			input::-webkit-input-placeholder{
+			    color:#929292;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+			}
+			input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+			}
+			input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+			}
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
-		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
-			<header style="width: 100%;height: 4%;z-index: 99999999;" id="headerDiv">
-				<span class="us_uer4" onclick="goBack();"></span>
-				<div class="fontCss">
-					<span class="fontSpanCss">检修平台</span>
-				</div>
-				<div class="title"></div>
-			</header>
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
 		
-		
-		
-			<div class="mui-content" style="height: 93%;z-index: -111;margin-top: 1px;background: none;">
+<!-- 			<div class="mui-content" style="height: 93%;z-index: -111;margin-top: 1px;background: none;">
 				<iframe id="iframeInfo" src="" frameborder="0" scrolling="auto" allowtransparency="true" width="100%" height="100%" ></iframe>
-			</div>
+			</div> -->
 	<!-- 		<nav class="mui-bar mui-bar-tab ">
 				<a class="mui-tab-item mui-icon mui-icon-gear aCss" style="font-size: 1rem;" href="#Popover_0">检修</a>
 				<a class="mui-tab-item mui-icon mui-icon-compose aCss" style="font-size: 1rem;" href="#Popover_1">运用</a>
@@ -58,7 +97,7 @@
 				<a class="mui-tab-item mui-icon mui-icon-contact aCss" style="font-size: 1rem;" href="#Popover_4">我的</a>
 			</nav> -->
 			<nav class="mui-bar mui-bar-tab " style="background:none;border: none;height: 5%;z-index: 99999999;">
-				<a class="mui-tab-item aCss" style="font-size: 1rem;" href="#Popover_0">
+				<a class="mui-tab-item aCss" style="font-size: 1rem;" href="#Popover_0" id="repairInfo">
 					<span class="mui-icon mui-icon-gear"></span>
 					<span class="mui-tab-label">检修</span>
 				</a>
@@ -82,69 +121,438 @@
 			<div id="Popover_0" class="mui-popover mui-bar-popover" style="background:none;border: 1px solid #007AFF;width: 108px;border-radius: 15px;">
 				<div class="mui-popover-arrow"></div>
 				<ul class="mui-table-view" style="background:none;border: none;">
-					<li class="mui-table-view-cell"><a href="#" style="color: #007AFF;">日常检修</a>
+					<li class="mui-table-view-cell"><a href="#" id="dayRepair" style="color: #007AFF;">日常检修</a>
 					</li>
-					<li class="mui-table-view-cell"><a href="#" style="color: #007AFF;">定期检修</a>
+					<li class="mui-table-view-cell"><a href="#" id="dingQiRepair" style="color: #007AFF;">定期检修</a>
 					</li>
-					<li class="mui-table-view-cell"><a href="#" style="color: #007AFF;">年度检修</a>
+					<li class="mui-table-view-cell"><a href="#" id="yearRepair" style="color: #007AFF;">年度检修</a>
 					</li>
 				</ul>
 			</div>
+			
+			<!-- 检修div start -->
+			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="repairDiv">
+				<header style="width: 100%;height: 4%;z-index: 99999999;">
+					<span class="us_uer4" onclick="mui.back();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">检修管理</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="liCss">
+					
+				</div>
+			</div>
+			<!-- 检修div end -->
+			
+			<!-- 运用div start -->
+			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="yunYongDiv">
+				<header style="width: 100%;height: 4%;z-index: 99999999;">
+					<span class="us_uer4" onclick="mui.back();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">运用管理</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="liCss">
+					
+				</div>
+			</div>
+			<!-- 运用div end -->
+			
+			<!-- 档案div start -->
+			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="dangAnDiv">
+				<header style="width: 100%;height: 4%;z-index: 99999999;">
+					<span class="us_uer4" onclick="mui.back();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">档案管理</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="liCss">
+					
+				</div>
+			</div>
+			<!-- 档案div end -->
+			
+			<!-- 消息div start -->
+			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="msgDiv">
+				<header style="width: 100%;height: 4%;z-index: 99999999;">
+					<span class="us_uer4" onclick="mui.back();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">消息管理</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="liCss">
+					<div class="mui-input-row">
+						<label class="lableCss">消息类型</label>
+						<a class="mui-navigate-right">
+							<span class="mui-badge1">
+								<select class="mui-h5" id="queryUserFlag" style="margin:auto;border-radius: 5px;background-color: transparent;">
+									<option value="">我发送的和我接收的</option>
+									<option value="2">我发送的</option>
+									<option value="3">我接收的</option>
+								</select>
+							</span>
+						</a>
+					</div> 
+					<div class="mui-input-row">
+						<label class="lableCss">开始时间</label>
+						<input readonly="readonly" type="text" value="" id="start_date" placeholder="请选择开始时间">  
+					</div>  
+					<div class="mui-input-row">  
+						<label class="lableCss">结束时间</label>
+						<input readonly="readonly" type="text" value="" id="end_date" placeholder="请选择结束时间">  
+					</div> 
+					<div class="mui-input-row">
+						<label class="lableCss">是否已读</label>
+						<select class="mui-h5" id="isRead" style="float: left; width: 100px;margin:auto;border-radius: 5px;background-color: transparent;">
+							<option value="">全部</option>
+							<option value="1">已读</option>
+							<option value="0">未读</option>
+						</select>
+					</div> 
+					<div style="float: right;margin-top: -40px;margin-right: 20px;">
+						<button type="button" id="search" class="mui-btn mui-btn-primary mui-icon mui-icon-search">
+							搜索
+						</button>
+					</div>
+				</div>
+				<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="background:none;border-bottom: none;margin-top: 200px;">
+					<div class="mui-scroll">
+						<ul class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+							<li class="mui-table-view-cell liCss">
+								<table style="width: 100%;text-align: center;">
+									<tr>
+										<td>消息</td>
+										<td>发送</td>
+										<td>接收</td>
+										<td>时间</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+						<ul id="ulInfo" class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+						
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 消息div end -->
+			
+			<!-- 我的div start -->
+			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="myDiv">
+				<header style="width: 100%;height: 4%;z-index: 99999999;">
+					<span class="us_uer4" onclick="mui.back();"></span>
+					<div class="fontCss">
+						<span class="fontSpanCss">我的</span>
+					</div>
+					<div class="title"></div>
+				</header>
+				<div class="liCss">
+					
+				</div>
+			</div>
+			<!-- 我的div end -->
+			
 		</div>
 	</body>
-	<script src="../js/mui.min.js"></script>
-	<script src="../js/mui.enterfocus.js"></script>
-	<script src="../js/app.js"></script>
-	<script type="text/javascript" src="../js/common.js"></script>
-	<script>
-		mui.init({
-			swipeBack:true ,//启用右滑关闭功能
-		});
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript" type="text/javascript"> type="text/javascript" type="text/javascript"</script>
+	<script src="../js/app.js" type="text/javascript" type="text/javascript" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"></script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="../js/showLoading.js"></script>
+	<script>	
+		// 分页初始参数
+		var pageNum = 1;
+		var totalPage = 0;
+		var limit = 10;
 		
-		/* mui.init({
-			subpages: [{  
-			        url: '../childPage/messageIndex.html',//子页面HTML地址，支持本地地址和网络地址  
-			        id: '11111111', //子页面标志  
-			        styles: {  
-			            top:'45px', //mui标题栏默认高度为45px
-			            bottom:'50px',//子页面底部位置  
-			            },  
-			      }]
-		}); */
-		//正确代码
-		/* $('#msgManager').on('tap', function() {  
-		    mui.alert("我被点了");
-		}) */	
-		document.getElementById("msgManager").addEventListener('tap', function() {
-			document.getElementById("headerDiv").style.display='none';
-			
-			$("#iframeInfo").attr("src","../childPage/messageIndex.html");
-		});
-		document.getElementById("baseInfo").addEventListener('tap', function() {
-			//document.getElementById("Popover_4").style.display='none';
-			$("#iframeInfo").attr("src","../childPage/messageIndex3.html");
-		});
-		document.getElementById("yunYongInfo").addEventListener('tap', function() {
-			$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
-		});
-		document.getElementById("danAnInfo").addEventListener('tap', function() {
-			$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
-		});
-		function goBack(){
-			var id = generateUUID()+"-checkPage";
-			mui.openWindow({
-				url: '../checkPage.html',
-				id: id,
-				show: {
-					aniShow: 'pop-in'
-				},
-				styles: {
-					popGesture: 'hide'
-				},
-				waiting: {
-					autoShow: false
-				}
+		var msgIsQuery = false;
+		
+		(function (mui) {
+			//阻尼系数
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			mui(".mui-scroll-wrapper").scroll({
+				bounce: true,//滚动条是否有弹力默认是true
+				indicators: false, //是否显示滚动条,默认是true
+				deceleration: deceleration
 			});
-		}
+			
+			/* mui.init({
+				subpages: [{  
+						url: '../childPage/messageIndex.html',//子页面HTML地址，支持本地地址和网络地址  
+						id: '11111111', //子页面标志  
+						styles: {  
+							top:'45px', //mui标题栏默认高度为45px
+							bottom:'50px',//子页面底部位置  
+							},  
+					  }]
+			}); */
+			//正确代码
+			/* $('#msgManager').on('tap', function() {  
+				mui.alert("我被点了");
+			}) */	
+			document.getElementById("msgManager").addEventListener('tap', function() {
+				document.getElementById("msgDiv").style.display='block';
+				//pulluploading();
+				document.getElementById("Popover_0").style.display='none';
+				document.getElementById("repairDiv").style.display='none';
+				document.getElementById("yunYongDiv").style.display='none';
+				document.getElementById("dangAnDiv").style.display='none';
+				document.getElementById("myDiv").style.display='none';
+				//$("#iframeInfo").attr("src","../childPage/messageIndex.html");
+			});
+			document.getElementById("baseInfo").addEventListener('tap', function() {
+				document.getElementById("myDiv").style.display='block';
+				
+				document.getElementById("Popover_0").style.display='none';
+				document.getElementById("repairDiv").style.display='none';
+				document.getElementById("yunYongDiv").style.display='none';
+				document.getElementById("dangAnDiv").style.display='none';
+				document.getElementById("msgDiv").style.display='none';
+				//$("#iframeInfo").attr("src","../childPage/messageIndex3.html");
+			});
+			document.getElementById("yunYongInfo").addEventListener('tap', function() {
+				document.getElementById("yunYongDiv").style.display='block';
+				
+				document.getElementById("Popover_0").style.display='none';
+				document.getElementById("repairDiv").style.display='none';
+				document.getElementById("myDiv").style.display='none';
+				document.getElementById("dangAnDiv").style.display='none';
+				document.getElementById("msgDiv").style.display='none';
+				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+			});
+			document.getElementById("danAnInfo").addEventListener('tap', function() {
+				document.getElementById("dangAnDiv").style.display='block';
+				
+				document.getElementById("Popover_0").style.display='none';
+				document.getElementById("yunYongDiv").style.display='none';
+				document.getElementById("myDiv").style.display='none';
+				document.getElementById("repairDiv").style.display='none';
+				document.getElementById("msgDiv").style.display='none';
+				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+			});
+			
+			document.getElementById("repairInfo").addEventListener('tap', function() {
+				document.getElementById("repairDiv").style.display='block';
+				
+				document.getElementById("yunYongDiv").style.display='none';
+				document.getElementById("myDiv").style.display='none';
+				document.getElementById("dangAnDiv").style.display='none';
+				document.getElementById("msgDiv").style.display='none';
+				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+			});
+			
+			/********消息管理部分的js start*******/
+			
+			mui.init({ 
+			 pullRefresh : {
+			　　 swipeBack: false, //关闭左滑关闭功能
+				container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down : {
+				  style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				  color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				  height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				  range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				  offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				  auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				  //callback :pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			   },
+			　　up:{
+				   auto: false ,//可选,默认false.首次加载自动上拉加载一次
+			　　　　contentrefresh: '正在加载中...',
+			　　　　contentnomore:'没有更多数据了',
+			　　　　callback:pulluploading //上拉加载下一页
+			　　},
+			}
+			});
+			 
+			 function pulluploading(){
+				 console.log("消息管理之上拉加载数据"+msgIsQuery);
+				 if(msgIsQuery){
+				 	getMsgInfo();			 
+				 }
+			 }
+			function pulldownRefresh(){
+				console.log("消息管理之下拉刷新");
+				/* setTimeout(function() {  
+					var table = document.body.querySelector('.mui-table-view');  
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');  
+					for(var i = cells.length, len = i + 7; i < len; i++) {  
+						var li = document.createElement('li');  
+						li.className = 'mui-table-view-cell';  
+						li.innerHTML = '<a class="mui-navigate-right">' + '<img class="mui-media-object">' + '<div class="mui-media-body">' + '</div>' + '</a>';  
+						//下拉刷新，新纪录插到最前面；  
+						table.insertBefore(li, table.firstChild);  
+					}  
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed  
+				}, 1500); */ 
+			}
+			
+			//搜索
+			document.getElementById("search").addEventListener('tap',function() {
+				console.log("消息管理之搜索查询");
+				getMsgInfo(1);
+			});
+			
+			function getMsgInfo(flag){
+				var isRead = $("#isRead").val();
+				var queryUserFlag = $("#queryUserFlag").val();
+				var startTime = $("#start_date").val();
+				var endTime = $("#end_date").val();
+				console.log(isRead+"="+queryUserFlag+"="+startTime+"="+endTime);
+				var url = path1+"/msg/getMsgDataListByPage";
+				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+				if(flag == 1){
+					mui.showLoading("查询中,请稍后...","div");
+					pageNum = 1;
+					totalPage = 0;
+					
+				}
+				mui.ajax(url, {
+					 type: "get",
+					 dataType: "json",
+					 data:{
+						 isRead:isRead,
+						 queryUserId:queryUserFlag,
+						 startTime:startTime,
+						 endTime:endTime,
+						 page:pageNum,
+						 limit:limit,
+						 appSessionIdInfo:appSessionIdInfo
+					 },
+					 success: function(data){
+						 if(flag == 1){
+						 	mui.hideLoading();
+							$("#ulInfo").empty();
+						 }
+						 msgIsQuery = true;
+						 if(data.code == 1){
+							 mui.toast(data.msg);
+						 }else{
+							 var html = "";
+							 var dataInfo = data.data;
+							 var count = data.count;
+							 for(var v=0; v<dataInfo.length;v++){
+								 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
+								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;"><table style="width: 100%;text-align: center;"><tr>';
+								 if(dataInfo[v].msgInfo.length>5){
+									 html = html + "<td>"+dataInfo[v].msgInfo.substring(0,5)+"...</td>";
+								 }else{
+									 html = html + "<td>"+dataInfo[v].msgInfo+"</td>";
+								 }
+								 if(dataInfo[v].userNameFrom.length>3){
+								 	html = html + "<td>"+dataInfo[v].userNameFrom.substring(0,3)+"...</td>";
+								 }else{
+								 	html = html + "<td>"+dataInfo[v].userNameFrom+"</td>";
+								 }
+								 if(dataInfo[v].userNameTo.length>3){
+								 	html = html + "<td>"+dataInfo[v].userNameTo.substring(0,3)+"...</td>";
+								 }else{
+								 	html = html + "<td>"+dataInfo[v].userNameTo+"</td>";
+								 } 
+								 html = html + "<td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td>";
+								 html = html + '</tr></table></a>';
+								 html = html + '</li>';
+							 }
+							 if(totalPage==0){
+								 if(count%limit==0){
+									totalPage = count/limit; 
+								 }else{
+									 totalPage = parseInt(count/limit)+1
+								 }
+							 }
+							 //mui.toast(totalPage +"=="+pageNum);
+							 if(totalPage == pageNum){
+								  mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+								  //mui.toast('没有更多数据了！');
+								  //mui.querySelector(".mui-pull-bottom-pocket .mui-pull-caption").innerHTML = "没有更多数据了";
+							 }else{
+								 mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+								 pageNum = pageNum + 1;
+								 console.log(111111)
+							 }
+							 $("#ulInfo").append(html);
+						 }
+					 }
+				}); 
+			}
+					
+			mui('#ulInfo').on('tap','li',function(v){
+				  var msgId = this.id;
+				  console.log("点击的信息主键ID："+msgId);
+				  var id = generateUUID()+"-messageDetail";
+				  mui.openWindow({
+				  	url: '../childPage/messageDetail.html',
+				  	id: id,
+				  	show: {
+				  		aniShow: 'pop-in'
+				  	},
+				  	styles: {
+				  		popGesture: 'hide'
+				  	},
+				  	waiting: {
+				  		autoShow: false
+				  	},
+					extras: {
+						msgId: msgId
+					},
+					createNew:true
+				  });
+			})
+			
+			//日期选择
+			document.getElementById("start_date").addEventListener('tap',function() {
+				getDate('start_date');
+			});
+			document.getElementById("end_date").addEventListener('tap',function() {
+				getDate('end_date');
+			});
+			//获取文本框中的值
+			var start_date = $('#start_date').val();
+			var end_date = $('#end_date').val();
+			//日期js控件
+			function getDate(obj) {
+				var dDate = new Date();
+				//设置当前日期（不设置默认当前日期）
+				dDate.setFullYear(dDate.getFullYear(), dDate.getMonth(), dDate.getDate());
+				var minDate = new Date();
+				//最小时间
+				minDate.setFullYear(1900, 0, 1);
+				var maxDate = new Date();
+				//最大时间
+				maxDate.setFullYear(3000, 12, 31);
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					var objData = d.getFullYear() + "-" + (d.getMonth() < 9 ? '0': '') + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? '0': '') + d.getDate();
+					pickTime(obj, objData);
+				},
+				function(e) {
+					console.log("您没有选择日期");
+				},
+				{
+					title: '请选择日期',
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+			}
+			function pickTime(obj, objData) {
+				plus.nativeUI.pickTime(function(e) {
+					var d = e.date;
+					console.log("选择的时间：" + d.getHours() + ":" + d.getMinutes());
+					document.getElementById(obj).value = objData + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes() + ":" + (d.getSeconds() < 10 ? '0': '') + d.getSeconds();
+			
+				},
+				function(e) {
+					console.log("未选择时间：" + e.message);
+				});
+			}
+			/********消息管理部分的js end*******/
+		})(mui);
 	</script>
 </html>
