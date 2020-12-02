@@ -13,6 +13,8 @@
 		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
 		<link type="text/css" type="text/css" rel="stylesheet" href="../css/mui.css">
 		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
 		<style>
 			.mui-bar-popover {
 				width: 30%;
@@ -68,7 +70,9 @@
 				/* border: 1px solid #929292; */
 				margin-top: 2px;
 			}
-			
+			input{
+				color: #929292;
+			}
 			input::-webkit-input-placeholder{
 			    color:#929292;
 			}
@@ -84,7 +88,7 @@
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
-		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;z-index: -999999999;">				
 		
 <!-- 			<div class="mui-content" style="height: 93%;z-index: -111;margin-top: 1px;background: none;">
 				<iframe id="iframeInfo" src="" frameborder="0" scrolling="auto" allowtransparency="true" width="100%" height="100%" ></iframe>
@@ -96,8 +100,8 @@
 				<a class="mui-tab-item mui-icon mui-icon-email aCss" style="font-size: 1rem;" href="#Popover_3">消息</a>
 				<a class="mui-tab-item mui-icon mui-icon-contact aCss" style="font-size: 1rem;" href="#Popover_4">我的</a>
 			</nav> -->
-			<nav class="mui-bar mui-bar-tab " style="background:none;border: none;height: 5%;z-index: 99999999;">
-				<a class="mui-tab-item aCss" style="font-size: 1rem;" href="#Popover_0" id="repairInfo">
+			<nav class="mui-bar mui-bar-tab " id="navDiv" style="background:none;border: none;height: 5%;z-index: 99999999;">
+				<a class="mui-tab-item aCss" style="font-size: 1rem;" id="repairInfo">
 					<span class="mui-icon mui-icon-gear"></span>
 					<span class="mui-tab-label">检修</span>
 				</a>
@@ -118,7 +122,7 @@
 					<span class="mui-tab-label">我的</span>
 				</a>
 			</nav>
-			<div id="Popover_0" class="mui-popover mui-bar-popover" style="background:none;border: 1px solid #007AFF;width: 108px;border-radius: 15px;">
+			<!-- <div id="Popover_0" class="mui-popover mui-bar-popover" style="background:none;border: 1px solid #007AFF;width: 108px;border-radius: 15px;">
 				<div class="mui-popover-arrow"></div>
 				<ul class="mui-table-view" style="background:none;border: none;">
 					<li class="mui-table-view-cell"><a href="#" id="dayRepair" style="color: #007AFF;">日常检修</a>
@@ -128,7 +132,7 @@
 					<li class="mui-table-view-cell"><a href="#" id="yearRepair" style="color: #007AFF;">年度检修</a>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 			
 			<!-- 检修div start -->
 			<div class="mainDiv" style="height:93%;width:100%;position:absolute;display: none;" id="repairDiv">
@@ -184,7 +188,7 @@
 					</div>
 					<div class="title"></div>
 				</header>
-				<div class="liCss">
+				<div class="liCss" style="height: 24%;">
 					<div class="mui-input-row">
 						<label class="lableCss">消息类型</label>
 						<a class="mui-navigate-right">
@@ -213,27 +217,31 @@
 							<option value="0">未读</option>
 						</select>
 					</div> 
-					<div style="float: right;margin-top: -40px;margin-right: 20px;">
+					<div style="float: right;margin-top: -40px;margin-right: 5px;">
 						<button type="button" id="search" class="mui-btn mui-btn-primary mui-icon mui-icon-search">
 							搜索
 						</button>
+						&nbsp;
+						<button type="button" class="mui-btn mui-btn-success mui-icon mui-icon-plus">
+							添加
+						</button>
 					</div>
 				</div>
-				<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="background:none;border-bottom: none;margin-top: 200px;">
+				<ul class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+					<li class="mui-table-view-cell liCss" style="height: 4%;">
+						<table style="width: 100%;text-align: center;">
+							<tr>
+								<td>消息</td>
+								<td>发送</td>
+								<td>接收</td>
+								<td>时间</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+				<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="height: 69%; background:none;border-bottom: none;margin-top: 244px;">
 					<div class="mui-scroll">
-						<ul class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
-							<li class="mui-table-view-cell liCss">
-								<table style="width: 100%;text-align: center;">
-									<tr>
-										<td>消息</td>
-										<td>发送</td>
-										<td>接收</td>
-										<td>时间</td>
-									</tr>
-								</table>
-							</li>
-						</ul>
-						<ul id="ulInfo" class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+						<ul id="ulInfo" class="mui-table-view mui-table-view-chevron"  style="height: 94%; background:none;border-bottom: none;">
 						
 						</ul>
 					</div>
@@ -265,6 +273,7 @@
 	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" src="../js/showLoading.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
 	<script>	
 		// 分页初始参数
 		var pageNum = 1;
@@ -299,7 +308,6 @@
 			document.getElementById("msgManager").addEventListener('tap', function() {
 				document.getElementById("msgDiv").style.display='block';
 				//pulluploading();
-				document.getElementById("Popover_0").style.display='none';
 				document.getElementById("repairDiv").style.display='none';
 				document.getElementById("yunYongDiv").style.display='none';
 				document.getElementById("dangAnDiv").style.display='none';
@@ -309,7 +317,6 @@
 			document.getElementById("baseInfo").addEventListener('tap', function() {
 				document.getElementById("myDiv").style.display='block';
 				
-				document.getElementById("Popover_0").style.display='none';
 				document.getElementById("repairDiv").style.display='none';
 				document.getElementById("yunYongDiv").style.display='none';
 				document.getElementById("dangAnDiv").style.display='none';
@@ -319,7 +326,6 @@
 			document.getElementById("yunYongInfo").addEventListener('tap', function() {
 				document.getElementById("yunYongDiv").style.display='block';
 				
-				document.getElementById("Popover_0").style.display='none';
 				document.getElementById("repairDiv").style.display='none';
 				document.getElementById("myDiv").style.display='none';
 				document.getElementById("dangAnDiv").style.display='none';
@@ -329,8 +335,6 @@
 			document.getElementById("danAnInfo").addEventListener('tap', function() {
 				document.getElementById("dangAnDiv").style.display='block';
 				
-				document.getElementById("Popover_0").style.display='none';
-				document.getElementById("yunYongDiv").style.display='none';
 				document.getElementById("myDiv").style.display='none';
 				document.getElementById("repairDiv").style.display='none';
 				document.getElementById("msgDiv").style.display='none';
@@ -348,10 +352,10 @@
 			});
 			
 			/********消息管理部分的js start*******/
-			
+			 
 			mui.init({ 
 			 pullRefresh : {
-			　　 swipeBack: false, //关闭左滑关闭功能
+			　　swipeBack: false, //关闭左滑关闭功能
 				container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
 				down : {
 				  style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
@@ -360,7 +364,8 @@
 				  range:'100px', //可选 默认100px,控件可下拉拖拽的范围
 				  offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
 				  auto: false,//可选,默认false.首次加载自动上拉刷新一次
-				  //callback :pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				  contentrefresh: '正在刷新中...',
+				  callback :pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
 			   },
 			　　up:{
 				   auto: false ,//可选,默认false.首次加载自动上拉加载一次
@@ -370,6 +375,9 @@
 			　　},
 			}
 			});
+			
+			//禁用下拉刷新
+			plus.webview.currentWebview().setPullToRefresh({support:false});
 			 
 			 function pulluploading(){
 				 console.log("消息管理之上拉加载数据"+msgIsQuery);
@@ -411,7 +419,8 @@
 					mui.showLoading("查询中,请稍后...","div");
 					pageNum = 1;
 					totalPage = 0;
-					
+					// 重新激活上拉加载 下拉刷新操作
+					mui('#refreshContainer').pullRefresh().refresh(true);
 				}
 				mui.ajax(url, {
 					 type: "get",
@@ -439,7 +448,13 @@
 							 var count = data.count;
 							 for(var v=0; v<dataInfo.length;v++){
 								 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
-								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;"><table style="width: 100%;text-align: center;"><tr>';
+								 // 向右滑删除
+								 //html = html + '<div class="mui-slider-left mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+								 // 向左滑删除
+								 html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+								 html = html + '<div class="mui-slider-handle" style="background:none;">';
+								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+								 html = html + '<table style="width: 100%;text-align: center;"><tr>';
 								 if(dataInfo[v].msgInfo.length>5){
 									 html = html + "<td>"+dataInfo[v].msgInfo.substring(0,5)+"...</td>";
 								 }else{
@@ -456,7 +471,7 @@
 								 	html = html + "<td>"+dataInfo[v].userNameTo+"</td>";
 								 } 
 								 html = html + "<td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td>";
-								 html = html + '</tr></table></a>';
+								 html = html + '</tr></table></a></div>';
 								 html = html + '</li>';
 							 }
 							 if(totalPage==0){
@@ -474,7 +489,6 @@
 							 }else{
 								 mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
 								 pageNum = pageNum + 1;
-								 console.log(111111)
 							 }
 							 $("#ulInfo").append(html);
 						 }
@@ -505,53 +519,44 @@
 				  });
 			})
 			
-			//日期选择
-			document.getElementById("start_date").addEventListener('tap',function() {
-				getDate('start_date');
-			});
-			document.getElementById("end_date").addEventListener('tap',function() {
-				getDate('end_date');
-			});
-			//获取文本框中的值
-			var start_date = $('#start_date').val();
-			var end_date = $('#end_date').val();
-			//日期js控件
-			function getDate(obj) {
-				var dDate = new Date();
-				//设置当前日期（不设置默认当前日期）
-				dDate.setFullYear(dDate.getFullYear(), dDate.getMonth(), dDate.getDate());
-				var minDate = new Date();
-				//最小时间
-				minDate.setFullYear(1900, 0, 1);
-				var maxDate = new Date();
-				//最大时间
-				maxDate.setFullYear(3000, 12, 31);
-				plus.nativeUI.pickDate(function(e) {
-					var d = e.date;
-					var objData = d.getFullYear() + "-" + (d.getMonth() < 9 ? '0': '') + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? '0': '') + d.getDate();
-					pickTime(obj, objData);
-				},
-				function(e) {
-					console.log("您没有选择日期");
-				},
-				{
-					title: '请选择日期',
-					date: dDate,
-					minDate: minDate,
-					maxDate: maxDate
-				});
-			}
-			function pickTime(obj, objData) {
-				plus.nativeUI.pickTime(function(e) {
-					var d = e.date;
-					console.log("选择的时间：" + d.getHours() + ":" + d.getMinutes());
-					document.getElementById(obj).value = objData + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes() + ":" + (d.getSeconds() < 10 ? '0': '') + d.getSeconds();
 			
-				},
-				function(e) {
-					console.log("未选择时间：" + e.message);
+			var btnArray = ['确认', '取消'];
+			////右滑不需要点击删除自动触发弹出确认框
+			//$('#ulInfo').on('slideleft', '.mui-table-view-cell', function(event) {
+			//右滑点击删除弹出确认框
+			$('#ulInfo').on('tap', '.mui-btn', function(event) {
+				var elem = this;
+				var li = elem.parentNode.parentNode;
+				mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
+					if (e.index == 0) {
+						li.parentNode.removeChild(li);
+						var id = parseInt(li.id);
+						var url = path1+"/msg/getMsgInfoById";
+						var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+						mui.showLoading("删除中,请稍后...","div"); 
+						mui.ajax(path1+'/msg/deleteMsgById',{
+						    data:{
+									 appSessionIdInfo:appSessionIdInfo,
+									 id:id
+								},
+							async:true,
+							dataType:'json',   
+							type:'post',
+							success:function(data){
+								mui.hideLoading();
+								mui.toast(data.msg);
+							},
+							error:function(data){
+								mui.alert('请求失败');
+							}
+						}); 
+					} else {
+						setTimeout(function() {
+							$.swipeoutClose(li);
+						}, 0);
+					}
 				});
-			}
+			});
 			/********消息管理部分的js end*******/
 		})(mui);
 	</script>
