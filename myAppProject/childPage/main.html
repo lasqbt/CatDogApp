@@ -290,7 +290,6 @@
 				indicators: false, //是否显示滚动条,默认是true
 				deceleration: deceleration
 			});
-			
 			/* mui.init({
 				subpages: [{  
 						url: '../childPage/messageIndex.html',//子页面HTML地址，支持本地地址和网络地址  
@@ -301,263 +300,277 @@
 							},  
 					  }]
 			}); */
-			//正确代码
-			/* $('#msgManager').on('tap', function() {  
-				mui.alert("我被点了");
-			}) */	
-			document.getElementById("msgManager").addEventListener('tap', function() {
-				document.getElementById("msgDiv").style.display='block';
-				//pulluploading();
-				document.getElementById("repairDiv").style.display='none';
-				document.getElementById("yunYongDiv").style.display='none';
-				document.getElementById("dangAnDiv").style.display='none';
-				document.getElementById("myDiv").style.display='none';
-				//$("#iframeInfo").attr("src","../childPage/messageIndex.html");
-			});
-			document.getElementById("baseInfo").addEventListener('tap', function() {
-				document.getElementById("myDiv").style.display='block';
-				
-				document.getElementById("repairDiv").style.display='none';
-				document.getElementById("yunYongDiv").style.display='none';
-				document.getElementById("dangAnDiv").style.display='none';
-				document.getElementById("msgDiv").style.display='none';
-				//$("#iframeInfo").attr("src","../childPage/messageIndex3.html");
-			});
-			document.getElementById("yunYongInfo").addEventListener('tap', function() {
-				document.getElementById("yunYongDiv").style.display='block';
-				
-				document.getElementById("repairDiv").style.display='none';
-				document.getElementById("myDiv").style.display='none';
-				document.getElementById("dangAnDiv").style.display='none';
-				document.getElementById("msgDiv").style.display='none';
-				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
-			});
-			document.getElementById("danAnInfo").addEventListener('tap', function() {
-				document.getElementById("dangAnDiv").style.display='block';
-				
-				document.getElementById("myDiv").style.display='none';
-				document.getElementById("repairDiv").style.display='none';
-				document.getElementById("msgDiv").style.display='none';
-				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
-			});
-			
-			document.getElementById("repairInfo").addEventListener('tap', function() {
-				document.getElementById("repairDiv").style.display='block';
-				
-				document.getElementById("yunYongDiv").style.display='none';
-				document.getElementById("myDiv").style.display='none';
-				document.getElementById("dangAnDiv").style.display='none';
-				document.getElementById("msgDiv").style.display='none';
-				//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
-			});
-			
-			/********消息管理部分的js start*******/
-			 
-			mui.init({ 
-			 pullRefresh : {
-			　　swipeBack: false, //关闭左滑关闭功能
-				container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
-				down : {
-				  style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
-				  color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
-				  height:'50px',//可选,默认50px.下拉刷新控件的高度,
-				  range:'100px', //可选 默认100px,控件可下拉拖拽的范围
-				  offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
-				  auto: false,//可选,默认false.首次加载自动上拉刷新一次
-				  contentrefresh: '正在刷新中...',
-				  callback :pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
-			   },
-			　　up:{
-				   auto: false ,//可选,默认false.首次加载自动上拉加载一次
-			　　　　contentrefresh: '正在加载中...',
-			　　　　contentnomore:'没有更多数据了',
-			　　　　callback:pulluploading //上拉加载下一页
-			　　},
-			}
-			});
-			
-			//禁用下拉刷新
-			plus.webview.currentWebview().setPullToRefresh({support:false});
-			 
-			 function pulluploading(){
-				 console.log("消息管理之上拉加载数据"+msgIsQuery);
-				 if(msgIsQuery){
-				 	getMsgInfo();			 
-				 }
-			 }
-			function pulldownRefresh(){
-				console.log("消息管理之下拉刷新");
-				/* setTimeout(function() {  
-					var table = document.body.querySelector('.mui-table-view');  
-					var cells = document.body.querySelectorAll('.mui-table-view-cell');  
-					for(var i = cells.length, len = i + 7; i < len; i++) {  
-						var li = document.createElement('li');  
-						li.className = 'mui-table-view-cell';  
-						li.innerHTML = '<a class="mui-navigate-right">' + '<img class="mui-media-object">' + '<div class="mui-media-body">' + '</div>' + '</a>';  
-						//下拉刷新，新纪录插到最前面；  
-						table.insertBefore(li, table.firstChild);  
-					}  
-					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed  
-				}, 1500); */ 
-			}
-			
-			//搜索
-			document.getElementById("search").addEventListener('tap',function() {
-				console.log("消息管理之搜索查询");
-				getMsgInfo(1);
-			});
-			
-			function getMsgInfo(flag){
-				var isRead = $("#isRead").val();
-				var queryUserFlag = $("#queryUserFlag").val();
-				var startTime = $("#start_date").val();
-				var endTime = $("#end_date").val();
-				console.log(isRead+"="+queryUserFlag+"="+startTime+"="+endTime);
-				var url = path1+"/msg/getMsgDataListByPage";
-				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				if(flag == 1){
-					mui.showLoading("查询中,请稍后...","div");
-					pageNum = 1;
-					totalPage = 0;
-					// 重新激活上拉加载 下拉刷新操作
-					mui('#refreshContainer').pullRefresh().refresh(true);
-				}
-				mui.ajax(url, {
-					 type: "get",
-					 dataType: "json",
-					 data:{
-						 isRead:isRead,
-						 queryUserFlag:queryUserFlag,
-						 startTime:startTime,
-						 endTime:endTime,
-						 page:pageNum,
-						 limit:limit,
-						 appSessionIdInfo:appSessionIdInfo
-					 },
-					 success: function(data){
-						 if(flag == 1){
-						 	mui.hideLoading();
-							$("#ulInfo").empty();
-						 }
-						 msgIsQuery = true;
-						 if(data.code == 1){
-							 mui.toast(data.msg);
-						 }else{
-							 var html = "";
-							 var dataInfo = data.data;
-							 var count = data.count;
-							 for(var v=0; v<dataInfo.length;v++){
-								 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
-								 // 向右滑删除
-								 //html = html + '<div class="mui-slider-left mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
-								 // 向左滑删除
-								 html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
-								 html = html + '<div class="mui-slider-handle" style="background:none;">';
-								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
-								 html = html + '<table style="width: 100%;text-align: center;"><tr>';
-								 if(dataInfo[v].msgInfo.length>5){
-									 html = html + "<td>"+dataInfo[v].msgInfo.substring(0,5)+"...</td>";
-								 }else{
-									 html = html + "<td>"+dataInfo[v].msgInfo+"</td>";
-								 }
-								 if(dataInfo[v].userNameFrom.length>3){
-								 	html = html + "<td>"+dataInfo[v].userNameFrom.substring(0,3)+"...</td>";
-								 }else{
-								 	html = html + "<td>"+dataInfo[v].userNameFrom+"</td>";
-								 }
-								 if(dataInfo[v].userNameTo.length>3){
-								 	html = html + "<td>"+dataInfo[v].userNameTo.substring(0,3)+"...</td>";
-								 }else{
-								 	html = html + "<td>"+dataInfo[v].userNameTo+"</td>";
-								 } 
-								 html = html + "<td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td>";
-								 html = html + '</tr></table></a></div>';
-								 html = html + '</li>';
-							 }
-							 if(totalPage==0){
-								 if(count%limit==0){
-									totalPage = count/limit; 
-								 }else{
-									 totalPage = parseInt(count/limit)+1
-								 }
-							 }
-							 //mui.toast(totalPage +"=="+pageNum);
-							 if(totalPage == pageNum){
-								  mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
-								  //mui.toast('没有更多数据了！');
-								  //mui.querySelector(".mui-pull-bottom-pocket .mui-pull-caption").innerHTML = "没有更多数据了";
-							 }else{
-								 mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
-								 pageNum = pageNum + 1;
-							 }
-							 $("#ulInfo").append(html);
-						 }
-					 }
-				}); 
-			}
-					
-			mui('#ulInfo').on('tap','li',function(v){
-				  var msgId = this.id;
-				  console.log("点击的信息主键ID："+msgId);
-				  var id = generateUUID()+"-messageDetail";
-				  mui.openWindow({
-				  	url: '../childPage/messageDetail.html',
-				  	id: id,
-				  	show: {
-				  		aniShow: 'pop-in'
-				  	},
-				  	styles: {
-				  		popGesture: 'hide'
-				  	},
-				  	waiting: {
-				  		autoShow: false
-				  	},
-					extras: {
-						msgId: msgId
-					},
-					createNew:true
-				  });
-			})
-			
-			
-			var btnArray = ['确认', '取消'];
-			////右滑不需要点击删除自动触发弹出确认框
-			//$('#ulInfo').on('slideleft', '.mui-table-view-cell', function(event) {
-			//右滑点击删除弹出确认框
-			$('#ulInfo').on('tap', '.mui-btn', function(event) {
-				var elem = this;
-				var li = elem.parentNode.parentNode;
-				mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
-					if (e.index == 0) {
-						li.parentNode.removeChild(li);
-						var id = parseInt(li.id);
-						var url = path1+"/msg/getMsgInfoById";
-						var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-						mui.showLoading("删除中,请稍后...","div"); 
-						mui.ajax(path1+'/msg/deleteMsgById',{
-						    data:{
-									 appSessionIdInfo:appSessionIdInfo,
-									 id:id
-								},
-							async:true,
-							dataType:'json',   
-							type:'post',
-							success:function(data){
-								mui.hideLoading();
-								mui.toast(data.msg);
-							},
-							error:function(data){
-								mui.alert('请求失败');
-							}
-						}); 
-					} else {
-						setTimeout(function() {
-							$.swipeoutClose(li);
-						}, 0);
-					}
+			mui.plusReady(function() {
+				mui.ajaxSettings = mui.extend(mui.ajaxSettings, {
+				    xhr: function(settings) {
+				        if (settings.crossDomain) { //强制使用plus跨域
+				            return new plus.net.XMLHttpRequest();
+				        }
+				        if (mui.os.ios && window.webkit && window.webkit.messageHandlers) { //wkwebview下同样使用5+ xhr
+				            return new plus.net.XMLHttpRequest();
+				        }
+				        return new window.XMLHttpRequest();
+							
+				    }
+							
 				});
+				//正确代码
+				/* $('#msgManager').on('tap', function() {  
+					mui.alert("我被点了");
+				}) */	
+				document.getElementById("msgManager").addEventListener('tap', function() {
+					document.getElementById("msgDiv").style.display='block';
+					//pulluploading();
+					document.getElementById("repairDiv").style.display='none';
+					document.getElementById("yunYongDiv").style.display='none';
+					document.getElementById("dangAnDiv").style.display='none';
+					document.getElementById("myDiv").style.display='none';
+					//$("#iframeInfo").attr("src","../childPage/messageIndex.html");
+				});
+				document.getElementById("baseInfo").addEventListener('tap', function() {
+					document.getElementById("myDiv").style.display='block';
+					
+					document.getElementById("repairDiv").style.display='none';
+					document.getElementById("yunYongDiv").style.display='none';
+					document.getElementById("dangAnDiv").style.display='none';
+					document.getElementById("msgDiv").style.display='none';
+					//$("#iframeInfo").attr("src","../childPage/messageIndex3.html");
+				});
+				document.getElementById("yunYongInfo").addEventListener('tap', function() {
+					document.getElementById("yunYongDiv").style.display='block';
+					
+					document.getElementById("repairDiv").style.display='none';
+					document.getElementById("myDiv").style.display='none';
+					document.getElementById("dangAnDiv").style.display='none';
+					document.getElementById("msgDiv").style.display='none';
+					//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+				});
+				document.getElementById("danAnInfo").addEventListener('tap', function() {
+					document.getElementById("dangAnDiv").style.display='block';
+					
+					document.getElementById("myDiv").style.display='none';
+					document.getElementById("repairDiv").style.display='none';
+					document.getElementById("msgDiv").style.display='none';
+					//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+				});
+				
+				document.getElementById("repairInfo").addEventListener('tap', function() {
+					document.getElementById("repairDiv").style.display='block';
+					
+					document.getElementById("yunYongDiv").style.display='none';
+					document.getElementById("myDiv").style.display='none';
+					document.getElementById("dangAnDiv").style.display='none';
+					document.getElementById("msgDiv").style.display='none';
+					//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
+				});
+				
+				/********消息管理部分的js start*******/
+				mui.init({ 
+			     swipeBack: false,
+				 pullRefresh : {
+					container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down : {
+					  height:'50px',//可选,默认50px.下拉刷新控件的高度,
+					  auto: true,//可选,默认false.首次加载自动上拉刷新一次
+					  contentdown : "下拉可以刷新呀",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					  contentover : "释放立即刷新哟",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					  contentrefresh : "正在刷新ing...",//可选，正在刷新状态时，下拉刷新控件上显示的标题内容 
+					  contentnomore:'刷新完成了',
+					  callback :function(){
+							console.log("vgsdfvgdf");
+							setTimeout(function() {
+								pulldownRefresh();
+								mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
+							}, 500);
+
+					  } //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				   },
+				　　up:{
+					   auto: false ,//可选,默认false.首次加载自动上拉加载一次
+				　　　　contentrefresh: '正在加载中...',
+				　　　　contentnomore:'没有更多数据了',
+				　　　　callback:pulluploading//上拉加载下一页
+				　　},
+				}
+				});
+				 function pulldownRefresh(){
+				 	console.log("消息管理之下拉刷新");
+				 	if(msgIsQuery){
+				 		getMsgInfo(0,1,totalPage*limit);			 
+				 	}else{
+				 		getMsgInfo(0,pageNum,limit);
+				 	}
+				 }
+				 
+				 function pulluploading(){
+					 console.log("消息管理之上拉加载数据"+msgIsQuery);
+					 if(msgIsQuery){
+						getMsgInfo(0,pageNum,limit);			 
+					 }
+				 }
+				
+				
+				//搜索
+				document.getElementById("search").addEventListener('tap',function() {
+					console.log("消息管理之搜索查询");
+					totalPage = 0;
+					getMsgInfo(1,1,limit);
+				});
+				
+				function getMsgInfo(flag,pageNumV,limitV){
+					var isRead = $("#isRead").val();
+					var queryUserFlag = $("#queryUserFlag").val();
+					var startTime = $("#start_date").val();
+					var endTime = $("#end_date").val();
+					//console.log(isRead+"="+queryUserFlag+"="+startTime+"="+endTime);
+					var url = path1+"/msg/getMsgDataListByPage";
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					if(flag == 1){
+						//显示遮罩层
+						mui.showLoading("查询中,请稍后...","div");
+						// 重新激活上拉加载 下拉刷新操作
+						mui('#refreshContainer').pullRefresh().refresh(true);
+					}
+					mui.ajax(url, {
+						 type: "get",
+						 dataType: "json",
+						 data:{
+							 isRead:isRead,
+							 queryUserFlag:queryUserFlag,
+							 startTime:startTime,
+							 endTime:endTime,
+							 page:pageNumV,
+							 limit:limitV,
+							 appSessionIdInfo:appSessionIdInfo
+						 },
+						 success: function(data){
+							 if(flag == 1){
+								 //关闭遮罩层
+								mui.hideLoading();
+								// 清空操作
+								$("#ulInfo").empty();
+							 }
+							 msgIsQuery = true;
+							 if(data.code == 1){
+								 mui.toast(data.msg);
+							 }else{
+								 var html = "";
+								 var dataInfo = data.data;
+								 var count = data.count;
+								 for(var v=0; v<dataInfo.length;v++){
+									 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
+									 // 向右滑删除
+									 //html = html + '<div class="mui-slider-left mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+									 // 向左滑删除
+									 html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+									 html = html + '<div class="mui-slider-handle" style="background:none;">';
+									 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+									 html = html + '<table style="width: 100%;text-align: center;"><tr>';
+									 if(dataInfo[v].msgInfo.length>5){
+										 html = html + "<td>"+dataInfo[v].msgInfo.substring(0,5)+"...</td>";
+									 }else{
+										 html = html + "<td>"+dataInfo[v].msgInfo+"</td>";
+									 }
+									 if(dataInfo[v].userNameFrom.length>3){
+										html = html + "<td>"+dataInfo[v].userNameFrom.substring(0,3)+"...</td>";
+									 }else{
+										html = html + "<td>"+dataInfo[v].userNameFrom+"</td>";
+									 }
+									 if(dataInfo[v].userNameTo.length>3){
+										html = html + "<td>"+dataInfo[v].userNameTo.substring(0,3)+"...</td>";
+									 }else{
+										html = html + "<td>"+dataInfo[v].userNameTo+"</td>";
+									 } 
+									 html = html + "<td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td>";
+									 html = html + '</tr></table></a></div>';
+									 html = html + '</li>';
+								 }
+								 if(totalPage==0){
+									 if(count%limit==0){
+										totalPage = count/limit; 
+									 }else{
+										 totalPage = parseInt(count/limit)+1
+									 }
+								 }
+								 //mui.toast(totalPage +"=="+pageNumV);
+								 if(totalPage == pageNumV){
+									  mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+									  //mui.toast('没有更多数据了！');
+									  //mui.querySelector(".mui-pull-bottom-pocket .mui-pull-caption").innerHTML = "没有更多数据了";
+										pageNum = 1;
+								 }else{
+									 mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+									 pageNum = pageNum + 1;
+								 }
+								 $("#ulInfo").append(html);
+							 }
+						 }
+					}); 
+				}
+						
+				mui('#ulInfo').on('tap','li',function(v){
+					  var msgId = this.id;
+					  console.log("点击的信息主键ID："+msgId);
+					  var id = generateUUID()+"-messageDetail";
+					  mui.openWindow({
+						url: '../childPage/messageDetail.html',
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						},
+						extras: {
+							msgId: msgId
+						},
+						createNew:true
+					  });
+				})
+				
+				
+				var btnArray = ['确认', '取消'];
+				////右滑不需要点击删除自动触发弹出确认框
+				//$('#ulInfo').on('slideleft', '.mui-table-view-cell', function(event) {
+				//右滑点击删除弹出确认框
+				$('#ulInfo').on('tap', '.mui-btn', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
+						if (e.index == 0) {
+							li.parentNode.removeChild(li);
+							var id = parseInt(li.id);
+							var url = path1+"/msg/getMsgInfoById";
+							var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+							mui.showLoading("删除中,请稍后...","div"); 
+							mui.ajax(path1+'/msg/deleteMsgById',{
+								data:{
+										 appSessionIdInfo:appSessionIdInfo,
+										 id:id
+									},
+								async:true,
+								dataType:'json',   
+								type:'post',
+								success:function(data){
+									mui.hideLoading();
+									mui.toast(data.msg);
+								},
+								error:function(data){
+									mui.alert('请求失败');
+								}
+							}); 
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				/********消息管理部分的js end*******/
 			});
-			/********消息管理部分的js end*******/
 		})(mui);
 	</script>
 </html>
