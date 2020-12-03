@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mui-bar-popover {
+				width: 30%;
+			}
+			.aCss:hover{
+				color: blue;
+			}
+			
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0; */
+			}
+			
+			.mui-badge1{
+				padding:0px; 
+				width:65%; 
+				float:right; 
+				line-height:40px; 
+				font-size:14px;
+			}
+			.lableCss{
+				color: #929292;
+			}
+			.mui-table-view-cell:after{	
+			    background-color: transparent; /*ul的背景颜色*/
+			}
+			.mui-table-view:after{
+			    background-color: transparent; /*ul最下面的横线  liu aishen*/
+			}
+			.mui-table-view:before{
+			    background-color: transparent; /*ul最上面的横线  liu aishen*/
+			}
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			
+			input::-webkit-input-placeholder{
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				border-radius: 5px;
+				width: 96%;
+				margin: 0 auto;
+				/* border: 1px solid #929292; */
+				margin-top: 3px;
+			}
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<!-- <span class="us_uer4" onclick="mui.back();"></span> -->
+				<div class="fontCss">
+					<span class="fontSpanCss">选择接收人</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="mui-input-row mui-search" style="width: 95%;margin: 0 auto;">
+				<input type="search" class="mui-input-clear lableCss" placeholder="输入姓名查询">
+			</div>
+			<ul id="userInfo" class="mui-table-view mui-table-view-chevron"  style="height: 530px; background:none;border-bottom: none;overflow: auto;">
+			
+			</ul>
+			<div style="text-align: center;margin-top: 17px;">
+				<button type="button" id="comeBack" class="mui-btn mui-btn-primary">
+					确认并返回
+				</button>
+				<button type="button" id="quan" class="mui-btn mui-btn-primary">
+					全选
+				</button>
+				<button type="button" id="fan" class="mui-btn mui-btn-primary">
+					反选
+				</button>
+				<button type="button" id="noChecked" class="mui-btn mui-btn-primary">
+					全不选
+				</button>
+			</div>
+			
+		</div>
+	</body>
+	<script src="../js/jquery.min.js" type="text/javascript" ></script>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript"> </script>
+	<script src="../js/app.js" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"> </script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+	<script>	
+		(function (mui) {
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui.plusReady(function(){
+				getMsgInfo();
+				function getMsgInfo(){
+					var url = path1+"/msg/getsendMsgUserInfo";
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					//显示遮罩层
+					mui.showLoading("查询中,请稍后...","div");
+					mui.ajax(url, {
+						 type: "get",
+						 dataType: "json",
+						 data:{appSessionIdInfo:appSessionIdInfo},
+						 success: function(data){
+							 console.log("返回码是"+data.code);
+							 mui.hideLoading();
+							 if(data.code == 1){
+								 mui.toast(data.msg);
+							 }else{
+								 var html = "";
+								 var dataInfo = data.userTo;
+								 for(var v=0; v<dataInfo.length;v++){
+									 html = html + '<li class="mui-table-view-cell mui-checkbox mui-left liCss">';
+									 html = html + '<input name="userToInfo" type="checkbox" value="'+dataInfo[v].userid+'">'+dataInfo[v].username;
+									 html = html + '</li>';
+								 }
+								 //console.log(html);
+								 $("#userInfo").append(html);
+								 setChecked();
+							 }
+						 },
+				 		error:function(data){
+							mui.hideLoading();
+				 			mui.alert('请求用户数据失败');
+				 		}
+					}); 
+				}
+				function setChecked(){
+					// 取父页面传的值
+					var self = plus.webview.currentWebview();
+					var userIds = self.checkedUserIds;
+					var arr = userIds.split(",");
+					if(arr != null){
+						var rdsObj = document.getElementsByName("userToInfo");
+						for(var i = 0; i< rdsObj.length; i++){
+							for(var v=0;v<arr.length;v++){
+								if(arr[v]==rdsObj[i].value){
+									rdsObj[i].checked = true;
+								}
+							}
+						} 
+					}
+				}
+				//确认并返回
+				document.getElementById("comeBack").addEventListener('tap',function() {
+					var ids="";
+					var names="";
+					var n = 0;
+					var rdsObj = document.getElementsByName("userToInfo");
+					for(var i = 0; i< rdsObj.length; i++){
+						if(rdsObj[i].checked){
+							ids = ids+rdsObj[i].value+",";
+							names = names + rdsObj[i].nextSibling.nodeValue+";";
+							n++;
+						}
+					} 
+					//console.log(ids.substring(0,ids.length-5));
+					//console.log(names);
+					if(n<1){
+						mui.toast('请选择接收人')
+					}else{
+						if(names.length>18){
+							names = names.substring(0,18)+"...";
+						}
+						var data={};
+						data.checkUserToIds = ids;
+						data.checkUserToName = names;
+						//获取父页面messageAdd.html
+						var list = plus.webview.currentWebview().opener();
+						//自定义事件,事件名为getValueFromChild
+						mui.fire(list,'getValueFromChild',data);
+						// 返回
+						mui.back();
+					}
+					
+				});
+				
+				//全选
+				document.getElementById("quan").addEventListener('tap',function() {
+					var rdsObj = document.getElementsByName("userToInfo");
+					for(var i = 0; i< rdsObj.length; i++){
+						if(!rdsObj[i].checked){
+							rdsObj[i].checked = true;
+						}
+					}
+				});
+				
+				//反选
+				document.getElementById("fan").addEventListener('tap',function() {
+					var rdsObj = document.getElementsByName("userToInfo");
+					for(var i = 0; i< rdsObj.length; i++){
+						if(!rdsObj[i].checked){
+							rdsObj[i].checked = true;
+						}else {
+							rdsObj[i].checked = false;
+						}
+					}
+				});
+				
+				//全不选
+				document.getElementById("noChecked").addEventListener('tap',function() {
+					var rdsObj = document.getElementsByName("userToInfo");
+					for(var i = 0; i< rdsObj.length; i++){
+						if(rdsObj[i].checked){
+							rdsObj[i].checked = false;
+						}
+					}
+				});
+
+			});
+		})(mui);
+	</script>
+</html>
