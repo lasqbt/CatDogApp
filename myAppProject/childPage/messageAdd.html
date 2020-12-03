@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mui-bar-popover {
+				width: 30%;
+			}
+			.aCss:hover{
+				color: blue;
+			}
+			
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0; */
+			}
+			
+			.mui-badge1{
+				padding:0px; 
+				width:65%; 
+				float:right; 
+				line-height:42px; 
+				font-size:14px;
+			}
+			.lableCss{
+				color: #929292;
+			}
+			.mui-table-view-cell:after{	
+			    background-color: transparent; /*ul的背景颜色*/
+			}
+			.mui-table-view:after{
+			    background-color: transparent; /*ul最下面的横线  liu aishen*/
+			}
+			.mui-table-view:before{
+			    background-color: transparent; /*ul最上面的横线  liu aishen*/
+			}
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			textarea::-webkit-input-placeholder{
+			    color:black;
+				font-size: 0.8rem;
+			}
+			textarea::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			textarea::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			textarea::-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			
+			input::-webkit-input-placeholder{
+			    color:black;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:black;
+				font-size: 0.8rem;
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				border-radius: 5px;
+				width: 96%;
+				margin: 0 auto;
+				/* border: 1px solid #929292; */
+				margin-top: 2px;
+			}
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">发送消息</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="liCss">
+				<div class="mui-input-row">  
+					<label class="lableCss">发起人</label>	
+					<div style="float: right;border: 1px solid black;height: 40px;width: 65%;border-radius: 3px;">
+						<select class="mui-h5" id="userFrom" name="userFrom" style="background-color: transparent;">
+
+						</select>
+					</div>
+				</div> 
+				<div class="mui-input-row">
+					<label class="lableCss">接收人</label>
+					<input type="text" value="" placeholder=" 选择消息接收人" id="userTo" style="border: 1px solid black;margin-top: 5px;">  
+				</div> 
+				<div class="mui-input-row">
+					<label class="lableCss">消息内容</label>
+					<textarea placeholder=" 消息内容,80个字符以内..." maxlength="80" style="background-color: transparent;border: 1px solid black;margin-top: 5px;" id="msgInfo"></textarea>
+				</div> 
+				<div style="text-align: center;margin-top: 17px;">
+					<button type="button" id="search" class="mui-btn mui-btn-primary">
+						发送消息
+					</button>
+				</div>
+				<br />
+			</div>
+			
+		</div>
+	</body>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript" type="text/javascript"> type="text/javascript" type="text/javascript"</script>
+	<script src="../js/app.js" type="text/javascript" type="text/javascript" type="text/javascript"></script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+	<script>	
+		
+		(function (mui) {
+			
+			mui.init(); 
+			//初始加载下拉框数据
+			var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+			var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			var html="<option value='"+userInfo.userid+"'>"+userInfo.username;
+			html = html+"</option>";
+			console.log(html);
+			$("#userFrom").append(html);
+			  
+			 mui.plusReady(function(){
+				 var url = path1+"/msg/addMsgInfo";
+				 
+				 /* mui.showLoading("查询中,请稍后...","div"); 
+				 mui.ajax(path1+'/msg/getMsgInfoByIdForApp',{
+				     data:{
+						 appSessionIdInfo:appSessionIdInfo,
+						 id:id
+					},
+				 	async:true,
+				 	dataType:'json',   
+				 	type:'post',
+				 	success:function(data){
+						console.log("返回码是"+data.code);
+						mui.hideLoading();
+				 		if(data.code == 1){
+				 			mui.toast(data.msg);
+				 		}else{
+				 			$("#userFrom").val(data.data.userNameFrom);
+							$("#userTo").val(data.data.userNameTo);
+							$("#createTime").val(Format(data.data.createTime,"yyyy-MM-dd hh:mm:ss"));
+							$("#msgInfo").val(data.data.msgInfo);
+							$("#isRead").val(data.data.isRead == '0'?'未读':'已读');
+				 		} 
+				 	},
+				 	error:function(data){
+				 		mui.alert('请求失败');
+				 	}
+				 }); */
+			 });
+		})(mui);
+	</script>
+</html>
