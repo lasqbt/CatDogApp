@@ -130,7 +130,7 @@
 					</div> 
 					<div class="mui-input-row">
 						<label class="lableCss">消息内容</label>
-						<textarea class="lableCss" placeholder=" 消息内容,80个字符以内..." maxlength="80" style="background-color: transparent;border: 1px solid #929292;margin-top: 5px;font-size: 0.9rem;" id="msgInfo"></textarea>
+						<textarea class="lableCss" placeholder=" 消息内容,80个字符以内..." maxlength="80" style="background-color: transparent;border: 1px solid #929292;margin-top: 5px;font-size: 0.9rem;height: 125px;" id="msgInfo"></textarea>
 					</div> 
 				</form>
 				<div style="text-align: center;margin-top: 17px;">
@@ -177,14 +177,15 @@
 				 		success:function(data){
 							console.log("返回码是"+data.code);
 							mui.hideLoading();
-				 			mui.toast(data.msg);
-							
-							//获取父页面main.html
-							var list = plus.webview.currentWebview().opener();
-							//自定义事件,事件名为getValueFromChild
-							mui.fire(list,'sendMsgAfterQueryInfo',null);
-							// 返回父页面
-							mui.back();
+							mui.toast(data.msg);
+							if(data.code=='0'){
+								//获取父页面main.html
+								var list = plus.webview.currentWebview().opener();
+								//自定义事件,事件名为getValueFromChild
+								mui.fire(list,'sendMsgAfterQueryInfo',null);
+								// 返回父页面
+								mui.back();
+							}
 				 		},
 				 		error:function(data){
 							mui.hideLoading();
