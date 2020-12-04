@@ -496,6 +496,14 @@
 				 	}
 				 }
 				
+				//监听自定义事件，用于子页面向父页面进行传值  子页面：jieShouRen.html
+				window.addEventListener("sendMsgAfterQueryInfo", function(e) {
+					console.log("发送完毕信息后，触发主页面的信息管理页面刷新操作");
+					setTimeout(function(){
+						//执行新的查询操作
+						getMsgInfo(1,1,limit);
+					}, 1000);
+				});
 				
 				//搜索
 				document.getElementById("search").addEventListener('tap',function() {
