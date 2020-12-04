@@ -321,8 +321,7 @@
 				    }
 							
 				});
-				var userObj = JSON.parse(localStorage.getItem("userInfo")).userid;
-				var userid = userObj.userid;
+				var userid = JSON.parse(localStorage.getItem("userInfo")).userid;
 				/****消息推送  start****/
 				var socket;
 				if (typeof (WebSocket) == "undefined") {
@@ -344,22 +343,7 @@
 				    socket.onmessage = function(msg) {
 				        var d = msg.data;
 						if(d!=null && d!=''){
-							var v = d.split("fenGeDian");
-				   			//mui.alert(v[1]);
-							var countInfo= parseInt(v[0]);
-							if(countInfo==0){
-								// app图标上设置数字显示  0代表无
-								plus.runtime.setBadgeNumber(0);
-								// app界面消息图标增加数字显示
-								$("#countMsg").text();
-								document.getElementById("countMsg").style.display='none';
-							}else{
-								// app图标上设置数字显示  0代表无否则代表有多少条
-								plus.runtime.setBadgeNumber(countInfo);
-								// app界面消息图标增加数字显示
-								$("#countMsg").text(countInfo);
-								document.getElementById("countMsg").style.display='block';
-							}
+							getMsgInfo(1,1,limit);
 						}
 				        
 				    };
@@ -645,8 +629,9 @@
 								mui.hideLoading();
 								// 清空操作
 								$("#ulInfo").empty();
+							 }else{
+								 msgIsQuery = true;
 							 }
-							 msgIsQuery = true;
 							 if(data.code == 1){
 								 mui.toast(data.msg);
 							 }else{
@@ -784,6 +769,7 @@
 								success:function(data){
 									mui.hideLoading();
 									mui.toast(data.msg);
+									getMsgInfo(1,1,limit);
 								},
 								error:function(data){
 									mui.alert('请求失败');
