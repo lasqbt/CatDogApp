@@ -119,7 +119,7 @@
 					<span class="mui-tab-label">档案</span>
 				</a>
 				<a class="mui-tab-item aCss" style="font-size: 1rem;" id="msgManager">
-					<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+					<span class="mui-icon mui-icon-email"><span class="mui-badge" id="countMsg" style="display: none;"></span></span>
 					<span class="mui-tab-label">消息</span>
 				</a>
 				<a class="mui-tab-item aCss" style="font-size: 1rem;" id="baseInfo">
@@ -307,7 +307,7 @@
 							},  
 					  }]
 			}); */
-			//mui.plusReady(function() {
+			mui.plusReady(function() {
 				mui.ajaxSettings = mui.extend(mui.ajaxSettings, {
 				    xhr: function(settings) {
 				        if (settings.crossDomain) { //强制使用plus跨域
@@ -321,6 +321,92 @@
 				    }
 							
 				});
+				
+				/****消息推送  start****/
+				var socket;
+				if (typeof (WebSocket) == "undefined") {
+				    layer.msg("遗憾：您的手机不支持WebSocket");
+				} else {
+				    console.log("恭喜：您的手机支持WebSocket");
+				    //实现化WebSocket对象
+				    //指定要连接的服务器地址与端口建立连接
+				    //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+				    //无法使用wss，浏览器打开WebSocket时报错
+				    //ws对应http、wss对应https。
+					var userid = JSON.parse(localStorage.getItem("userInfo")).userid;
+				    socket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
+				    //连接打开事件
+				    socket.onopen = function() {
+				        console.log("Socket 已打开");
+				        socket.send("向后台发消息==这是来自客户端的消息");
+				    };
+				    //收到消息事件
+				    socket.onmessage = function(msg) {
+				        var d = msg.data;
+						if(d!=null && d!=''){
+							var v = d.split("fenGeDian");
+				   			//mui.alert(v[1]);
+							var count= parseInt(v[0]);
+							if(count==0){
+								// app图标上设置数字显示  0代表无
+								plus.runtime.setBadgeNumber(0);
+								// app界面消息图标增加数字显示
+								$("#countMsg").text();
+								document.getElementById("countMsg").style.display='none';
+							}else{
+								// app图标上设置数字显示  0代表无否则代表有多少条
+								plus.runtime.setBadgeNumber(count);
+								// app界面消息图标增加数字显示
+								$("#countMsg").text(count);
+								document.getElementById("countMsg").style.display='block';
+							}
+						}
+				        
+				    };
+				    //连接关闭事件
+				    socket.onclose = function() {
+				        console.log("Socket已关闭");
+				    };
+				    //发生了错误事件
+				    socket.onerror = function() {
+				        alert("Socket发生了错误");
+				    }
+					
+				    //窗口关闭时，关闭连接
+				    //jquery1.8中已经被废弃，3.0中已经移除
+				    window.unload=function() {
+				        socket.close();
+				    };
+				}
+				
+				
+				//获取推送通知
+/* 				plus.push.addEventListener("receive", function (msg) {
+				   alert("接收到的透传推送 " + JSON.stringify(msg));
+				   if (plus.os.name == "iOS") {
+				       switch (msg.payload) {
+				         case "LocalMSG":
+				            alert("本地创建消息的 " + JSON.stringify(msg));
+				            break;
+				         default:
+				         //测试本地推送
+				         createLocalPushMsg(msg);
+				         break;
+				       }
+				   }
+				}, false);
+				
+				//创建本地消息
+				function createLocalPushMsg(msg) {
+				   var options = {cover: false};
+				   plus.push.createMessage("1111", "LocalMSG", options);
+				   if (plus.os.name == "iOS") {
+				      outLine('*如果无法创建消息，请到"设置"->"通知"中配置应用在通知中心显示!');
+				   }
+				} */
+				
+				/****消息推送  end****/
+				
 				//正确代码
 				/* $('#msgManager').on('tap', function() {  
 					mui.alert("我被点了");
@@ -499,7 +585,7 @@
 					 if(msgIsQuery){
 						getMsgInfo(0,pageNum,limit);			 
 					 }else{
-				 		getMsgInfo(0,pageNum,limit);
+				 		getMsgInfo(1,pageNum,limit);
 				 	}
 				 }
 				
@@ -510,6 +596,29 @@
 						//执行新的查询操作
 						getMsgInfo(1,1,limit);
 					}, 1000);
+				});
+				
+				//监听自定义事件，用于子页面向父页面进行传值  子页面：messageDetail.html
+				window.addEventListener("updateNoReadMsgCount", function(e) {
+					console.log("阅读一条消息后修改app图标上数字和app内页面上的消息总数数字");
+					setTimeout(function(){
+						console.log(e.detail.noReadMsgCount);
+						var count = parseInt(e.detail.noReadMsgCount);
+						
+						if(count==0){
+							// app图标上设置数字显示  0代表无
+							plus.runtime.setBadgeNumber(0);
+							// app界面消息图标增加数字显示
+							$("#countMsg").text();
+							document.getElementById("countMsg").style.display='none';
+						}else{
+							// app图标上设置数字显示  0代表无否则代表有多少条
+							plus.runtime.setBadgeNumber(count);
+							// app界面消息图标增加数字显示
+							$("#countMsg").text(count);
+							document.getElementById("countMsg").style.display='block';
+						}
+					}, 500);
 				});
 				
 				//搜索
@@ -696,7 +805,7 @@
 					});
 				});
 				/********消息管理部分的js end*******/
-			//});
+			});
 		})(mui);
 	</script>
 </html>
