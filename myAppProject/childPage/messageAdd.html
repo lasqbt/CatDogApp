@@ -198,6 +198,13 @@
 				 document.getElementById("userToName").addEventListener('tap',function() {
 				 	var id = generateUUID()+"-jieShouRen";
 					var checkedUserIds= $("#userTo").val();
+					var checkedUserNames= $("#userToName").val();
+					var checkUserNums = 0;
+					if(checkedUserIds.length>0){
+						checkUserNums = checkedUserIds.split(",").length;
+						checkedUserIds = checkedUserIds+",";
+						checkedUserNames = checkedUserNames +",";
+					}
 				 	mui.openWindow({
 				 		url: '../childPage/jieShouRen.html',
 				 		id: id,
@@ -211,7 +218,9 @@
 				 			autoShow: false
 				 		},
 						extras: {
-							checkedUserIds: checkedUserIds
+							checkedUserIds: checkedUserIds,
+							checkedUserNames:checkedUserNames,
+							checkUserNums:checkUserNums
 						}, 
 				 		createNew:true
 				 	});

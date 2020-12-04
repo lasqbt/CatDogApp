@@ -134,8 +134,18 @@
 				swipeBack:true //启用右滑关闭功能
 			});
 			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				var userIds = self.checkedUserIds;
+				var userNames = self.checkedUserNames;
+				var checkUserNums = self.checkUserNums;
+				console.log("userIds==="+userIds);
+				console.log("userNames==="+userNames);
+				console.log("checkUserNums==="+checkUserNums);
 				//全局变量
 				var dataInfo ;
+				var ids= userIds;
+				var names= userNames;
+				var checkNums = checkUserNums;
 				document.getElementById("searchInput").addEventListener('input',function(){
 					//console.log(this.value);
 					if(dataInfo!=null){
@@ -143,14 +153,43 @@
 						var html="";
 						for(var v=0; v<dataInfo.length;v++){
 							if(dataInfo[v].username.indexOf(this.value)>-1){
-								html = html + '<li class="mui-table-view-cell mui-checkbox mui-left liCss">';
-								html = html + '<input name="userToInfo" type="checkbox" value="'+dataInfo[v].userid+'">'+dataInfo[v].username;
+								html = html + '<li id="'+dataInfo[v].id+'" class="mui-table-view-cell mui-checkbox mui-left liCss">';
+								html = html + '<input name="userToInfo" type="checkbox" id="'+dataInfo[v].id+'cb" value="'+dataInfo[v].userid+'"><span style="color:#929292" id="'+dataInfo[v].id+'name">'+dataInfo[v].username+"</span>";
 								html = html + '</li>';
 							}
 						}
+						//console.log(html);
 						$("#userInfo").append(html);
 					}
 				});
+				
+				mui('#userInfo').on('tap','li',function(v){
+					  var liId = this.id;
+					  console.log("点击的信息主键ID："+liId);
+					  var checkboxId = liId+"cb";
+					  var spanId = liId+"name";
+					  var obj = document.getElementById(checkboxId);
+					  var v = obj.value + ",";
+					  var spanName = $("#"+spanId).text()+",";
+					  if($('#'+checkboxId).is(':checked')){
+						  if(ids.indexOf(v)>-1){
+							  ids = ids.replace(v,"");
+						  }
+						  if(names.indexOf(spanName)>-1){
+						  	  names = names.replace(spanName,"");
+						  }
+						  if(checkNums>0){
+							 checkNums--; 
+						  }
+						  
+					  }else{
+						  ids = ids + v ;
+						  names = names + spanName;
+						  checkNums++;
+					  }
+					   console.log(ids);
+					   console.log(names);
+				})
 				
 				getMsgInfo();
 				function getMsgInfo(){
@@ -171,8 +210,8 @@
 								 var html = "";
 								 dataInfo = data.userTo;
 								 for(var v=0; v<dataInfo.length;v++){
-									 html = html + '<li class="mui-table-view-cell mui-checkbox mui-left liCss">';
-									 html = html + '<input name="userToInfo" type="checkbox" value="'+dataInfo[v].userid+'">'+dataInfo[v].username;
+									 html = html + '<li id="'+dataInfo[v].id+'" class="mui-table-view-cell mui-checkbox mui-left liCss">';
+									 html = html + '<input name="userToInfo" type="checkbox" id="'+dataInfo[v].id+'cb" value="'+dataInfo[v].userid+'"><span style="color:#929292" id="'+dataInfo[v].id+'name">'+dataInfo[v].username+"</span>";
 									 html = html + '</li>';
 								 }
 								 //console.log(html);
@@ -188,8 +227,6 @@
 				}
 				function setChecked(){
 					// 取父页面传的值
-					var self = plus.webview.currentWebview();
-					var userIds = self.checkedUserIds;
 					var arr = userIds.split(",");
 					if(arr != null){
 						var rdsObj = document.getElementsByName("userToInfo");
@@ -204,22 +241,13 @@
 				}
 				//确认并返回
 				document.getElementById("comeBack").addEventListener('tap',function() {
-					var ids="";
-					var names="";
-					var n = 0;
-					var rdsObj = document.getElementsByName("userToInfo");
-					for(var i = 0; i< rdsObj.length; i++){
-						if(rdsObj[i].checked){
-							ids = ids+rdsObj[i].value+",";
-							names = names + rdsObj[i].nextSibling.nodeValue+";";
-							n++;
-						}
-					} 
-					//console.log(ids.substring(0,ids.length-5));
-					//console.log(names);
-					if(n<1){
+					console.log(checkNums);
+					
+					if(checkNums<1){
 						mui.toast('请选择接收人')
 					}else{
+						ids = ids.substring(0,ids.length-1);
+						names = names.substring(0,names.length-1);
 						if(names.length>18){
 							names = names.substring(0,18)+"...";
 						}
