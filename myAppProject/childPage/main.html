@@ -321,7 +321,8 @@
 				    }
 							
 				});
-				
+				var userObj = JSON.parse(localStorage.getItem("userInfo")).userid;
+				var userid = userObj.userid;
 				/****消息推送  start****/
 				var socket;
 				if (typeof (WebSocket) == "undefined") {
@@ -333,7 +334,6 @@
 				    //注意ws、wss使用不同的端口。我使用自签名的证书测试，
 				    //无法使用wss，浏览器打开WebSocket时报错
 				    //ws对应http、wss对应https。
-					var userid = JSON.parse(localStorage.getItem("userInfo")).userid;
 				    socket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
 				    //连接打开事件
 				    socket.onopen = function() {
@@ -346,8 +346,8 @@
 						if(d!=null && d!=''){
 							var v = d.split("fenGeDian");
 				   			//mui.alert(v[1]);
-							var count= parseInt(v[0]);
-							if(count==0){
+							var countInfo= parseInt(v[0]);
+							if(countInfo==0){
 								// app图标上设置数字显示  0代表无
 								plus.runtime.setBadgeNumber(0);
 								// app界面消息图标增加数字显示
@@ -355,9 +355,9 @@
 								document.getElementById("countMsg").style.display='none';
 							}else{
 								// app图标上设置数字显示  0代表无否则代表有多少条
-								plus.runtime.setBadgeNumber(count);
+								plus.runtime.setBadgeNumber(countInfo);
 								// app界面消息图标增加数字显示
-								$("#countMsg").text(count);
+								$("#countMsg").text(countInfo);
 								document.getElementById("countMsg").style.display='block';
 							}
 						}
@@ -413,7 +413,6 @@
 				}) */	
 				document.getElementById("msgManager").addEventListener('tap', function() {
 					document.getElementById("msgDiv").style.display='block';
-					//pulluploading();
 					document.getElementById("repairDiv").style.display='none';
 					document.getElementById("yunYongDiv").style.display='none';
 					document.getElementById("dangAnDiv").style.display='none';
@@ -422,7 +421,6 @@
 				});
 				document.getElementById("baseInfo").addEventListener('tap', function() {
 					document.getElementById("myDiv").style.display='block';
-					
 					document.getElementById("repairDiv").style.display='none';
 					document.getElementById("yunYongDiv").style.display='none';
 					document.getElementById("dangAnDiv").style.display='none';
@@ -431,7 +429,6 @@
 				});
 				document.getElementById("yunYongInfo").addEventListener('tap', function() {
 					document.getElementById("yunYongDiv").style.display='block';
-					
 					document.getElementById("repairDiv").style.display='none';
 					document.getElementById("myDiv").style.display='none';
 					document.getElementById("dangAnDiv").style.display='none';
@@ -440,16 +437,15 @@
 				});
 				document.getElementById("danAnInfo").addEventListener('tap', function() {
 					document.getElementById("dangAnDiv").style.display='block';
-					
 					document.getElementById("myDiv").style.display='none';
 					document.getElementById("repairDiv").style.display='none';
 					document.getElementById("msgDiv").style.display='none';
+					document.getElementById("yunYongDiv").style.display='none';
 					//$("#iframeInfo").attr("src","../childPage/messageIndex2.html");
 				});
 				
 				document.getElementById("repairInfo").addEventListener('tap', function() {
 					document.getElementById("repairDiv").style.display='block';
-					
 					document.getElementById("yunYongDiv").style.display='none';
 					document.getElementById("myDiv").style.display='none';
 					document.getElementById("dangAnDiv").style.display='none';
@@ -571,6 +567,7 @@
 				}
 				});
 				
+				
 				 function pulldownRefresh(){
 				 	console.log("消息管理之下拉刷新");
 				 	if(msgIsQuery){
@@ -585,7 +582,7 @@
 					 if(msgIsQuery){
 						getMsgInfo(0,pageNum,limit);			 
 					 }else{
-				 		getMsgInfo(1,pageNum,limit);
+				 		getMsgInfo(0,pageNum,limit);
 				 	}
 				 }
 				
@@ -595,30 +592,17 @@
 					setTimeout(function(){
 						//执行新的查询操作
 						getMsgInfo(1,1,limit);
-					}, 1000);
+					}, 800);
 				});
 				
 				//监听自定义事件，用于子页面向父页面进行传值  子页面：messageDetail.html
 				window.addEventListener("updateNoReadMsgCount", function(e) {
 					console.log("阅读一条消息后修改app图标上数字和app内页面上的消息总数数字");
 					setTimeout(function(){
-						console.log(e.detail.noReadMsgCount);
+						getMsgInfo(1,1,limit);
 						var count = parseInt(e.detail.noReadMsgCount);
-						
-						if(count==0){
-							// app图标上设置数字显示  0代表无
-							plus.runtime.setBadgeNumber(0);
-							// app界面消息图标增加数字显示
-							$("#countMsg").text();
-							document.getElementById("countMsg").style.display='none';
-						}else{
-							// app图标上设置数字显示  0代表无否则代表有多少条
-							plus.runtime.setBadgeNumber(count);
-							// app界面消息图标增加数字显示
-							$("#countMsg").text(count);
-							document.getElementById("countMsg").style.display='block';
-						}
-					}, 500);
+						setRedNum(count);
+					}, 300);
 				});
 				
 				//搜索
@@ -636,6 +620,7 @@
 					//console.log(isRead+"="+queryUserFlag+"="+startTime+"="+endTime);
 					var url = path1+"/msg/getMsgDataListByPage";
 					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					var uid = JSON.parse(localStorage.getItem("userInfo")).userid;
 					if(flag == 1){
 						//显示遮罩层
 						mui.showLoading("查询中,请稍后...","div");
@@ -675,7 +660,11 @@
 									 // 向左滑删除
 									 html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
 									 html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
-									 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+									 if(dataInfo[v].isRead == 0 && dataInfo[v].userTo == uid){//未读 并且发送人是当前登录账号
+										 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: blue;font-size: 1rem;">';
+									 }else{//已读
+										 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+									 }
 									 html = html + '<table style="width: 96%;text-align: center;"><tr>';
 									 if(dataInfo[v].msgInfo.length>3){
 										 html = html + "<td style='width:25%;'>"+dataInfo[v].msgInfo.substring(0,3)+"...</td>";
@@ -717,14 +706,17 @@
 									 }
 								 }
 								 $("#ulInfo").append(html);
-								 
+								 if(flag==1){
+									 mui('#refreshContainer').pullRefresh().scrollTo(1, 1, 100); 
+								 }
+								 setRedNum(data.noReadMsgCount);
 							 }
 						 }
 					}); 
 				}
 				
 				
-				//搜索
+				//发送消息
 				document.getElementById("add").addEventListener('tap',function() {
 					var id = generateUUID()+"-messageAdd";
 					mui.openWindow({

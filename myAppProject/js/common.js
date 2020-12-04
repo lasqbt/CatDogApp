@@ -1,3 +1,19 @@
+/**/
+function setRedNum(countInfo){
+	if(countInfo==0){
+		// app图标上设置数字显示  0代表无
+		plus.runtime.setBadgeNumber(0);
+		// app界面消息图标增加数字显示
+		$("#countMsg").text();
+		document.getElementById("countMsg").style.display='none';
+	}else{
+		// app图标上设置数字显示  0代表无否则代表有多少条
+		plus.runtime.setBadgeNumber(countInfo);
+		// app界面消息图标增加数字显示
+		$("#countMsg").text(countInfo);
+		document.getElementById("countMsg").style.display='block';
+	}
+}
 /*唯一标识*/
 function generateUUID() {
     var d = new Date().getTime();
