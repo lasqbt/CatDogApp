@@ -14,6 +14,22 @@ function setRedNum(countInfo){
 		document.getElementById("countMsg").style.display='block';
 	}
 }
+
+//状态码转换
+function taskStatusToCN(num){
+	if(num === 1){
+		return "待提交";
+	}else if(num ===2){
+		return "通过";
+	}else if(num === 3){
+		return "拒绝";
+	}else if(num === 4){
+		return "审核中";
+	}else{
+		return "未知";
+	}
+}
+
 /*唯一标识*/
 function generateUUID() {
     var d = new Date().getTime();
