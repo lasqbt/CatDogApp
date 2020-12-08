@@ -71,8 +71,7 @@ window.addEventListener("createYunYongAfterQueryInfo", function(e) {
 	setTimeout(function(){
 		//执行新的查询操作
 		getYunYongInfo(1,1,limitForYunYong);
-		
-	}, 800);
+	}, 500);
 });
 
 
@@ -170,11 +169,11 @@ function getYunYongInfo(flag,pageNumV,limitV){
 }
 
 
-//发送消息
+//创建运转主任务
 document.getElementById("addForYunYong").addEventListener('tap',function() {
 	var id = generateUUID()+"-messageAdd";
 	mui.openWindow({
-		url: '../childPage/messageAdd.html',
+		url: '../childPage/train_use_main_task.html',
 		id: id,
 		show: {
 			aniShow: 'pop-in'
