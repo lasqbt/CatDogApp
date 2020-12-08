@@ -153,7 +153,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 						that1.endPullUpToRefresh(true);
 						pageNumForYunYong = 1;
 				 }else{
-					 that1.endPullUpToRefresh(true);
+					 that1.endPullUpToRefresh(false);
 					 if(totalPageForYunYong<pageNumV){
 						 pageNumForYunYong = 1;
 					 }else{
