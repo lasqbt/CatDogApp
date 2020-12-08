@@ -60,6 +60,7 @@
             }else if(newRePassword==''){
                 mui.alert('请确认密码');
             }else if(newRePassword == newPassword){
+				mui.showLoading("修改中,请稍后...","div"); 
 				var url = path2+'/user/modifyUserPwd?appSessionIdInfo='+appSessionIdInfo;
 				console.log("修改密码=="+url);
 				mui.ajax(url,{
