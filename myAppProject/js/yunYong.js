@@ -71,7 +71,7 @@ window.addEventListener("createYunYongAfterQueryInfo", function(e) {
 	setTimeout(function(){
 		//执行新的查询操作
 		getYunYongInfo(1,1,limitForYunYong);
-	}, 500);
+	}, 300);
 });
 
 
@@ -92,6 +92,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 	var url = path1+"/trainUse/getTrainUseInfoDataListByPage";
 	var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 	var uid = JSON.parse(localStorage.getItem("userInfo")).userid;
+	console.log("查询运用信息列表=="+url);
 	if(flag == 1){
 		//显示遮罩层
 		mui.showLoading("查询中,请稍后...","div");
@@ -164,6 +165,14 @@ function getYunYongInfo(flag,pageNumV,limitV){
 				 }
 				 $("#ulInfoForYunYong").append(html);
 			 }
+		 },
+		 error:function(xhr,type,errorThrown){
+		 	mui.hideLoading();
+		 	if(type=='timeout'){
+		 		mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+		 	}else{
+		 		mui.alert('请求失败');
+		 	}
 		 }
 	}); 
 }

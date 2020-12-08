@@ -169,8 +169,10 @@
 					d.msgInfo = $("#msgInfo").val();
 					d.userTo = $("#userTo").val();
 					d.userFrom = $("#userFrom").val();
+					var url = path1+'/msg/addMsgInfo?appSessionIdInfo='+appSessionIdInfo;
 				 	mui.showLoading("发送中,请稍后...","div"); 
-				 	mui.ajax(path1+'/msg/addMsgInfo?appSessionIdInfo='+appSessionIdInfo,{
+					console.log("发送单条消息=="+url);
+				 	mui.ajax(url,{
 						data:JSON.stringify(d),
 						contentType: "application/json;charset=UTF-8",   // http content type
 				 		dataType:'json',   
@@ -190,9 +192,13 @@
 								mui.toast(data.msg);
 							}
 				 		},
-				 		error:function(data){
-							mui.hideLoading();
-				 			mui.alert('请求发送失败');
+				 		error:function(xhr,type,errorThrown){
+				 			mui.hideLoading();
+				 			if(type=='timeout'){
+				 				mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+				 			}else{
+				 				mui.alert('请求失败');
+				 			}
 				 		}
 				 	}); 
 				 });

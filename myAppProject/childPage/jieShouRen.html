@@ -209,6 +209,7 @@
 				function getMsgInfo(){
 					var url = path1+"/msg/getsendMsgUserInfo";
 					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					console.log("查询消息接收人信息列表=="+url);
 					//显示遮罩层
 					mui.showLoading("查询中,请稍后...","div");
 					mui.ajax(url, {
@@ -233,9 +234,13 @@
 								 setChecked();
 							 }
 						 },
-				 		error:function(data){
-							mui.hideLoading();
-				 			mui.alert('请求用户数据失败');
+				 		error:function(xhr,type,errorThrown){
+				 			mui.hideLoading();
+				 			if(type=='timeout'){
+				 				mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+				 			}else{
+				 				mui.alert('请求失败');
+				 			}
 				 		}
 					}); 
 				}

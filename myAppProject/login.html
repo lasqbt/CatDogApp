@@ -62,7 +62,9 @@
                 mui.alert('请输入六位验证码');
             }else if(val == num){
 				mui.showLoading("登录中,请稍后...","div"); 
-				mui.ajax(path2+'/loginValidate',{
+				var url = path2+'/loginValidate';
+				console.log("登录=="+url);
+				mui.ajax(url,{
 				    data:{userid:loginAccount,password: password,appSessionIdInfo:appSessionIdInfo},
 					async:true,
 					dataType:'json',   
@@ -91,9 +93,13 @@
 							mui.alert(data.msg);
 						} 
 					},
-					error:function(data){
-						//mui.alert(data);
-						mui.alert('请求失败');
+					error:function(xhr,type,errorThrown){
+						mui.hideLoading();
+						if(type=='timeout'){
+							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+						}else{
+							mui.alert('请求失败');
+						}
 					}
 				}); 
             }else{

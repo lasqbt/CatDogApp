@@ -651,7 +651,7 @@
 					setTimeout(function(){
 						//执行新的查询操作
 						getMsgInfo(1,1,limit);
-					}, 800);
+					}, 300);
 				});
 				
 				//监听自定义事件，用于子页面向父页面进行传值  子页面：messageDetail.html
@@ -670,7 +670,7 @@
 					totalPage = 0;
 					setTimeout(function(){
 						getMsgInfo(1,1,limit);
-					}, 1000);
+					}, 300);
 				});
 				
 				function getMsgInfo(flag,pageNumV,limitV){
@@ -681,6 +681,7 @@
 					var endTime = $("#end_date").val();
 					//console.log(isRead+"="+queryUserFlag+"="+startTime+"="+endTime);
 					var url = path1+"/msg/getMsgDataListByPage";
+					console.log("查询消息列表=="+url);
 					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 					var uid = JSON.parse(localStorage.getItem("userInfo")).userid;
 					if(flag == 1){
@@ -774,6 +775,14 @@
 								 $("#ulInfo").append(html);
 								 setRedNum(data.noReadMsgCount);
 							 }
+						 },
+						 error:function(xhr,type,errorThrown){
+						 	mui.hideLoading();
+						 	if(type=='timeout'){
+						 		mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+						 	}else{
+						 		mui.alert('请求失败');
+						 	}
 						 }
 					}); 
 				}
@@ -834,6 +843,7 @@
 							li.parentNode.removeChild(li);
 							var id = parseInt(li.id);
 							var url = path1+"/msg/getMsgInfoById";
+							console.log("删除消息=="+url);
 							var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 							mui.showLoading("删除中,请稍后...","div"); 
 							mui.ajax(path1+'/msg/deleteMsgById',{
@@ -849,8 +859,13 @@
 									mui.toast(data.msg);
 									getMsgInfo(1,1,limit);
 								},
-								error:function(data){
-									mui.alert('请求失败');
+								error:function(xhr,type,errorThrown){
+									mui.hideLoading();
+									if(type=='timeout'){
+										mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+									}else{
+										mui.alert('请求失败');
+									}
 								}
 							}); 
 						} else {

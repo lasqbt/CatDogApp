@@ -122,11 +122,11 @@
 				 var self = plus.webview.currentWebview();
 				 var id = parseInt(self.msgId);
 				 
-				 var url = path1+"/msg/getMsgInfoById";
+				 var url = path1+"/msg/getMsgInfoByIdForApp";
 				 var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				 console.log(url+"=="+id);
+				 console.log("查看单条消息=="+url);
 				 mui.showLoading("查询中,请稍后...","div"); 
-				 mui.ajax(path1+'/msg/getMsgInfoByIdForApp',{
+				 mui.ajax(url,{
 				     data:{
 						 appSessionIdInfo:appSessionIdInfo,
 						 id:id
@@ -155,8 +155,13 @@
 							mui.fire(list,'updateNoReadMsgCount',p);
 				 		} 
 				 	},
-				 	error:function(data){
-				 		mui.alert('请求失败');
+				 	error:function(xhr,type,errorThrown){
+				 		mui.hideLoading();
+				 		if(type=='timeout'){
+				 			mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+				 		}else{
+				 			mui.alert('请求失败');
+				 		}
 				 	}
 				 }); 
 			 });

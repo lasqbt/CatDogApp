@@ -49,6 +49,7 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  mui.confirm('当前版本号：'+ version, '提示', ['检查更新','取消'], function(e) {
 			if (e.index == 0) {
 				var url = path2+"/version/getTheNewVersionInfo";
+				console.log("获取版本号=="+url);
 				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 				mui.showLoading("检测中,请稍后...","div"); 
 				mui.ajax(url,{
@@ -71,8 +72,13 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 							mui.alert(data.msg);
 						}
 					},
-					error:function(data){
-						mui.alert('请求失败');
+					error:function(xhr,type,errorThrown){
+						mui.hideLoading();
+						if(type=='timeout'){
+							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+						}else{
+							mui.alert('请求失败');
+						}
 					}
 				}); 
 			}else{
@@ -88,6 +94,7 @@ document.getElementById("logout").addEventListener('tap',function() {
 		if (e.index == 0) {
 			var url = path1+"/logoutForApp";
 			var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+			console.log("退出登录=="+url);
 			mui.showLoading("退出中,请稍后...","div"); 
 			mui.ajax(url,{
 				data:{
@@ -96,6 +103,7 @@ document.getElementById("logout").addEventListener('tap',function() {
 				async:true,
 				dataType:'json',   
 				type:'post',
+				timeout:5000,
 				success:function(data){
 					mui.hideLoading();
 					if(data.code=='0'){
@@ -118,8 +126,13 @@ document.getElementById("logout").addEventListener('tap',function() {
 						mui.alert(data.msg);
 					}
 				},
-				error:function(data){
-					mui.alert('请求失败');
+				error:function(xhr,type,errorThrown){
+					mui.hideLoading();
+					if(type=='timeout'){
+						mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+					}else{
+						mui.alert('请求失败');
+					}
 				}
 			}); 
 		}else{

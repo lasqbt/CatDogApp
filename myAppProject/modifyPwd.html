@@ -11,8 +11,6 @@
 	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
 	<link type="text/css" rel="stylesheet" href="css/layer.css">
     <script type="text/javascript" src="js/layer.js"></script>
-	<script type="text/javascript" src="js/common.js"></script>
-	<script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
 	</head>
 	<body style="margin:0px; padding:0px;">
@@ -45,8 +43,11 @@
 		</div>
 	</body>
 	<script src="js/mui.js"></script>
+	<script src="js/app.js"></script>
 	<script type="text/javascript" src="js/showLoading.js"></script>
 	<script src="js/mui.enterfocus.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
 	<script type="text/javascript"> 
 		var jObj = JSON.parse(localStorage.getItem("userInfo"));
         function modifyPwd(){
@@ -61,6 +62,8 @@
                 mui.alert('请确认密码');
             }else if(newRePassword == newPassword){
 				mui.showLoading("修改中,请稍后...","div"); 
+				var url = path2+'/user/modifyUserPwd';
+				console.log("修改密码=="+url);
 				mui.ajax(path2+'/user/modifyUserPwd',{
 					type : 'post',        		
 					data:{newPassword:newPassword,newRePassword:newRePassword,password:password,id:jObj.id},
@@ -68,7 +71,7 @@
 					success : function(data) {
 						mui.hideLoading();
 						if(data.code=='0'){
-							mui.alert("修改成功，请重新登录","提升","好的",function(){
+							mui.alert("修改成功，请重新登录","提示","好的",function(){
 								mui.openWindow({
 									url: 'login.html',
 									id: 'login',
@@ -82,9 +85,17 @@
 										autoShow: false
 									}
 								});
-							},true);
+							});
 						}else{
 							mui.alert(data.msg);
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						mui.hideLoading();
+						if(type=='timeout'){
+							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+						}else{
+							mui.alert('请求失败');
 						}
 					}
 				 });
