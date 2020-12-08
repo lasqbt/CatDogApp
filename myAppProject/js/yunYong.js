@@ -135,7 +135,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆类型：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
 					 html = html + "<td style='width:20%;font-size:0.8rem;'>车辆型号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainModelInfo+"</td>";
 					 html = html + "<td style='width:20%;font-size:0.8rem;text-align: center;'rowspan=2><div style='border-radius:50%;border: 1px solid #929292;width:50px;font-size:0.6rem;height:50px;margin:0 auto;text-align:center;padding:5.5%;'>";
-					 html = html + "<div style='border-radius:50%;border: 1px dashed #929292;width:40px;font-size:0.6rem;height:40px;line-height: 40px;'>待提交</div>";
+					 html = html + "<div style='border-radius:50%;border: 1px dashed #929292;width:40px;font-size:0.6rem;height:40px;line-height: 40px;'>"+taskStatusToCN(dataInfo[v].taskStatus)+"</div>";
 					 html = html + "</div></td></tr>";
 					 html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆编号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainNo+"</td>";
 					 html = html + "<td style='width:20%;font-size:0.8rem;'>创建时间：</td><td style='width:20%;font-size:0.8rem;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";

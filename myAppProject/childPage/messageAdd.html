@@ -127,6 +127,7 @@
 						<label class="lableCss">接收人</label>
 						<input readonly="readonly" class="lableCss" placeholder=" 请选择接收人" type="text" value="" id="userToName" style="background-color: transparent;border: 1px solid #929292;margin-top: 5px;font-size: 0.9rem;">  
 						<input type="hidden" value="" id="userTo">  
+						<input type="hidden" value="" id="userToNameHidden">
 					</div> 
 					<div class="mui-input-row">
 						<label class="lableCss">消息内容</label>
@@ -201,11 +202,13 @@
 				 	var id = generateUUID()+"-jieShouRen";
 					var checkedUserIds= $("#userTo").val();
 					var checkedUserNames= $("#userToName").val();
+					var checkUserToNameHidden= $("#userToNameHidden").val();
 					var checkUserNums = 0;
 					if(checkedUserIds.length>0){
 						checkUserNums = checkedUserIds.split(",").length;
 						checkedUserIds = checkedUserIds+",";
 						checkedUserNames = checkedUserNames +",";
+						checkUserToNameHidden = checkUserToNameHidden + ",";
 					}
 				 	mui.openWindow({
 				 		url: '../childPage/jieShouRen.html',
@@ -222,7 +225,9 @@
 						extras: {
 							checkedUserIds: checkedUserIds,
 							checkedUserNames:checkedUserNames,
-							checkUserNums:checkUserNums
+							checkUserNums:checkUserNums,
+							checkUserToNameHidden:checkUserToNameHidden
+							
 						}, 
 				 		createNew:true
 				 	});
@@ -232,6 +237,7 @@
 				 window.addEventListener("getValueFromChild", function(e) {
 				 	document.getElementById("userToName").value = e.detail.checkUserToName;
 					document.getElementById("userTo").value = e.detail.checkUserToIds;
+					document.getElementById("userToNameHidden").value = e.detail.checkUserToNameHidden;
 				 });
 			})
 		})(mui);

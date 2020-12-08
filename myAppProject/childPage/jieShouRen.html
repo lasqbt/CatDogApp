@@ -136,7 +136,7 @@
 			mui.plusReady(function(){
 				var self = plus.webview.currentWebview();
 				var userIds = self.checkedUserIds;
-				var userNames = self.checkedUserNames;
+				var userNames = self.checkUserToNameHidden;
 				var checkUserNums = self.checkUserNums;
 				console.log("userIds==="+userIds);
 				console.log("userNames==="+userNames);
@@ -146,20 +146,33 @@
 				var ids= userIds;
 				var names= userNames;
 				var checkNums = checkUserNums;
+				var flag = false;
 				document.getElementById("searchInput").addEventListener('input',function(){
 					//console.log(this.value);
 					if(dataInfo!=null){
 						$("#userInfo").empty();
 						var html="";
-						for(var v=0; v<dataInfo.length;v++){
-							if(dataInfo[v].username.indexOf(this.value)>-1){
-								html = html + '<li id="'+dataInfo[v].id+'" class="mui-table-view-cell mui-checkbox mui-left liCss">';
-								html = html + '<input name="userToInfo" type="checkbox" id="'+dataInfo[v].id+'cb" value="'+dataInfo[v].userid+'"><span style="color:#929292" id="'+dataInfo[v].id+'name">'+dataInfo[v].username+"</span>";
-								html = html + '</li>';
+						if(this.value.trim().length>0){//文本框输入的有值
+							for(var v=0; v<dataInfo.length;v++){
+								if(dataInfo[v].username.indexOf(this.value)>-1){
+									html = html + '<li id="'+dataInfo[v].id+'" class="mui-table-view-cell mui-checkbox mui-left liCss">';
+									html = html + '<input name="userToInfo" type="checkbox" id="'+dataInfo[v].id+'cb" value="'+dataInfo[v].userid+'"><span style="color:#929292" id="'+dataInfo[v].id+'name">'+dataInfo[v].username+"</span>";
+									html = html + '</li>';
+								}
+							}
+							flag = true;
+						}else{//文本框没有输入值
+							if(flag){
+								for(var v=0; v<dataInfo.length;v++){
+									 html = html + '<li id="'+dataInfo[v].id+'" class="mui-table-view-cell mui-checkbox mui-left liCss">';
+									 html = html + '<input name="userToInfo" type="checkbox" id="'+dataInfo[v].id+'cb" value="'+dataInfo[v].userid+'"><span style="color:#929292" id="'+dataInfo[v].id+'name">'+dataInfo[v].username+"</span>";
+									 html = html + '</li>';
+								}
+								flag = false;
 							}
 						}
-						//console.log(html);
 						$("#userInfo").append(html);
+						setChecked();
 					}
 				});
 				
@@ -187,6 +200,7 @@
 						  names = names + spanName;
 						  checkNums++;
 					  }
+					  
 					   console.log(ids);
 					   console.log(names);
 				})
@@ -227,7 +241,8 @@
 				}
 				function setChecked(){
 					// 取父页面传的值
-					var arr = userIds.split(",");
+					console.log(ids);
+					var arr = ids.split(",");
 					if(arr != null){
 						var rdsObj = document.getElementsByName("userToInfo");
 						for(var i = 0; i< rdsObj.length; i++){
@@ -246,12 +261,15 @@
 					if(checkNums<1){
 						mui.toast('请选择接收人')
 					}else{
+						var temp = null;
 						ids = ids.substring(0,ids.length-1);
 						names = names.substring(0,names.length-1);
+						temp = names;
 						if(names.length>18){
 							names = names.substring(0,18)+"...";
 						}
 						var data={};
+						data.checkUserToNameHidden = temp;
 						data.checkUserToIds = ids;
 						data.checkUserToName = names;
 						//获取父页面messageAdd.html
