@@ -9,8 +9,6 @@
 	<link type="text/css" rel="stylesheet" href="css/modifyPwd.css" />
 	<link type="text/css" rel="stylesheet" href="css/headerCss.css" />
 	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
-	<link type="text/css" rel="stylesheet" href="css/layer.css">
-    <script type="text/javascript" src="js/layer.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
 	</head>
 	<body style="margin:0px; padding:0px;">
@@ -50,6 +48,7 @@
 	<script type="text/javascript" src="js/config.js"></script>
 	<script type="text/javascript"> 
 		var jObj = JSON.parse(localStorage.getItem("userInfo"));
+		var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
         function modifyPwd(){
             var password = $("#password").val();
             var newPassword = $("#newPassword").val();
@@ -61,10 +60,9 @@
             }else if(newRePassword==''){
                 mui.alert('请确认密码');
             }else if(newRePassword == newPassword){
-				mui.showLoading("修改中,请稍后...","div"); 
-				var url = path2+'/user/modifyUserPwd';
+				var url = path2+'/user/modifyUserPwd?appSessionIdInfo='+appSessionIdInfo;
 				console.log("修改密码=="+url);
-				mui.ajax(path2+'/user/modifyUserPwd',{
+				mui.ajax(url,{
 					type : 'post',        		
 					data:{newPassword:newPassword,newRePassword:newRePassword,password:password,id:jObj.id},
 					dataType : "json",
@@ -89,7 +87,7 @@
 						}else{
 							mui.alert(data.msg);
 						}
-					},
+					}/* ,
 					error:function(xhr,type,errorThrown){
 						mui.hideLoading();
 						if(type=='timeout'){
@@ -97,7 +95,7 @@
 						}else{
 							mui.alert('请求失败');
 						}
-					}
+					} */
 				 });
             }else{
 				mui.alert('两次输入的新密码不一致！请重新输入！');
