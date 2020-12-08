@@ -90,6 +90,10 @@
 				border: 1px solid yellow;
 			}
 			
+			.mui-pull-bottom-wrapper{
+				text-align: center;
+				/* color: #929292; */
+			}
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
@@ -374,7 +378,7 @@
 							},  
 					  }]
 			}); */
-			mui.plusReady(function() {
+			//mui.plusReady(function() {
 				mui.ajaxSettings = mui.extend(mui.ajaxSettings, {
 				    xhr: function(settings) {
 				        if (settings.crossDomain) { //强制使用plus跨域
@@ -719,8 +723,10 @@
 								 }
 								 //mui.toast(totalPage +"=="+pageNumV);
 								 if(totalPage == pageNumV){
+									    that3.endPullUpToRefresh(true);
 										pageNum = 1;
 								 }else{
+									 that3.endPullUpToRefresh(false);
 									 if(totalPage<pageNumV){
 										 pageNum = 1
 									 }else{
@@ -819,7 +825,7 @@
 					});
 				});
 				/********消息管理部分的js end*******/
-			});
+			//});
 		})(mui);
 	</script>
 </html>

@@ -58,11 +58,11 @@ function pulluploadingForYunYong(self){
 	 }else{
 		getYunYongInfo(0,pageNumForYunYong,limitForYunYong);
 	}
-	if(totalPageForYunYong == pageNumForYunYong){
+	/* if(totalPageForYunYong == pageNumForYunYong){
 		self.endPullUpToRefresh(true);
 	}else{
 		self.endPullUpToRefresh(false);
-	}
+	} */
  } 
 
 //监听自定义事件，用于子页面向父页面进行传值  子页面：jieShouRen.html
@@ -151,8 +151,10 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 }
 				 }
 				 if(totalPageForYunYong == pageNumV){
+						that1.endPullUpToRefresh(true);
 						pageNumForYunYong = 1;
 				 }else{
+					 that1.endPullUpToRefresh(true);
 					 if(totalPageForYunYong<pageNumV){
 						 pageNumForYunYong = 1;
 					 }else{

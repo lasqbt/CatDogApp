@@ -285,23 +285,46 @@
 				//全选
 				document.getElementById("quan").addEventListener('tap',function() {
 					var rdsObj = document.getElementsByName("userToInfo");
+					ids = "";
+					names = "";
+					checkNums = 0;
 					for(var i = 0; i< rdsObj.length; i++){
 						if(!rdsObj[i].checked){
 							rdsObj[i].checked = true;
 						}
+						ids = ids + rdsObj[i].value+ ",";
+						var checkboxId = rdsObj[i].id;
+						var checkboxNameId = checkboxId.replace("cb","name");
+						names = names + $("#"+checkboxNameId).text() +",";
+						checkNums = rdsObj.length;
 					}
+					//console.log(ids);
+					//console.log(names);
+					//console.log(checkNums);
 				});
 				
 				//反选
 				document.getElementById("fan").addEventListener('tap',function() {
+					ids = "";
+					names = "";
+					checkNums = 0;
 					var rdsObj = document.getElementsByName("userToInfo");
 					for(var i = 0; i< rdsObj.length; i++){
 						if(!rdsObj[i].checked){
 							rdsObj[i].checked = true;
+							
+							ids = ids + rdsObj[i].value+ ",";
+							var checkboxId = rdsObj[i].id;
+							var checkboxNameId = checkboxId.replace("cb","name");
+							names = names + $("#"+checkboxNameId).text() +",";
+							checkNums++;
 						}else {
 							rdsObj[i].checked = false;
 						}
 					}
+					//console.log(ids);
+					//console.log(names);
+					//console.log(checkNums);
 				});
 				
 				//全不选
@@ -312,6 +335,9 @@
 							rdsObj[i].checked = false;
 						}
 					}
+					ids = "";
+					names = "";
+					checkNums = 0;
 				});
 
 			});
