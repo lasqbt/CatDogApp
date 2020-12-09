@@ -146,6 +146,9 @@ function getYunYongInfo(flag,pageNumV,limitV){
 				 if(totalPageForYunYong==0){
 					 if(count%limitForYunYong==0){
 						totalPageForYunYong = count/limitForYunYong; 
+						if(totalPageForYunYong == 0){
+							totalPageForYunYong = 1;
+						}
 					 }else{
 						 totalPageForYunYong = parseInt(count/limitForYunYong)+1
 					 }

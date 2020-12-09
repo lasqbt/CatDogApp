@@ -480,8 +480,6 @@
 				$("#myName").text(loginUserName);
 				$("#myRoleName").text(loginUserRole);
 				$("#myDeptName").text(loginUserDept);
-				console.log(headPicName);
-				console.log(headPicName != 'no');
 				if(headPicName != 'no'){
 					$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+headPicName+"&appSessionIdInfo="+localStorage.getItem("appSessionIdInfo"));
 				}
@@ -810,6 +808,9 @@
 								 if(totalPage==0){
 									 if(count%limit==0){
 										totalPage = count/limit; 
+										if(totalPage == 0){
+											totalPage = 1;
+										}
 									 }else{
 										 totalPage = parseInt(count/limit)+1
 									 }
