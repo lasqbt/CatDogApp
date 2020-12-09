@@ -88,12 +88,20 @@
 			});
 		}
 		function modifyPwd(){
+			var id = generateUUID()+"-modifyPwd";
 			mui.openWindow({
 				url: 'modifyPwd.html',
-				id: 'modifyPwd',
+				id: id,
 				show: {
 					aniShow: 'pop-in'
-				}
+				},
+				styles: {
+					popGesture: 'hide'
+				},
+				waiting: {
+					autoShow: false
+				},
+				createNew:false
 			});
 		}
 		
@@ -110,9 +118,6 @@
 				},
 				waiting: {
 					autoShow: false
-				},
-				extras: {
-					msgId: msgId
 				},
 				createNew:false
 			});

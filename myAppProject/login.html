@@ -72,14 +72,20 @@
 					success:function(data){
 						mui.hideLoading();
 						var code = data.code;
+						console.log(JSON.stringify(data));
 						if(code=='0'){
 							//放入共享池
-							localStorage.setItem("userInfo",JSON.stringify(data.userInfo)); 
+							console.log(1);
+							localStorage.setItem("userInfo",JSON.stringify(data.userInfo));
+							 console.log(2);
 							localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
+							console.log(3);
 							localStorage.setItem("headPic",data.headPic);
+							console.log(4);
+							var id = generateUUID()+"-checkPage";
 							mui.openWindow({
 								url: 'checkPage.html',
-								id: 'checkPage',
+								id: id,
 								show: {
 									aniShow: 'pop-in'
 								},
@@ -88,7 +94,8 @@
 								},
 								waiting: {
 									autoShow: false
-								}
+								},
+								createNew:false
 							}); 
 						}else{
 							mui.alert(data.msg);
