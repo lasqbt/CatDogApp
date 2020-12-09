@@ -728,7 +728,7 @@
 				});
 				
 				function getMsgInfo(flag,pageNumV,limitV){
-					console.log(pageNumV+"===="+limitV);
+					//console.log(pageNumV+"===="+limitV);
 					var isRead = $("#isRead").val();
 					var queryUserFlag = $("#queryUserFlag").val();
 					var startTime = $("#start_date").val();
@@ -805,17 +805,17 @@
 									 html = html + '</tr></table></a></div>';
 									 html = html + '</li>';
 								 }
-								 if(totalPage==0){
-									 if(count%limit==0){
-										totalPage = count/limit; 
-										if(totalPage == 0){
-											totalPage = 1;
-										}
-									 }else{
-										 totalPage = parseInt(count/limit)+1
-									 }
+								 if(count%limit==0){
+									totalPage = count/limit; 
+									console.log("count/limit=="+count/limit)
+									if(totalPage == 0){
+										totalPage = 1;
+										console.log(5555555);
+									}
+								 }else{
+									 totalPage = parseInt(count/limit)+1
 								 }
-								 //mui.toast(totalPage +"=="+pageNumV);
+								 //console.log(totalPage +"==啊"+pageNumV);
 								 if(totalPage == pageNumV){
 									    that3.endPullUpToRefresh(true);
 										pageNum = 1;

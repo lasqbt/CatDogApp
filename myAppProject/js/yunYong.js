@@ -143,7 +143,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 html = html + '</tr></table></a>';
 					 html = html + '</li>';
 				 }
-				 if(totalPageForYunYong==0){
+				 //if(totalPageForYunYong==0){
 					 if(count%limitForYunYong==0){
 						totalPageForYunYong = count/limitForYunYong; 
 						if(totalPageForYunYong == 0){
@@ -152,7 +152,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 }else{
 						 totalPageForYunYong = parseInt(count/limitForYunYong)+1
 					 }
-				 }
+				 //}
 				 if(totalPageForYunYong == pageNumV){
 						that1.endPullUpToRefresh(true);
 						pageNumForYunYong = 1;
