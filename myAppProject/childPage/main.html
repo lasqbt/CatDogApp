@@ -328,23 +328,23 @@
 					<div class="title"></div>
 				</header>
 				<div class="liCss" style="height: 16%;">
-					<table style="width: 100%;">
+					<table style="width: 100%;color: #929292;">
 						<tr style="height: 33px;">
 							<td rowspan="3" style="width: 30%;">
 								<div>
-									<img src="../images/cat.png" style="width: 100px;height: 100px;border-radius: 50%;"/>
+									<img src="../images/defaultImage.png" id="imgInfo" style="width: 100px;height: 100px;border-radius: 50%;"/>
 								</div>
 							</td>
-							<td style="width: 35%">习大大</td>
+							<td style="width: 35%" id="myName"></td>
 							<td style="width: 35%"></td>
 						</tr>
 						<tr style="height: 33px;">
-							<td>系统管理员</td>
+							<td id="myRoleName"></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr style="height: 33px;">
-							<td>机修车间第二部门</td>
+							<td id="myDeptName"></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -358,7 +358,7 @@
 								<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">IP设置</a>
 							</li>
 							<li class="mui-table-view-cell liCss" id="clearCooKie">
-								<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">清除缓存</a>
+								<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">清除缓存<span id="cacheSize" style="float: right;margin-right: -30px;"></span></a>
 							</li>
 							<li class="mui-table-view-cell liCss" id="versionInfo">
 								<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">版本信息</a>
@@ -428,7 +428,63 @@
 				    }
 							
 				});
+				//检测缓存最大容量
+				/* if(!window.localStorage) {
+				   console.log('当前浏览器不支持localStorage!')
+				   }    var test = '0123456789';
+				var add = function(num) {
+				     num += num;
+				     if(num.length == 10240) {
+				       test = num;
+				       return;
+				     }
+				     add(num);
+				   }
+				add(test);
+				var sum = test;
+				var show = setInterval(function(){
+				      sum += test;
+				      try {
+				       window.localStorage.removeItem('test');
+				       window.localStorage.setItem('test', sum);
+				       console.log(sum.length / 1024 + 'KB');
+				      } catch(e) {
+				       console.log(sum.length / 1024 + 'KB超出最大限制');
+				       clearInterval(show);
+				      }
+				 }, 0.1) */
+				//判断已使用本地存储大小
+				if(!window.localStorage) {
+				         console.log('浏览器不支持localStorage');
+				}
+				var size = 0;
+				 for(item in window.localStorage) {
+					 if(window.localStorage.hasOwnProperty(item)) {
+						 size += window.localStorage.getItem(item).length;
+					 }
+				}
+				var r = (size / 1024).toFixed(2) + 'KB';
+				console.log('当前localStorage已使用容量为' + r);
+					 
+				// 当前登录人账号
 				var userid = JSON.parse(localStorage.getItem("userInfo")).userid;
+				//当前登录人姓名
+				var loginUserName = JSON.parse(localStorage.getItem("userInfo")).username;
+				//当前登录人角色
+				var loginUserRole = JSON.parse(localStorage.getItem("userInfo")).roleName;
+				//当前登录人部门
+				var loginUserDept = JSON.parse(localStorage.getItem("userInfo")).deptName;
+				//当前登录人头像
+				var headPicName = localStorage.getItem("headPic");
+				// 在我的面板里面赋值
+				$("#myName").text(loginUserName);
+				$("#myRoleName").text(loginUserRole);
+				$("#myDeptName").text(loginUserDept);
+				console.log(headPicName);
+				console.log(headPicName != 'no');
+				if(headPicName != 'no'){
+					$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+headPicName+"&appSessionIdInfo="+localStorage.getItem("appSessionIdInfo"));
+				}
 				/****消息推送  start****/
 				var socket;
 				if (typeof (WebSocket) == "undefined") {
@@ -803,7 +859,7 @@
 						waiting: {
 							autoShow: false
 						},
-						createNew:true
+						createNew:false
 					});
 				});
 						
@@ -826,7 +882,7 @@
 						extras: {
 							msgId: msgId
 						},
-						createNew:true
+						createNew:false
 					  });
 				})
 				

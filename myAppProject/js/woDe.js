@@ -1,9 +1,56 @@
 /********我的部分的js start*******/
+
+//检测缓存最大容量
+/* if(!window.localStorage) {
+   console.log('当前浏览器不支持localStorage!')
+   }    var test = '0123456789';
+var add = function(num) {
+	 num += num;
+	 if(num.length == 10240) {
+	   test = num;
+	   return;
+	 }
+	 add(num);
+   }
+add(test);
+var sum = test;
+var show = setInterval(function(){
+	  sum += test;
+	  try {
+	   window.localStorage.removeItem('test');
+	   window.localStorage.setItem('test', sum);
+	   console.log(sum.length / 1024 + 'KB');
+	  } catch(e) {
+	   console.log(sum.length / 1024 + 'KB超出最大限制');
+	   clearInterval(show);
+	  }
+ }, 0.1) */
+//判断已使用本地存储大小
+if(!window.localStorage) {
+		 console.log('浏览器不支持localStorage');
+}
+var size = 0;
+ for(item in window.localStorage) {
+	 if(window.localStorage.hasOwnProperty(item)) {
+		 size += window.localStorage.getItem(item).length;
+	 }
+}
+//单位kb
+var r = (size / 1024).toFixed(2);
+$("#cacheSize").text(r+"KB");
+console.log('当前localStorage已使用容量为' + r + 'KB');
+// localStorage最大是5120KB 大于将出错
+if(r>5000){
+	var msg = '缓存数据过大,已达:'+r+'KB数据,建议清除缓存在重新登录！';
+	clearStart(msg);
+}
+				
+				
 mui('#ulInfoForWoDe').on('tap','li',function(v){
 	  var clickId = this.id;
 	  console.log("点击的信息主键ID："+clickId);
 	  if(clickId == 'ipSet'){
-		  mui.prompt('IP设置，只针对本手机APP有效！','格式：xxx.xxx.xxx.xxx','提升',['确定','取消'],function(e) {
+		  mui.prompt('IP设置，只针对本手机APP的本次登录有效！','格式如下：192.168.10.1','提升',['确定','取消'],function(e) {
 		  	if (e.index == 1) {
 		  		console.log("点击了取消");
 		  	} else {
@@ -18,32 +65,8 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  	}
 		  })
 	  }else if(clickId == 'clearCooKie'){
-		  mui.confirm('清除缓存后，你需要重新登录！确认现在开始清除吗？', '提示',['好的','不'], function(e) {
-		  	if (e.index == 1) {
-		  		console.log("点击了不");
-		  	} else {
-		  		console.log("点击了好的");
-				mui.showLoading("清除中,请稍后...","div");
-				localStorage.clear();
-				mui.hideLoading();
-				var id = generateUUID()+"-login";
-				mui.openWindow({
-					url: '/login.html',
-					id: id,
-					show: {
-						aniShow: 'pop-in'
-					},
-					styles: {
-						popGesture: 'hide'
-					},
-					waiting: {
-						autoShow: false
-					},
-					createNew:true
-				});
-		  	}
-		  })
-	  		  
+		  var msg = '缓存数据大小:'+r+'KB,清除缓存后你需要重新登录！确认开始清除吗？';
+		  clearStart(msg);
 	  }else if(clickId == 'versionInfo'){
 		  var oldVersion = parseFloat(version);
 		  mui.confirm('当前版本号：'+ version, '提示', ['检查更新','取消'], function(e) {
@@ -88,6 +111,40 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 	  }
 })
 
+function clearStart(msg){
+	mui.confirm(msg, '提示',['清除','算了'], function(e) {
+		if (e.index == 1) {
+			console.log("点击了不");
+		} else {
+			console.log("点击了好的");
+					mui.showLoading("清除中,请稍后...","div");
+					localStorage.clear();
+					mui.hideLoading();
+					var id = generateUUID()+"-login";
+					mui.openWindow({
+						url: '/login.html',
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						},
+						createNew:false
+					});
+		}
+	})
+}
+
+//退出登录
+document.getElementById("imgInfo").addEventListener('tap',function() {
+	var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+	choosePhoto(this,1,9,appSessionIdInfo);
+});
+
 //退出登录
 document.getElementById("logout").addEventListener('tap',function() {
 	mui.confirm('确认退出登录吗？', '提示', ['确定','取消'], function(e) {
@@ -120,7 +177,7 @@ document.getElementById("logout").addEventListener('tap',function() {
 							waiting: {
 								autoShow: false
 							},
-							createNew:true
+							createNew:false
 						});
 					}else{
 						mui.alert(data.msg);
