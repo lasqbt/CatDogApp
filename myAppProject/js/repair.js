@@ -1,14 +1,14 @@
-/********运用管理部分的js start*******/
-var pageNumForYunYong = 1;
-var limitForYunYong = 10;
-var totalPageForYunYong = 0;
-var msgIsQueryForYunYong = false;
-var that1 = null;
-document.getElementById("start_date_yun_yong").addEventListener('tap', function() {
+/********检修管理部分的js start*******/
+var pageNumForRepair = 1;
+var limitForRepair = 10;
+var totalPageForRepair = 0;
+var msgIsQueryForRepair = false;
+var that0 = null;
+document.getElementById("start_date_Repair").addEventListener('tap', function() {
 	var _self = this;
 	if(_self.picker) {
 		_self.picker.show(function (rs) {
-			$("#start_date_yun_yong").val(rs.text+":00");
+			$("#start_date_Repair").val(rs.text+":00");
 			_self.picker.dispose();
 			_self.picker = null;
 		});
@@ -18,18 +18,18 @@ document.getElementById("start_date_yun_yong").addEventListener('tap', function(
 		var id = this.getAttribute('id');
 		_self.picker = new mui.DtPicker(options);
 		_self.picker.show(function(rs) {
-			$("#start_date_yun_yong").val(rs.text+":00");
+			$("#start_date_Repair").val(rs.text+":00");
 			_self.picker.dispose();
 			_self.picker = null;
 		});
 	}
 	
 }, false);
-document.getElementById("end_date_yun_yong").addEventListener('tap', function() {
+document.getElementById("end_date_Repair").addEventListener('tap', function() {
 	var _self = this;
 	if(_self.picker) {
 		_self.picker.show(function (rs) {
-			$("#end_date_yun_yong").val(rs.text+":00");
+			$("#end_date_Repair").val(rs.text+":00");
 			_self.picker.dispose();
 			_self.picker = null;
 		});
@@ -39,7 +39,7 @@ document.getElementById("end_date_yun_yong").addEventListener('tap', function() 
 		var id = this.getAttribute('id');
 		_self.picker = new mui.DtPicker(options);
 		_self.picker.show(function(rs) {
-			$("#end_date_yun_yong").val(rs.text+":00");
+			$("#end_date_Repair").val(rs.text+":00");
 			_self.picker.dispose();
 			_self.picker = null;
 		});
@@ -47,18 +47,18 @@ document.getElementById("end_date_yun_yong").addEventListener('tap', function() 
 	
 }, false);
 
-function pulluploadingForYunYong(self){
-	 console.log("运用管理之上拉加载数据"+msgIsQueryForYunYong);
-	 that1 = self;
-	 if(msgIsQueryForYunYong){
-		 if(pageNumForYunYong == 1){
-			 pageNumForYunYong = pageNumForYunYong+1;
+function pulluploadingForRepair(self){
+	 console.log("检修管理之上拉加载数据"+msgIsQueryForRepair);
+	 that0 = self;
+	 if(msgIsQueryForRepair){
+		 if(pageNumForRepair == 1){
+			 pageNumForRepair = pageNumForRepair+1;
 		 }
-		getYunYongInfo(0,pageNumForYunYong,limitForYunYong);			 
+		getRepairInfo(0,pageNumForRepair,limitForRepair);			 
 	 }else{
-		getYunYongInfo(0,pageNumForYunYong,limitForYunYong);
+		getRepairInfo(0,pageNumForRepair,limitForRepair);
 	}
-	/* if(totalPageForYunYong == pageNumForYunYong){
+	/* if(totalPageForRepair == pageNumForRepair){
 		self.endPullUpToRefresh(true);
 	}else{
 		self.endPullUpToRefresh(false);
@@ -66,39 +66,39 @@ function pulluploadingForYunYong(self){
  } 
 
 //监听自定义事件，用于子页面向父页面进行传值  子页面：jieShouRen.html
-window.addEventListener("createYunYongAfterQueryInfo", function(e) {
+window.addEventListener("createRepairAfterQueryInfo", function(e) {
 	console.log("发送完毕信息后，触发主页面的信息管理页面刷新操作");
 	setTimeout(function(){
 		//执行新的查询操作
-		getYunYongInfo(1,1,limitForYunYong);
+		getRepairInfo(1,1,limitForRepair);
 	}, 300);
 });
 
 
 //搜索
-document.getElementById("searchForYunYong").addEventListener('tap',function() {
-	console.log("运用管理之搜索查询");
-	totalPageForYunYong = 0;
-	getYunYongInfo(1,1,limitForYunYong);
+document.getElementById("searchForRepair").addEventListener('tap',function() {
+	console.log("检修管理之搜索查询");
+	totalPageForRepair = 0;
+	getRepairInfo(1,1,limitForRepair);
 });
 
-function getYunYongInfo(flag,pageNumV,limitV){
+function getRepairInfo(flag,pageNumV,limitV){
 	console.log(pageNumV+"===="+limitV);
 	var taskStatus = $("#taskStatus").val();
 	var trainNo = $("#trainNo").val();
-	var startTime = $("#start_date_yun_yong").val();
-	var endTime = $("#end_date_yun_yong").val();
+	var startTime = $("#start_date_Repair").val();
+	var endTime = $("#end_date_Repair").val();
 	//console.log(taskStatus+"="+trainNo+"="+startTime+"="+endTime);
-	var url = path1+"/trainUse/getTrainUseInfoDataListByPage";
+	var url = path1+"/task/getRepairTaskDataListByPage";
 	var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 	var uid = JSON.parse(localStorage.getItem("userInfo")).userid;
-	console.log("查询运用信息列表=="+url);
+	console.log("查询检修信息列表=="+url);
 	if(flag == 1){
 		//显示遮罩层
 		mui.showLoading("查询中,请稍后...","div");
 		// 重新激活上拉加载 下拉刷新操作
-		that1.refresh(true);
-		mui("#refreshContainerForYunYong").scroll().scrollTo(1,1);
+		that0.refresh(true);
+		mui("#refreshContainerForRepair").scroll().scrollTo(1,1);
 	}
 	mui.ajax(url, {
 		 type: "get",
@@ -117,9 +117,9 @@ function getYunYongInfo(flag,pageNumV,limitV){
 				 //关闭遮罩层
 				mui.hideLoading();
 				// 清空操作
-				$("#ulInfoForYunYong").empty();
+				$("#ulInfoForRepair").empty();
 			 }else{
-				 msgIsQueryForYunYong = true;
+				 msgIsQueryForRepair = true;
 			 }
 			 if(data.code == 1){
 				 mui.toast(data.msg);
@@ -142,30 +142,30 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 html = html + '</tr></table></a>';
 					 html = html + '</li>';
 				 }
-				 //if(totalPageForYunYong==0){
-					 if(count%limitForYunYong==0){
-						totalPageForYunYong = count/limitForYunYong; 
-						if(totalPageForYunYong == 0){
-							totalPageForYunYong = 1;
+				 //if(totalPageForRepair==0){
+					 if(count%limitForRepair==0){
+						totalPageForRepair = count/limitForRepair; 
+						if(totalPageForRepair == 0){
+							totalPageForRepair = 1;
 						}
 					 }else{
-						 totalPageForYunYong = parseInt(count/limitForYunYong)+1
+						 totalPageForRepair = parseInt(count/limitForRepair)+1
 					 }
 				 //}
-				 if(totalPageForYunYong == pageNumV){
-						that1.endPullUpToRefresh(true);
-						pageNumForYunYong = 1;
+				 if(totalPageForRepair == pageNumV){
+						that0.endPullUpToRefresh(true);
+						pageNumForRepair = 1;
 				 }else{
-					 that1.endPullUpToRefresh(false);
-					 if(totalPageForYunYong<pageNumV){
-						 pageNumForYunYong = 1;
+					 that0.endPullUpToRefresh(false);
+					 if(totalPageForRepair<pageNumV){
+						 pageNumForRepair = 1;
 					 }else{
 						if(flag!=1){
-							pageNumForYunYong = pageNumForYunYong + 1; 
+							pageNumForRepair = pageNumForRepair + 1; 
 						} 
 					 }
 				 }
-				 $("#ulInfoForYunYong").append(html);
+				 $("#ulInfoForRepair").append(html);
 			 }
 		 },
 		 error:function(xhr,type,errorThrown){
@@ -180,11 +180,11 @@ function getYunYongInfo(flag,pageNumV,limitV){
 }
 
 
-//创建运转主任务
-document.getElementById("addForYunYong").addEventListener('tap',function() {
+//创建检修主任务
+document.getElementById("addForRepair").addEventListener('tap',function() {
 	var id = generateUUID()+"-messageAdd";
 	mui.openWindow({
-		url: '../childPage/train_use_main_task.html',
+		url: '../childPage/day_repair_main_task.html',
 		id: id,
 		show: {
 			aniShow: 'pop-in'
@@ -199,7 +199,9 @@ document.getElementById("addForYunYong").addEventListener('tap',function() {
 	});
 });
 		
-mui('#ulInfoForYunYong').on('tap','li',function(v){
+mui('#ulInfoForRepair').on('tap','li',function(v){
+	mui.alert("开发中");
+	return false;
 	  var msgId = this.id;
 	  console.log("点击的信息主键ID："+msgId);
 	  var id = generateUUID()+"-messageDetail";
@@ -221,4 +223,4 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 		createNew:false
 	  });
 })
-/********运用管理部分的js end*******/
+/********检修管理部分的js end*******/
