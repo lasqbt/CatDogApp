@@ -88,6 +88,7 @@ function getRepairInfo(flag,pageNumV,limitV){
 	var trainNo = $("#trainNo").val();
 	var startTime = $("#start_date_Repair").val();
 	var endTime = $("#end_date_Repair").val();
+	var taskType = $("#taskType").val();
 	//console.log(taskStatus+"="+trainNo+"="+startTime+"="+endTime);
 	var url = path1+"/task/getRepairTaskDataListByPage";
 	var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
@@ -110,6 +111,7 @@ function getRepairInfo(flag,pageNumV,limitV){
 			 endTime:endTime,
 			 page:pageNumV,
 			 limit:limitV,
+			 taskType:taskType,
 			 appSessionIdInfo:appSessionIdInfo
 		 },
 		 success: function(data){
@@ -128,19 +130,27 @@ function getRepairInfo(flag,pageNumV,limitV){
 				 var dataInfo = data.data;
 				 var count = data.count;
 				 for(var v=0; v<dataInfo.length;v++){
-					 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
-					 html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
-					 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
-					 html = html + '<table style="width: 96%;text-align: left;">';
-					 html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆类型：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
-					 html = html + "<td style='width:20%;font-size:0.8rem;'>车辆型号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainModelInfo+"</td>";
-					 html = html + "<td style='width:20%;font-size:0.8rem;text-align: center;'rowspan=2><div style='border-radius:50%;border: 1px solid #929292;width:50px;font-size:0.6rem;height:50px;margin:0 auto;text-align:center;padding:5.5%;'>";
-					 html = html + "<div style='border-radius:50%;border: 1px dashed #929292;width:40px;font-size:0.6rem;height:40px;line-height: 40px;'>"+taskStatusToCN(dataInfo[v].taskStatus)+"</div>";
-					 html = html + "</div></td></tr>";
-					 html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆编号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainNo+"</td>";
-					 html = html + "<td style='width:20%;font-size:0.8rem;'>创建时间：</td><td style='width:20%;font-size:0.8rem;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
-					 html = html + '</tr></table></a>';
-					 html = html + '</li>';
+					html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
+					html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
+					html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+					html = html + '<table style="width: 96%;text-align: left;">';
+					html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆类型：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
+					html = html + "<td style='width:20%;font-size:0.8rem;'>车辆型号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainModelInfo+"</td>";
+					html = html + "<td style='width:20%;font-size:0.8rem;text-align: left;'rowspan=2>";
+					if(dataInfo[v].taskStatus == '1'){
+						html = html + "<img src='../images/daiTiJao.png' style='width:50px;height:50px;'>";
+					}else if(dataInfo[v].taskStatus == '2'){
+						html = html + "<img src='../images/success-1.png' style='width:50px;height:50px;'>";
+					}else if(dataInfo[v].taskStatus == '3'){
+						html = html + "<img src='../images/refuse-1.png' style='width:50px;height:50px;'>";
+					}else if(dataInfo[v].taskStatus == '4'){
+						html = html + "<img src='../images/shenHeZhong-1.png' style='width:50px;height:50px;'>";
+					}
+					html = html + "</td></tr>";
+					html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆编号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainNo+"</td>";
+					html = html + "<td style='width:20%;font-size:0.8rem;'>创建时间：</td><td style='width:20%;font-size:0.8rem;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
+					html = html + '</tr></table></a>';
+					html = html + '</li>';
 				 }
 				 //if(totalPageForRepair==0){
 					 if(count%limitForRepair==0){

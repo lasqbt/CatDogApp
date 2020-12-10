@@ -134,7 +134,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 html = html + '<table style="width: 96%;text-align: left;">';
 					 html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆类型：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
 					 html = html + "<td style='width:20%;font-size:0.8rem;'>车辆型号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainModelInfo+"</td>";
-					 html = html + "<td style='width:20%;font-size:0.8rem;text-align: center;'rowspan=2>";
+					 html = html + "<td style='width:20%;font-size:0.8rem;text-align: left;'rowspan=2>";
 					 if(dataInfo[v].taskStatus == '1'){
 						 html = html + "<img src='../images/daiTiJao.png' style='width:50px;height:50px;'>";
 					 }else if(dataInfo[v].taskStatus == '2'){

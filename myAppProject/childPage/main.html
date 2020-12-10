@@ -95,7 +95,7 @@
 				/* color: #929292; */
 			}
 			.mui-navigate-right:after, .mui-push-left:after, .mui-push-right:after{
-				left:87%;
+				left:95%;
 			}
 		</style>
 	</head>
@@ -166,8 +166,10 @@
 								<span class="mui-badge1">
 									<select class="mui-h5" id="taskStatus" style="margin:auto;border-radius: 5px;background-color: transparent;">
 										<option value="">全部</option>
-										<option value="1">日检</option>
-										<option value="2">定检</option>
+										<option value="1">待提交</option>
+										<option value="2">审核完毕</option>
+										<option value="3">拒绝审核</option>
+										<option value="4">审核中</option>
 									</select>
 								</span>
 							</a>
@@ -180,7 +182,19 @@
 							<label class="lableCss">结束时间</label>
 							<input readonly="readonly" type="text" value="" id="end_date_Repair" placeholder="请选择任务创建结束时间">  
 						</div> 
-						<div style="float: right;margin-right: 5px;">
+						<div class="mui-input-row">
+							<label class="lableCss">检修类型</label>
+							<!-- <a class="mui-navigate-right"> -->
+								<span class="mui-badge1" style="width: 100px;float: left;">
+									<select class="mui-h5" id="taskType" style="margin:auto;border-radius: 5px;background-color: transparent;width: 100px;">
+										<option value="">全部</option>
+										<option value="1">日常检修</option>
+										<option value="2">定期检修</option>
+									</select>
+								</span>
+							<!-- </a> -->
+						</div> 
+						<div style="float: right;margin-right: 5px;margin-top: -11%;">
 							<button type="button" id="searchForRepair" class="mui-btn mui-btn-primary mui-icon mui-icon-search">
 								搜索
 							</button>
