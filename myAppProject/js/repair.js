@@ -249,13 +249,11 @@ $('#ulInfoForRepair').on('tap', '.mui-btn', function(event) {
 });
 		
 mui('#ulInfoForRepair').on('tap','li',function(v){
-	mui.alert("开发中");
-	return false;
-	  var msgId = this.id;
-	  console.log("点击的信息主键ID："+msgId);
-	  var id = generateUUID()+"-messageDetail";
+	  var taskId = this.id;
+	  console.log("点击的主任务信息主键ID："+taskId);
+	  var id = generateUUID()+"-dayRepairTableDetail";
 	  mui.openWindow({
-		url: '../childPage/messageDetail.html',
+		url: '../childPage/day_repair_main_task_detail.html',
 		id: id,
 		show: {
 			aniShow: 'pop-in'
@@ -267,7 +265,7 @@ mui('#ulInfoForRepair').on('tap','li',function(v){
 			autoShow: false
 		},
 		extras: {
-			msgId: msgId
+			taskId: taskId
 		},
 		createNew:false
 	  });

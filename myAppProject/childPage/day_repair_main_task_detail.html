@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0; */
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				position: fixed;
+				bottom: 0;
+			}
+			/*div隐藏滚动条 并且仍能滚动*/
+			::-webkit-scrollbar{
+				display: none;
+			}
+			
+			.tdCss{
+				width: 10%;
+			}
+			
+			input{
+				color: #929292;
+				font-size: 0.8rem;
+			}
+			input::-webkit-input-placeholder{
+			    color:#929292;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+			}
+			input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+			}
+			input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+			}
+			
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">检修详情</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div style="width: 95%;height: 80%;margin-top: 10px;margin-left: 2.5%;">
+				<div style="width: 100%;height: 45%;box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;">
+					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
+						<img src="../images/d-55.png"  style="width: 10px;height: 10px;float: left;"/>
+						<strong style="color: red;">保养检修项目</strong>
+						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
+						</div>
+					<div style="width: 96%;overflow-y: auto;height: 76%;margin-left: 5px;" id="byProject">
+						<span style="margin-top: 3px;">1、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">2、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">3、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">4、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">5、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">6、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">7、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">8、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">9、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">10、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">11、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">12、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">13、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">14、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">15、清洁发动机外壳体。</span><br>
+					</div>
+					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
+						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
+						<img src="../images/d-22.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+				</div>
+				<br>
+				<div style="width: 100%;height: 45%;box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;">
+					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
+						<img src="../images/d-55.png"  style="width: 10px;height: 10px;float: left;"/>
+						<strong style="color: red;">保养检修标准</strong>
+						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+					<div style="width: 96%;overflow-y: auto;height: 76%;margin-left: 5px;" id="byStand">
+						<span style="margin-top: 3px;">1、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">2、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">3、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">4、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">5、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">6、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">7、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">8、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">9、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">10、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">11、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">12、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">13、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">14、清洁发动机外壳体。</span><br>
+						<span style="margin-top: 3px;">15、清洁发动机外壳体。</span><br>
+					</div>
+					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
+						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
+						<img src="../images/d-22.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+				</div>
+				<br>
+				<div style="width: 100%;height: 5%;text-align: center;">
+					<input type="text" value="" id="trainNo" placeholder="签名信息" style="width: 80%;height: 35px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;"> 
+					<button type="button" id="createTask" class="mui-btn mui-btn-primary">
+						签名
+					</button>
+				</div>
+			</div>
+			<div class="liCss" style="width: 100%;overflow-x: auto;height: 50px;">
+					<table style="width: 1000px;text-align: center;left: 0;">
+						<tr id="repairProject" style="background-color: #502171;color: #929292;font-size: 0.8rem;height: 50px;">
+						</tr>
+					</table>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery.min.js" type="text/javascript" ></script>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript"> </script>
+	<script src="../js/app.js" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"> </script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+
+	<script>
+		(function (mui) {
+			mui.init(); 
+			mui.plusReady(function(){
+				var projectIdArr = new Array();
+				var self = plus.webview.currentWebview();
+				var taskId = self.taskId;
+				console.log("编辑的任务ID=="+taskId);
+				var cacheData;
+				//初始加载预加载数据
+				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+				var url = path1+'/trainApp/getRepairTaskTableInfo?appSessionIdInfo='+appSessionIdInfo;
+				console.log("初始化日检或者定检详情信息数据=="+url);
+				mui.showLoading("查询中,请稍后...","div");
+				mui.ajax(url,{
+					data:{id:taskId},
+					dataType:'json',   
+					type:'get',
+					success:function(data){
+						console.log("返回码是"+data.code);
+						mui.hideLoading();
+						if(data.code=='0'){
+							mui.toast("数据加载成功");
+							console.log(JSON.stringify(data));
+							var mainListArr = data.mainList;
+							if(mainListArr!=null){
+								//repairProject
+								var rHtml = "";
+								for(var v=0;v<mainListArr.length;v++){
+									//var detailListArr = mainListArr[v].detailList;
+									rHtml = rHtml + '<td class="tdCss" id="'+mainListArr[v].id+'">'+mainListArr[v].repairProject+'</td>';
+									projectIdArr[v] = mainListArr[v].id;
+								}
+								$("#repairProject").append(rHtml);
+							}
+							
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						mui.hideLoading();
+						if(type=='timeout'){
+							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+						}else{
+							mui.alert('请求失败');
+						}
+					}
+				}); 
+				
+				$('#repairProject').on('tap', '.tdCss', function(event) {
+					var clickId = this.id;
+					for(var v=0;v<projectIdArr.length;v++){
+						if(clickId == projectIdArr[v]){
+							$("#"+clickId).css("border-radius","5px");
+							$("#"+clickId).css("background-color","#007AFF");
+							$("#"+clickId).css("color","red");
+						}else{
+							$("#"+projectIdArr[v]).css("background-color","transparent");
+							$("#"+projectIdArr[v]).css("border-radius","0px");
+							$("#"+projectIdArr[v]).css("color","#929292");
+						}
+					}
+					
+				})
+			})
+		})(mui);
+	</script>
+</html>
