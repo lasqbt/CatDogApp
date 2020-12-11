@@ -131,6 +131,7 @@ function getRepairInfo(flag,pageNumV,limitV){
 				 var count = data.count;
 				 for(var v=0; v<dataInfo.length;v++){
 					html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
+					html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">编辑</a></div>';
 					html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
 					html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
 					html = html + '<table style="width: 96%;text-align: left;font-size:0.8rem;">';
@@ -149,7 +150,13 @@ function getRepairInfo(flag,pageNumV,limitV){
 					html = html + "</td></tr>";
 					html = html + "<tr><td>车辆编号：</td><td>"+dataInfo[v].trainNo+"</td>";
 					html = html + "<td>创建时间：</td><td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
-					html = html + '<tr><td>检修类型：</td><td colspan="3">日常检修</td></tr></table></a>';
+					if(dataInfo[v].taskType == '1'){
+						html = html + '<tr><td>检修类型：</td><td colspan="2">日常检修</td>';
+					}else if(dataInfo[v].taskType == '2'){
+						html = html + '<tr><td>检修类型：</td><td colspan="2">定期检修</td>';
+					}
+					html = html + '<td><input type="hidden" id="'+dataInfo[v].id+'hidden" value="'+dataInfo[v].remark1+';'+dataInfo[v].taskType+'"></td></tr>';
+					html = html + '</table></a>';
 					html = html + '</li>';
 				 }
 				 //if(totalPageForRepair==0){
@@ -192,7 +199,7 @@ function getRepairInfo(flag,pageNumV,limitV){
 
 //创建检修主任务
 document.getElementById("addForRepair").addEventListener('tap',function() {
-	var id = generateUUID()+"-messageAdd";
+	var id = generateUUID()+"-addDayRepairTask";
 	mui.openWindow({
 		url: '../childPage/day_repair_main_task.html',
 		id: id,
@@ -207,6 +214,38 @@ document.getElementById("addForRepair").addEventListener('tap',function() {
 		},
 		createNew:false
 	});
+});
+
+
+////右滑不需要点击删除自动触发弹出确认框
+//$('#ulInfo').on('slideleft', '.mui-table-view-cell', function(event) {
+//右滑点击编辑
+$('#ulInfoForRepair').on('tap', '.mui-btn', function(event) {
+	var elem = this;
+	var li = elem.parentNode.parentNode;
+	var taskId = li.id;
+	var paramsArr = $("#"+taskId+"hidden").val().split(";");
+	var id = generateUUID()+"-modifyDayRepairTask";
+	mui.openWindow({
+		url: '../childPage/day_repair_main_task_modify.html',
+		id: id,
+		show: {
+			aniShow: 'pop-in'
+		},
+		styles: {
+			popGesture: 'hide'
+		},
+		waiting: {
+			autoShow: false
+		},
+		extras:{
+			trainId:paramsArr[0],
+			taskTypeId:paramsArr[1],
+			taskId:taskId
+		},
+		createNew:false
+	});
+
 });
 		
 mui('#ulInfoForRepair').on('tap','li',function(v){
