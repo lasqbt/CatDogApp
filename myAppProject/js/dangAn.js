@@ -66,11 +66,11 @@ function getDangAnInfo(flag,pageNumV,limitV){
 					 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
 					 html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
 					 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
-					 html = html + '<table style="width: 96%;text-align: left;">';
-					 html = html + "<tr><td style='width:15%;font-size:0.8rem;'>车辆类型：</td><td style='width:25%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
-					 html = html + "<td style='width:15%;font-size:0.8rem;'>车辆型号：</td><td style='width:25%;font-size:0.8rem;'>"+dataInfo[v].trainModelName+"</td></tr>";
-					 html = html + "<tr><td style='width:15%;font-size:0.8rem;'>车辆编号：</td><td style='width:25%;font-size:0.8rem;'>"+dataInfo[v].trainNo+"</td>";
-					 html = html + "<td style='width:15%;font-size:0.8rem;'>所属部门：</td><td style='width:25%;font-size:0.8rem;'>"+dataInfo[v].deptName+"</td></tr>";
+					 html = html + '<table style="width: 96%;text-align: left;font-size:0.8rem;">';
+					 html = html + "<tr><td style='width:15%;'>车辆类型：</td><td style='width:25%;'>"+dataInfo[v].trainTypeName+"</td>";
+					 html = html + "<td style='width:15%;'>车辆型号：</td><td style='width:25%;'>"+dataInfo[v].trainModelName+"</td></tr>";
+					 html = html + "<tr><td>车辆编号：</td><td>"+dataInfo[v].trainNo+"</td>";
+					 html = html + "<td>所属部门：</td><td>"+dataInfo[v].deptName+"</td></tr>";
 					 html = html + '</tr></table></a>';
 					 html = html + '</li>';
 				 }

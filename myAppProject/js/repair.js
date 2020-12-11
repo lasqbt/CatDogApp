@@ -133,10 +133,10 @@ function getRepairInfo(flag,pageNumV,limitV){
 					html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
 					html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
 					html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
-					html = html + '<table style="width: 96%;text-align: left;">';
-					html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆类型：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainTypeName+"</td>";
-					html = html + "<td style='width:20%;font-size:0.8rem;'>车辆型号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainModelInfo+"</td>";
-					html = html + "<td style='width:20%;font-size:0.8rem;text-align: left;'rowspan=2>";
+					html = html + '<table style="width: 96%;text-align: left;font-size:0.8rem;">';
+					html = html + "<tr><td style='width:20%;'>车辆类型：</td><td style='width:20%;'>"+dataInfo[v].trainTypeName+"</td>";
+					html = html + "<td style='width:20%;'>车辆型号：</td><td style='width:20%;'>"+dataInfo[v].trainModelInfo+"</td>";
+					html = html + "<td style='width:20%;text-align: left;'rowspan=3>";
 					if(dataInfo[v].taskStatus == '1'){
 						html = html + "<img src='../images/daiTiJao.png' style='width:50px;height:50px;'>";
 					}else if(dataInfo[v].taskStatus == '2'){
@@ -147,9 +147,9 @@ function getRepairInfo(flag,pageNumV,limitV){
 						html = html + "<img src='../images/shenHeZhong-1.png' style='width:50px;height:50px;'>";
 					}
 					html = html + "</td></tr>";
-					html = html + "<tr><td style='width:20%;font-size:0.8rem;'>车辆编号：</td><td style='width:20%;font-size:0.8rem;'>"+dataInfo[v].trainNo+"</td>";
-					html = html + "<td style='width:20%;font-size:0.8rem;'>创建时间：</td><td style='width:20%;font-size:0.8rem;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
-					html = html + '</tr></table></a>';
+					html = html + "<tr><td>车辆编号：</td><td>"+dataInfo[v].trainNo+"</td>";
+					html = html + "<td>创建时间：</td><td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
+					html = html + '<tr><td>检修类型：</td><td colspan="3">日常检修</td></tr></table></a>';
 					html = html + '</li>';
 				 }
 				 //if(totalPageForRepair==0){
