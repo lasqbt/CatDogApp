@@ -65,7 +65,7 @@
 			}
 			
 			.detailBtnCss{
-				width: 88px;
+				width: 95%;
 				height: 40px;
 				background-color: transparent;
 				box-shadow: 0px 0px 3px #929292 inset;
@@ -79,13 +79,18 @@
 				color: red;
 				background-color: #007AFF;
 			}
+			
+			.mui-popup-input input{
+				height: 150px;
+			}
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
 		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
 			<header style="width: 100%;height: 4%;z-index: 99999999;">
 				<span class="us_uer4" onclick="mui.back();"></span>
-				<div class="fontCss">
+				<span class="mui-icon mui-icon-compose" id="remarkInfo" style="float: right;color: #929292;margin-right: 10px;"></span>
+				<div class="fontCss" style="margin-left: 10%;">
 					<span class="fontSpanCss">检修详情</span>
 				</div>
 				<div class="title"></div>
@@ -120,30 +125,33 @@
 					</div>
 				</div>
 				<div style="width: 100%;height: 5%;text-align: center;margin-top: 8px;">
-					<input type="text" value="" id="trainNo" placeholder="签名信息" style="width: 100%;height: 40px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;"> 
+					<input type="text" value="" id="qianMingInfo" maxlength="15" placeholder="签名信息" style="width: 100%;height: 40px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;"> 
 				</div>
 				<div style="width: 100%;height: 5%;text-align: center;margin-top: 17px;">
-					
-					<button type="button" id="uploadPic" class="mui-btn mui-btn-primary detailBtnCss" style="float: left;">
-						上传照片
-					</button>
-					
-					<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss">
-						查看照片
-					</button>
-					&nbsp;
-					<button type="button" id="saveName" class="mui-btn mui-btn-primary detailBtnCss">
-						保存信息
-					</button>
-					
-					<button type="button" id="submitAudit" class="mui-btn mui-btn-primary detailBtnCss" style="float: right;">
-						提交审核
-					</button>
-					<!-- <input type="text" value="查看照片" id="lookPic" readonly="readonly" style="width: 88px;height: 40px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;">
-					&nbsp;
-					<input type="text" value="保存签名" id="saveName" readonly="readonly" style="width: 88px;height: 40px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;">
-					
-					<input type="text" value="提交审核" id="submitAudit" readonly="readonly" style="width: 88px;height: 40px;background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 5px;float: right;"> -->
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 25%;">
+								<button type="button" id="uploadPic" class="mui-btn mui-btn-primary detailBtnCss">
+									上传照片
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss">
+									查看照片
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="saveName" class="mui-btn mui-btn-primary detailBtnCss">
+									保存信息
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="submitAudit" class="mui-btn mui-btn-primary detailBtnCss">
+									提交审核
+								</button>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<div class="liCss" style="width: 100%;overflow-x: auto;height: 50px;">
@@ -194,7 +202,8 @@
 								var dHtml = "";
 								var sHtml = "";
 								var flag = true;
-								for(var v=0;v<mainListArr.length;v++){
+								//减一 是把备注去掉  备注放到页面右上角
+								for(var v=0;v<mainListArr.length-1;v++){
 									rHtml = rHtml + '<td class="tdCss" id="'+mainListArr[v].id+'">'+mainListArr[v].repairProject+'</td>';
 									projectIdArr[v] = mainListArr[v].id;
 									//加载保养项目和标准
@@ -212,9 +221,7 @@
 								$("#byStandard").append(sHtml); 
 								
 								//默认显示第一个检修项目
-								/* $("#"+projectIdArr[0]).css("border-radius","5px");
-								$("#"+projectIdArr[0]).css("background-color","#007AFF");
-								$("#"+projectIdArr[0]).css("color","red"); */
+								$("#"+projectIdArr[0]).addClass("bottomSpan");
 							}
 							
 						}else{
@@ -230,6 +237,28 @@
 						}
 					}
 				}); 
+				
+				//textarea 滚动条失效问题
+				window.addEventListener('touchmove',function(e){
+				  let target = e.target
+				  if(target && target.tagName === 'TEXTAREA'){ 
+					e.stopPropagation();
+				  }
+				},true);
+				//textarea 自定义样式
+				document.getElementById("remarkInfo").addEventListener('tap',function() {
+					var a = mui.prompt('请输入备注信息','','备注',['取消','保存'],function(e){
+						if(e.index==1){
+							var text = document.querySelector('.mui-popup-input textarea').value.trim();
+							console.log(text);
+						}else{
+							console.log('取消');
+						}
+					},'div');
+					var lihh = document.querySelector('.mui-popup-input');
+					lihh.innerHTML="<textarea placeholder='100个字符以内...' maxlength='100' cols='20' rows='5' style='height: 130px;border-radius: 10px;margin-top: 15px;font-size: 0.8rem;'></textarea>";
+				})
+				
 				//上传照片
 				document.getElementById("uploadPic").addEventListener('tap',function() {
 					$("#uploadPic").css("background-color","#007AFF");
@@ -270,17 +299,16 @@
 				$('#repairProject').on('tap', '.tdCss', function(event) {
 					var clickId = this.id;
 					for(var v=0;v<projectIdArr.length;v++){
-						mui.toast(projectIdArr[v]);
-						if(clickId == projectIdArr[v]){
+						if(parseInt(clickId)  == parseInt(projectIdArr[v])){
 							//增加样式
 							$("#"+clickId).addClass("bottomSpan");
 							//清除原有数据
 							$("#byProject").empty();
 							$("#byStandard").empty(); 
 							//加载现有数据
-							for(var v=0;v<cacheData.length;v++){
-								if(clickId == cacheData[v].id){
-									var detailListArr = cacheData[v].detailList;
+							for(var m=0;m<cacheData.length;m++){
+								if(clickId == cacheData[m].id){
+									var detailListArr = cacheData[m].detailList;
 									var dHtml = "";
 									var sHtml = "";
 									for(var b=0;b<detailListArr.length;b++){
@@ -290,11 +318,11 @@
 									$("#byProject").append(dHtml);
 									$("#byStandard").append(sHtml); 
 								}
-							}
+							} 
 						}else{
 							//删除样式
 							$("#"+projectIdArr[v]).removeClass("bottomSpan");
-						} 
+						}
 					}
 					
 				})

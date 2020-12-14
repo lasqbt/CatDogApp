@@ -50,7 +50,7 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 	  var clickId = this.id;
 	  console.log("点击的信息主键ID："+clickId);
 	  if(clickId == 'ipSet'){
-		  mui.prompt('IP设置，只针对本手机APP的本次登录有效！','格式如下：192.168.10.1','提升',['确定','取消'],function(e) {
+		  mui.prompt('IP设置，只针对本手机APP的本次登录有效！','格式如下：192.168.10.1','提示',['确定','取消'],function(e) {
 		  	if (e.index == 1) {
 		  		console.log("点击了取消");
 		  	} else {
