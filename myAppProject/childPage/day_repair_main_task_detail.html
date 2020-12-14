@@ -73,6 +73,12 @@
 				border: 0;
 				color: #929292;
 			}
+
+			.bottomSpan{
+				border-radius:5px;
+				color: red;
+				background-color: #007AFF;
+			}
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
@@ -92,21 +98,7 @@
 						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
 					</div>
 					<div style="width: 96%;overflow-y: auto;height: 76%;margin-left: 5px;" id="byProject">
-						<span class="detailCss">1、清洁发动机外壳体。</span><br>
-						<span class="detailCss">2、清洁发动机外壳体。</span><br>
-						<span class="detailCss">3、清洁发动机外壳体。</span><br>
-						<span class="detailCss">4、清洁发动机外壳体。</span><br>
-						<span class="detailCss">5、清洁发动机外壳体。</span><br>
-						<span class="detailCss">6、清洁发动机外壳体。</span><br>
-						<span class="detailCss">7、清洁发动机外壳体。</span><br>
-						<span class="detailCss">8、清洁发动机外壳体。</span><br>
-						<span class="detailCss">9、清洁发动机外壳体。</span><br>
-						<span class="detailCss">10、清洁发动机外壳体。</span><br>
-						<span class="detailCss">11、清洁发动机外壳体。</span><br>
-						<span class="detailCss">12、清洁发动机外壳体。</span><br>
-						<span class="detailCss">13、清洁发动机外壳体。</span><br>
-						<span class="detailCss">14、清洁发动机外壳体。</span><br>
-						<span class="detailCss">15、清洁发动机外壳体。</span><br>
+						
 					</div>
 					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
 						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
@@ -119,22 +111,8 @@
 						<span style="color: blueviolet;">保养检修标准</span>
 						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
 					</div>
-					<div style="width: 96%;overflow-y: auto;height: 76%;margin-left: 5px;" id="byStand">
-						<span class="detailCss">1、清洁发动机外壳体。</span><br>
-						<span class="detailCss">2、清洁发动机外壳体。</span><br>
-						<span class="detailCss">3、清洁发动机外壳体。</span><br>
-						<span class="detailCss">4、清洁发动机外壳体。</span><br>
-						<span class="detailCss">5、清洁发动机外壳体。</span><br>
-						<span class="detailCss">6、清洁发动机外壳体。</span><br>
-						<span class="detailCss">7、清洁发动机外壳体。</span><br>
-						<span class="detailCss">8、清洁发动机外壳体。</span><br>
-						<span class="detailCss">9、清洁发动机外壳体。</span><br>
-						<span class="detailCss">10、清洁发动机外壳体。</span><br>
-						<span class="detailCss">11、清洁发动机外壳体。</span><br>
-						<span class="detailCss">12、清洁发动机外壳体。</span><br>
-						<span class="detailCss">13、清洁发动机外壳体。</span><br>
-						<span class="detailCss">14、清洁发动机外壳体。</span><br>
-						<span class="detailCss">15、清洁发动机外壳体。</span><br>
+					<div style="width: 96%;overflow-y: auto;height: 76%;margin-left: 5px;" id="byStandard">
+						
 					</div>
 					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
 						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
@@ -155,7 +133,7 @@
 					</button>
 					&nbsp;
 					<button type="button" id="saveName" class="mui-btn mui-btn-primary detailBtnCss">
-						保存签名
+						保存信息
 					</button>
 					
 					<button type="button" id="submitAudit" class="mui-btn mui-btn-primary detailBtnCss" style="float: right;">
@@ -208,17 +186,35 @@
 						mui.hideLoading();
 						if(data.code=='0'){
 							mui.toast("数据加载成功");
-							console.log(JSON.stringify(data));
+							//console.log(JSON.stringify(data));
 							var mainListArr = data.mainList;
+							cacheData = mainListArr;
 							if(mainListArr!=null){
-								//repairProject
 								var rHtml = "";
+								var dHtml = "";
+								var sHtml = "";
+								var flag = true;
 								for(var v=0;v<mainListArr.length;v++){
-									//var detailListArr = mainListArr[v].detailList;
 									rHtml = rHtml + '<td class="tdCss" id="'+mainListArr[v].id+'">'+mainListArr[v].repairProject+'</td>';
 									projectIdArr[v] = mainListArr[v].id;
+									//加载保养项目和标准
+									if(flag){
+										var detailListArr = mainListArr[v].detailList;
+										for(var b=0;b<detailListArr.length;b++){
+										  dHtml = dHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectDetail+'</span><br>';
+										  sHtml = sHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectStandard+'</span><br>';
+										} 
+										flag = false;
+									}
 								}
 								$("#repairProject").append(rHtml);
+								$("#byProject").append(dHtml);
+								$("#byStandard").append(sHtml); 
+								
+								//默认显示第一个检修项目
+								/* $("#"+projectIdArr[0]).css("border-radius","5px");
+								$("#"+projectIdArr[0]).css("background-color","#007AFF");
+								$("#"+projectIdArr[0]).css("color","red"); */
 							}
 							
 						}else{
@@ -236,41 +232,75 @@
 				}); 
 				//上传照片
 				document.getElementById("uploadPic").addEventListener('tap',function() {
-					$("#uploadPic").css("background-color","yellow");
+					$("#uploadPic").css("background-color","#007AFF");
+					
+					$("#lookPic").css("background-color","transparent");
+					$("#saveName").css("background-color","transparent");
+					$("#submitAudit").css("background-color","transparent");
 					console.log(1);
 				})
 				//查看照片
 				document.getElementById("lookPic").addEventListener('tap',function() {
-					$("#uploadPic").css("background-color","yellow");
+					$("#lookPic").css("background-color","#007AFF");
+					
+					$("#uploadPic").css("background-color","transparent");
+					$("#saveName").css("background-color","transparent");
+					$("#submitAudit").css("background-color","transparent");
 					console.log(2);
 				})
 				//保存签名
 				document.getElementById("saveName").addEventListener('tap',function() {
-					$("#uploadPic").css("background-color","yellow");
+					$("#saveName").css("background-color","#007AFF");
+					
+					$("#lookPic").css("background-color","transparent");
+					$("#uploadPic").css("background-color","transparent");
+					$("#submitAudit").css("background-color","transparent");
 					console.log(3);
 				})
 				//提交签名
 				document.getElementById("submitAudit").addEventListener('tap',function() {
-					$("#uploadPic").css("background-color","yellow");
+					$("#submitAudit").css("background-color","#007AFF");
+					
+					$("#lookPic").css("background-color","transparent");
+					$("#saveName").css("background-color","transparent");
+					$("#uploadPic").css("background-color","transparent");
 					console.log(4);
 				})
 				
 				$('#repairProject').on('tap', '.tdCss', function(event) {
 					var clickId = this.id;
 					for(var v=0;v<projectIdArr.length;v++){
+						mui.toast(projectIdArr[v]);
 						if(clickId == projectIdArr[v]){
-							$("#"+clickId).css("border-radius","5px");
-							$("#"+clickId).css("background-color","#007AFF");
-							$("#"+clickId).css("color","red");
+							//增加样式
+							$("#"+clickId).addClass("bottomSpan");
+							//清除原有数据
+							$("#byProject").empty();
+							$("#byStandard").empty(); 
+							//加载现有数据
+							for(var v=0;v<cacheData.length;v++){
+								if(clickId == cacheData[v].id){
+									var detailListArr = cacheData[v].detailList;
+									var dHtml = "";
+									var sHtml = "";
+									for(var b=0;b<detailListArr.length;b++){
+									  dHtml = dHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectDetail+'</span><br>';
+									  sHtml = sHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectStandard+'</span><br>';
+									} 
+									$("#byProject").append(dHtml);
+									$("#byStandard").append(sHtml); 
+								}
+							}
 						}else{
-							$("#"+projectIdArr[v]).css("background-color","transparent");
-							$("#"+projectIdArr[v]).css("border-radius","0px");
-							$("#"+projectIdArr[v]).css("color","#929292");
-						}
+							//删除样式
+							$("#"+projectIdArr[v]).removeClass("bottomSpan");
+						} 
 					}
 					
 				})
 			})
 		})(mui);
 	</script>
+	
+	
 </html>
