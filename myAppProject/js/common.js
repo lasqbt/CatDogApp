@@ -3,7 +3,7 @@ var files = [];
 var index = 1;			
 var newUrlAfterCompress;
 // checkPicNum可上传照片张数，picType照片类型，appSessionIdInfo移动端的请求唯一标识
-function choosePhoto(event,checkPicNum,picType,appSessionIdInfo){
+function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId){
 	if (mui.os.plus) {
 		var buttonTit = [{
 			title: "我要拍照美美哒"
@@ -20,10 +20,10 @@ function choosePhoto(event,checkPicNum,picType,appSessionIdInfo){
 				case 0:
 					break;
 				case 1:
-					getImage(picType,appSessionIdInfo); /*拍照*/
+					getImage(picType,appSessionIdInfo,taskId,menuId); /*拍照*/
 					break;
 				case 2:
-					galleryImg(checkPicNum,picType,appSessionIdInfo); /*打开相册*/
+					galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId); /*打开相册*/
 					break;
 				default:
 					break;
@@ -32,14 +32,14 @@ function choosePhoto(event,checkPicNum,picType,appSessionIdInfo){
 	}
 }
 // 拍照获取图片
-function getImage(picType,appSessionIdInfo) {
+function getImage(picType,appSessionIdInfo,taskId,menuId) {
 	var c = plus.camera.getCamera();
 	c.captureImage(function(e) {
 		plus.io.resolveLocalFileSystemURL(e, function(entry) {
 			var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径                        
 			//setHtml(imgSrc);
 			var dstname = "_downloads/" + getUid() + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(imgSrc, dstname,picType,appSessionIdInfo);
+			newUrlAfterCompress = compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId);
 			appendFile(dstname, imgSrc);
 		}, function(e) {
 			console.log("读取拍照文件错误：" + e.message);
@@ -51,13 +51,13 @@ function getImage(picType,appSessionIdInfo) {
 	})
 }
 // 从相册中选择图片 
-function galleryImg(checkPicNum,picType,appSessionIdInfo) {
+function galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId) {
 	plus.gallery.pick(function(e) {
 		for (var i in e.files) {
 			var fileSrc = e.files[i];
 			//setHtml(fileSrc);
 			var dstname = "_downloads/" + getUid() + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(e.files[i], dstname,picType,appSessionIdInfo);
+			newUrlAfterCompress = compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId);
 			appendFile(dstname, fileSrc);
 		}
 	}, function(e) {
@@ -81,7 +81,7 @@ function setHtml(e) {
 	$("#imgInfo").attr("src",encodeURI(e));
 }
 //压缩图片，无return 
-function compressImage(src, dstname,picType,appSessionIdInfo) {
+function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId) {
 	plus.zip.compressImage({
 			src: src,
 			dst: dstname,
@@ -90,7 +90,7 @@ function compressImage(src, dstname,picType,appSessionIdInfo) {
 		},
 		function(event) {
 			console.log("压缩一张照片成功:"+event.target); 
-			upload(picType,appSessionIdInfo);
+			upload(picType,appSessionIdInfo,taskId,menuId);
 			//return event.target;
 		},
 		function(error) {
@@ -113,13 +113,13 @@ function appendFile(p, fileSrc) {
 	index++;			
 }
 //上传文件
-function upload(picType,appSessionIdInfo) {
+function upload(picType,appSessionIdInfo,taskId,menuId) {
 	mui.showLoading("上传中,请稍后...","div");
 	var url = "";
 	if(picType == 9){
 		url = path1 + "/uploadPic/uploadImageForHead?appSessionIdInfo="+appSessionIdInfo;
 	}else{
-		url = path1 + "/uploadPic/uploadPicForApp?appSessionIdInfo="+appSessionIdInfo;
+		url = path1 + "/uploadPic/uploadImageForMyApp?appSessionIdInfo="+appSessionIdInfo;
 	}
 	console.log("上传照片=="+url);
 	var task = plus.uploader.createUpload(url, {
@@ -135,9 +135,6 @@ function upload(picType,appSessionIdInfo) {
 				var rCode = JSON.parse(eval(t).responseText).code;
 				var rPicName = JSON.parse(eval(t).responseText).picName;
 				var rMsg = JSON.parse(eval(t).responseText).msg;
-				/* console.log(rCode);
-				console.log(rPicName);
-				console.log(rMsg); */
 				if(picType == '9'){
 					if(rCode=='0'){
 						mui.alert(rMsg);
@@ -146,7 +143,11 @@ function upload(picType,appSessionIdInfo) {
 						mui.alert(rMsg);
 					}
 				}else{
-					console.log("危险啊");
+					if(rCode=='0'){
+						mui.alert(rMsg);
+					}else{
+						mui.alert(rMsg);
+					}
 				}
 				
 			} else {
@@ -162,10 +163,14 @@ function upload(picType,appSessionIdInfo) {
 			key: f.name
 		});
 	}
+	console.log("picType="+picType);
 	if(picType != 9){// 9代表是头像照片  反之代表的是各个检修类型的照片
-		task.addData("pictureType", picType);
-		task.addData("taskId", picType);
-		task.addData("menuId", picType);
+		//大坑之处，传的参数值不能是数字0，数字0的话后台取不到 必须大于1的数字
+		// 要传0的话 必须转字符串0
+		task.addData("pictureType", picType.toString());
+		task.addData("taskId", taskId);
+		//menuId 针对年检
+		//task.addData("menuId", menuId);
 	}
 	task.start();
 }

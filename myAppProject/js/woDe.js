@@ -139,7 +139,7 @@ function clearStart(msg){
 	})
 }
 
-//退出登录
+//上传头像
 document.getElementById("imgInfo").addEventListener('tap',function() {
 	var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
 	choosePhoto(this,1,9,appSessionIdInfo);

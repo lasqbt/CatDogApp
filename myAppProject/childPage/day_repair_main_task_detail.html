@@ -179,6 +179,9 @@
 				var self = plus.webview.currentWebview();
 				var taskId = self.taskId;
 				console.log("编辑的任务ID=="+taskId);
+				//备注信息
+				var remarkInfoCache = "";
+				// 缓存数据
 				var cacheData;
 				//初始加载预加载数据
 				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
@@ -222,6 +225,7 @@
 								
 								//默认显示第一个检修项目
 								$("#"+projectIdArr[0]).addClass("bottomSpan");
+								menuId = projectIdArr[0];
 							}
 							
 						}else{
@@ -251,12 +255,13 @@
 						if(e.index==1){
 							var text = document.querySelector('.mui-popup-input textarea').value.trim();
 							console.log(text);
+							remarkInfoCache = text;
 						}else{
 							console.log('取消');
 						}
 					},'div');
 					var lihh = document.querySelector('.mui-popup-input');
-					lihh.innerHTML="<textarea placeholder='100个字符以内...' maxlength='100' cols='20' rows='5' style='height: 130px;border-radius: 10px;margin-top: 15px;font-size: 0.8rem;'></textarea>";
+					lihh.innerHTML="<textarea placeholder='100个字符以内...' maxlength='100' cols='20' rows='5' style='height: 130px;border-radius: 10px;margin-top: 15px;font-size: 0.8rem;'>"+remarkInfoCache+"</textarea>";
 				})
 				
 				//上传照片
@@ -295,6 +300,29 @@
 					$("#uploadPic").css("background-color","transparent");
 					console.log(4);
 				})
+				
+				//上传照片
+				document.getElementById("uploadPic").addEventListener('tap',function() {
+					var id = generateUUID()+"-dayRepairUploadingImg";
+					mui.openWindow({
+						url: '../childPage/day-repair-uploading-img.html',
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						},
+						extras:{
+							obj:this,
+							taskId:taskId
+						},
+						createNew:false
+					});
+				});
 				
 				$('#repairProject').on('tap', '.tdCss', function(event) {
 					var clickId = this.id;
