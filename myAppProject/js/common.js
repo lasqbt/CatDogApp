@@ -85,7 +85,9 @@ function setHtml(e,imgId) {
 		" class=\"file_img\" style=\"width:96px;height:96px\"><img  src=\"../../images/remove.png\" class=\"a-remove\"></div>";
 	$("#imgDiv").prepend(divHtml); */
 	var html = '<li class="mui-table-view-cell liCss" style="height: 178px;" id="'+imgId+'">';
-	html = html + '<table style="width: 115%;height: 100%;">';
+	html = html + '<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>';
+	html = html + '<div class="mui-slider-handle" style="background:none;width:380px">';
+	html = html + '<table style="width: 100%;height: 100%;">';
 	html = html + '<tr style="height: 100px;">';
 	html = html + '<td style="width: 45%;" rowspan="2">';
 	html = html + '<img data-preview-src="" data-preview-group="1" src="'+encodeURI(e)+'" id="imgInfo" class="imgCss"/>';
@@ -110,6 +112,7 @@ function setHtml(e,imgId) {
 	html = html + '<div style="width: 100px;height: 50px;margin: 0 auto;margin-top: 12%;">';
 	html = html + '<div class="mui-spinner" id="'+imgId+'loading" style="margin-top: 15%;font-size: 1rem;float: left;line-height: 50px;"></div>';
 	html = html + '<div style="float: right;line-height: 50px;color: yellow;" id="'+imgId+'loadingInfo">上传中...</div>';
+	html = html + '</div>';
 	html = html + '</div>';
 	html = html + '</div>';
 	html = html + '</li>';
@@ -183,8 +186,9 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 						$("#"+imgId+"picId").value(picIdInfo);
 						mui.toast(rMsg);
 					}else{
-						$("#"+imgId+"loadingInfo").text(rMsg);
-						$("#"+imgId+"loading").removeClass("mui-spinner");
+						$("#"+imgId+"Div").empty();
+						var h ='<div style="color: yellow;line-height: 158px;height: 30px;width: 100%;text-align: center;">上传失败，一个检修任务最多上传10张照片</div>';
+						$("#"+imgId+"Div").append(h);
 						mui.toast(rMsg);
 					}
 				}

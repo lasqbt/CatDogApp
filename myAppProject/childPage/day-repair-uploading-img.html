@@ -88,7 +88,7 @@
 			}
 			
 			.loadingDiv{
-				width: 115%;
+				width: 100%;
 				height: 100%;
 				z-index: 100000;
 				position: absolute;
@@ -132,31 +132,35 @@
 					<div class="">
 						<ul id="imgList" class="mui-table-view mui-table-view-chevron"  style="height: 94%; background:none;border-bottom: none;">
 							<!-- <li class="mui-table-view-cell liCss" style="height: 178px;">
-								<table style="width: 115%;height: 100%;">
-									<tr style="height: 100px;">
-										<td style="width: 45%;" rowspan="2">
-											<img data-preview-src="" data-preview-group="1" src="../images/defaultImage.png" id="imgInfo" class="imgCss"/>
-										</td>
-										<td style="width: 55%;text-align: right;">
-											<textarea placeholder="请输入照片描述,100个字符以内..." class="textareaCss"></textarea>
-										</td>
-									</tr>
-									<tr style="height: 50px;">
-										<td>
-											<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss" style="margin-left: 5%;">
-												保存描述
-											</button>
-											<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss" style="margin-left: 5%;float: right;color: red;">
-												删除照片
-											</button>
-											<input type="hidden" id="" value="" />
-										</td>
-									</tr>
-								</table>
-								<div class="loadingDiv">
-									<div style="width: 100px;height: 50px;margin: 0 auto;margin-top: 12%;">
-										<div class="mui-spinner" style="margin-top: 15%;font-size: 1rem;float: left;line-height: 50px;"></div>
-										<div style="float: right;line-height: 50px;color: yellow;">上传中...</div>
+							<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div>
+								<div class="mui-slider-handle" style="background:none;width:380px">
+									<table style="width: 100%;height: 100%;">
+										<tr style="height: 100px;">
+											<td style="width: 45%;" rowspan="2">
+												<img data-preview-src="" data-preview-group="1" src="../images/defaultImage.png" id="imgInfo" class="imgCss"/>
+											</td>
+											<td style="width: 55%;text-align: right;">
+												<textarea placeholder="请输入照片描述,100个字符以内..." class="textareaCss"></textarea>
+											</td>
+										</tr>
+										<tr style="height: 50px;">
+											<td>
+												<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss" style="margin-left: 5%;">
+													保存描述
+												</button>
+												<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss" style="margin-left: 5%;float: right;color: red;">
+													删除照片
+												</button>
+												<input type="hidden" id="" value="" />
+											</td>
+										</tr>
+									</table>
+									<div class="loadingDiv">
+										<div style="width: 100px;height: 50px;margin: 0 auto;margin-top: 12%;">
+											<div class="mui-spinner" style="margin-top: 15%;font-size: 1rem;float: left;line-height: 50px;"></div>
+											<div style="float: right;line-height: 50px;color: yellow;">上传中...</div>
+										</div>
+										<div style="color: yellow;line-height: 158px;height: 30px;width: 100%;text-align: center;">上传失败，一个检修任务最多上传10张照片</div>
 									</div>
 								</div>
 							</li> -->
@@ -211,11 +215,35 @@
 					console.log("保存=="+elem.parentNode.parentNode.parentNode.parentNode.parentNode.id);
 				})
 				
-				//保存描述
+				//按钮删除照片
 				$('#imgList').on('tap', '.deletPicCss', function(event) {
 					var elem = this;
-					console.log("删除=="+elem.parentNode.parentNode.parentNode.parentNode.parentNode.id);
+					var li = elem.parentNode.parentNode.parentNode.parentNode.parentNode;
+					console.log("删除=="+li.id);
+					deletePic(li);
 				})
+				
+				$('#imgList').on('tap', '.mui-btn-red', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					console.log("左滑删除=="+li.id);
+					deletePic(li);
+				});
+				
+				var btnArray = ['确认', '取消'];
+				function deletePic(li){
+					mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
+						if (e.index == 0) {
+							console.log("点击了删除");
+							li.parentNode.removeChild(li);
+						}else{
+							console.log("点击了不删除");
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					})
+				}
 			});
 		})(mui);
 	</script>
