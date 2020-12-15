@@ -36,10 +36,13 @@ function getImage(picType,appSessionIdInfo,taskId,menuId) {
 	var c = plus.camera.getCamera();
 	c.captureImage(function(e) {
 		plus.io.resolveLocalFileSystemURL(e, function(entry) {
-			var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径                        
-			//setHtml(imgSrc);
-			var dstname = "_downloads/" + getUid() + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId);
+			var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径  
+			var imgId = getUid();
+			if(picType!=9){//非上传头像
+				setHtml(imgSrc,imgId);
+			}
+			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
+			newUrlAfterCompress = compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
 			appendFile(dstname, imgSrc);
 		}, function(e) {
 			console.log("读取拍照文件错误：" + e.message);
@@ -55,9 +58,12 @@ function galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId) {
 	plus.gallery.pick(function(e) {
 		for (var i in e.files) {
 			var fileSrc = e.files[i];
-			//setHtml(fileSrc);
-			var dstname = "_downloads/" + getUid() + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId);
+			var imgId = getUid();
+			if(picType!=9){//非上传头像
+				setHtml(fileSrc,imgId);
+			}
+			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
+			newUrlAfterCompress = compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
 			appendFile(dstname, fileSrc);
 		}
 	}, function(e) {
@@ -74,14 +80,43 @@ function galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId) {
 	});
 }
 
-function setHtml(e) {
+function setHtml(e,imgId) {
 	/* var divHtml = "<div class=\"a-add\"><img src=" + encodeURI(e) +
 		" class=\"file_img\" style=\"width:96px;height:96px\"><img  src=\"../../images/remove.png\" class=\"a-remove\"></div>";
 	$("#imgDiv").prepend(divHtml); */
-	$("#imgInfo").attr("src",encodeURI(e));
+	var html = '<li class="mui-table-view-cell liCss" style="height: 178px;" id="'+imgId+'">';
+	html = html + '<table style="width: 115%;height: 100%;">';
+	html = html + '<tr style="height: 100px;">';
+	html = html + '<td style="width: 45%;" rowspan="2">';
+	html = html + '<img data-preview-src="" data-preview-group="1" src="'+encodeURI(e)+'" id="imgInfo" class="imgCss"/>';
+	html = html + '</td>';
+	html = html + '<td style="width: 55%;text-align: right;">';
+	html = html + '<textarea id="'+imgId+'description" placeholder="请输入照片描述,100个字符以内..." class="textareaCss"></textarea>';
+	html = html + '</td>';
+	html = html + '</tr>';
+	html = html + '<tr style="height: 50px;">';
+	html = html + '<td>';
+	html = html + '<button type="button" id="saveDescription" class="mui-btn mui-btn-primary detailBtnCss saveDescriptionCss" style="margin-left: 5%;">';
+	html = html + '保存描述';
+	html = html + '</button>';
+	html = html + '<button type="button" id="deletPic" class="mui-btn mui-btn-primary detailBtnCss deletPicCss" style="margin-left: 5%;float: right;color: red;">';
+	html = html + '删除照片';
+	html = html + '</button>';
+	html = html + '<input type="hidden" id="'+imgId+'picId" value="" />';
+	html = html + '</td>';
+	html = html + '</tr>';
+	html = html + '</table>';
+	html = html + '<div class="loadingDiv" id="'+imgId+'Div">';
+	html = html + '<div style="width: 100px;height: 50px;margin: 0 auto;margin-top: 12%;">';
+	html = html + '<div class="mui-spinner" id="'+imgId+'loading" style="margin-top: 15%;font-size: 1rem;float: left;line-height: 50px;"></div>';
+	html = html + '<div style="float: right;line-height: 50px;color: yellow;" id="'+imgId+'loadingInfo">上传中...</div>';
+	html = html + '</div>';
+	html = html + '</div>';
+	html = html + '</li>';
+	$("#imgList").append(html);
 }
 //压缩图片，无return 
-function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId) {
+function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId) {
 	plus.zip.compressImage({
 			src: src,
 			dst: dstname,
@@ -90,7 +125,7 @@ function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId) {
 		},
 		function(event) {
 			console.log("压缩一张照片成功:"+event.target); 
-			upload(picType,appSessionIdInfo,taskId,menuId);
+			upload(picType,appSessionIdInfo,taskId,menuId,imgId);
 			//return event.target;
 		},
 		function(error) {
@@ -105,16 +140,18 @@ function getUid() {
 }
 						
 function appendFile(p, fileSrc) {
+	console.log("name=="+"img" + index);
+	console.log("path=="+p);
 	files.push({
 		name: "img" + index, //这个值服务器会用到，作为file的key 					
 		path: p,					
-		fileSrc: fileSrc				,
+		fileSrc: fileSrc
 	});				
 	index++;			
 }
 //上传文件
-function upload(picType,appSessionIdInfo,taskId,menuId) {
-	mui.showLoading("上传中,请稍后...","div");
+function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
+	//mui.showLoading("上传中,请稍后...","div");
 	var url = "";
 	if(picType == 9){
 		url = path1 + "/uploadPic/uploadImageForHead?appSessionIdInfo="+appSessionIdInfo;
@@ -126,33 +163,34 @@ function upload(picType,appSessionIdInfo,taskId,menuId) {
 			method: "POST"
 		},
 		function(t, status) {
-			mui.hideLoading();
+			//mui.hideLoading();
 			if (status == 200) {
-				//$("#imgDiv").find(".a-add").remove();
 				console.log("上传成功，状态码=="+status+",t=="+JSON.stringify(t));
-				files = [];
-				index = 1;
 				var rCode = JSON.parse(eval(t).responseText).code;
 				var rPicName = JSON.parse(eval(t).responseText).picName;
 				var rMsg = JSON.parse(eval(t).responseText).msg;
-				if(picType == '9'){
+				var picIdInfo = JSON.parse(eval(t).responseText).picId;
+				if(picType == '9'){//上传头像一张
 					if(rCode=='0'){
 						mui.alert(rMsg);
 						$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+rPicName+"&appSessionIdInfo="+appSessionIdInfo);
 					}else{
 						mui.alert(rMsg);
 					}
-				}else{
+				}else{//上传多张检修照片
 					if(rCode=='0'){
-						mui.alert(rMsg);
+						$("#"+imgId+"Div").css("display","none");
+						$("#"+imgId+"picId").value(picIdInfo);
+						mui.toast(rMsg);
 					}else{
-						mui.alert(rMsg);
+						$("#"+imgId+"loadingInfo").text(rMsg);
+						$("#"+imgId+"loading").removeClass("mui-spinner");
+						mui.toast(rMsg);
 					}
 				}
 				
 			} else {
 				console.log("请求失败，状态码=="+status);
-				files = [];
 			}
 		}
 	);
@@ -160,10 +198,10 @@ function upload(picType,appSessionIdInfo,taskId,menuId) {
 	for (var i = 0; i < files.length; i++) {
 		var f = files[i];
 		task.addFile(f.path, {
-			key: f.name
+			key: "imgFile"+i
 		});
 	}
-	console.log("picType="+picType);
+	
 	if(picType != 9){// 9代表是头像照片  反之代表的是各个检修类型的照片
 		//大坑之处，传的参数值不能是数字0，数字0的话后台取不到 必须大于1的数字
 		// 要传0的话 必须转字符串0
@@ -256,59 +294,3 @@ function removeCookie(key){
     setCookie(key,"",-1); // 把cookie设置为过期
 }
 
-
-//选择弹出选项
-function funshow() {
-	var param = mui("#supplier")[0].value == null ? "" : mui("#supplier")[0].value;
-	var urlType = 'InitData/GetSupplier';
-	var params = new Array("supplier", "supplierId");
-	//下拉控件
-	app.selections(urlType, param, params);
-
-}
-//urlType 后台请求路径 param用户输入参数模糊查询 params 下拉列表显示ID和Name 得元素得ID
-/* {
-    "code": 200,
-    "data": [
-        {
-            "text": "半成品库",
-            "value": 185
-        }
-    ],
-    "Info": "响应成功"
-} */
-app.selections = function(urlType, param, params) {
-	mui.ajax({
-		url: app.serverUrl+urlType,
-		dataType: 'json', //服务器返回json格式数据
-		timeout: 8000,
-		data: {
-			name: param
-		},
-		beforeSend: function() {
-			plus.nativeUI.showWaiting('查询中...', {
-				back: "none"
-			});
-		},
-		complete: function() {
-			plus.nativeUI.closeWaiting();
-		},
-		success: function(data) {
-			if(data.code==200){
-				if(data.data.length>0){
-					var picker = new mui.PopPicker();
-					picker.setData(data.data);
-					picker.show(function(selectItems) {
-						mui("#" + params[0])[0].value = selectItems[0].text;
-						mui("#" + params[1])[0].value = selectItems[0].value;
-					});
-				}else{
-					mui.toast("提示: 没有查询到数据~");
-				}
-			}							
-		},
-		error: function(xhr, type, errorThrown) {
-			//app.ajaxStatus(xhr, type, errorThrown);
-		}
-	});
-};
