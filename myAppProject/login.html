@@ -11,13 +11,22 @@
 	<link type="text/css" rel="stylesheet" href="../css/app.css" />
 	<script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
-	
+	<style>
+		.changeLogin{
+			color: #008DF3;
+			font-size: 0.9rem;
+			text-decoration: underline;
+		}
+		.changeLogin:active{
+			color: red;
+		}
+	</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
 		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
 			<div class="logo_box">
 				<h3 style="font-size: 1.5rem;">乌鲁木齐检修管理平台</h3>
-				<div style="margin-left: 5%;margin-top: 30px;">
+				<div style="margin-left: 5%;margin-top: 30px;display: block;" id="accountLogin">
 					<div class="input_outer" id="accountDiv">
 						<span class="u_user"></span>
 						<input name="loginAccount" id="loginAccount" onfocus="$('#accountDiv').addClass('shineCss')" onblur="$('#accountDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px;" type="text" maxlength="15" placeholder="请输入账号">
@@ -33,6 +42,14 @@
 					</div>
 					<div class="mb2"><a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">登录</a></div>
 				</div>
+				
+				<div style="background-color: transparent;margin-left: 13%;display: none;" id="shouShiLogin">
+					<div id='holder' style="background-color: transparent;border: none;" class="mui-locker" data-locker-options='{"ringColor":"blue","fillColor":"rgba(50,205,50,1)","pointColor":"red","lineColor":"yellow"}' data-locker-width='300' data-locker-height='300'></div>
+					<div id='alert'></div>
+				</div>
+				<div style="width: 90%;height: 30px;margin-left: 5%;text-align: center;">
+					<a id="loginType" class="changeLogin">切换登录方式</a>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -41,6 +58,7 @@
 	<script type="text/javascript" src="js/mui.enterfocus.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/mui.locker.js"></script>
 	<script type="text/javascript"> 
 		// 验证码的生成和提交验证
         var show_num = [];
@@ -52,7 +70,6 @@
             var val = $("#codeInfo").val().toLowerCase();
             var password = $("#password").val();
             var loginAccount = $("#loginAccount").val();
-			var appSessionIdInfo = generateUUID()+"sid";
             var num = show_num.join("");
             if(loginAccount==''){
 				mui.alert('请输入用户账号');
@@ -61,57 +78,71 @@
             }else if(val==''){
                 mui.alert('请输入六位验证码');
             }else if(val == num){
-				mui.showLoading("登录中,请稍后...","div"); 
-				var url = path2+'/loginValidate';
-				console.log("登录=="+url);
-				mui.ajax(url,{
-				    data:{userid:loginAccount,password: password,appSessionIdInfo:appSessionIdInfo},
-					async:true,
-					dataType:'json',   
-					type:'post',
-					success:function(data){
-						mui.hideLoading();
-						var code = data.code;
-						console.log(JSON.stringify(data));
-						if(code=='0'){
-							//放入共享池
-							localStorage.setItem("userInfo",JSON.stringify(data.userInfo));
-							localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
-							localStorage.setItem("headPic",data.headPic);
-							var id = generateUUID()+"-checkPage";
-							mui.openWindow({
-								url: 'checkPage.html',
-								id: id,
-								show: {
-									aniShow: 'pop-in'
-								},
-								styles: {
-									popGesture: 'hide'
-								},
-								waiting: {
-									autoShow: false
-								},
-								createNew:false
-							}); 
-						}else{
-							mui.alert(data.msg);
-						} 
-					},
-					error:function(xhr,type,errorThrown){
-						mui.hideLoading();
-						if(type=='timeout'){
-							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
-						}else{
-							mui.alert('请求失败');
-						}
-					}
-				}); 
+				loginMethod(loginAccount,password,"account");
             }else{
 				mui.alert('验证码错误！请重新输入！');
                 $(".input-val").val('');
                 draw(show_num);
             }
         }
+		window.loginMethod = function(loginAccount,password,flag){
+			var appSessionIdInfo = generateUUID()+"sid";
+			mui.showLoading("登录中,请稍后...","div"); 
+			var url = "";
+			if(flag=="hand"){
+				url = path2+'/loginValidateForMyApp';
+			}else{
+				url = path2+'/loginValidate';
+			}
+			console.log("登录=="+url);
+			mui.ajax(url,{
+			    data:{userid:loginAccount,password: password,appSessionIdInfo:appSessionIdInfo},
+				async:true,
+				dataType:'json',   
+				type:'post',
+				success:function(data){
+					mui.hideLoading();
+					var code = data.code;
+					console.log(JSON.stringify(data));
+					if(code=='0'){
+						//放入共享池
+						localStorage.setItem("userInfo",JSON.stringify(data.userInfo));
+						localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
+						localStorage.setItem("headPic",data.headPic);
+						localStorage.setItem("djdUserid",loginAccount);
+						if(flag=="account"){
+							localStorage.setItem("djdPassword",password);
+						}
+						localStorage.setItem("djdUserObjId",data.userInfo.id);
+						var id = generateUUID()+"-checkPage";
+						mui.openWindow({
+							url: 'checkPage.html',
+							id: id,
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							},
+							createNew:false
+						}); 
+					}else{
+						mui.alert(data.msg);
+					} 
+				},
+				error:function(xhr,type,errorThrown){
+					mui.hideLoading();
+					if(type=='timeout'){
+						mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+					}else{
+						mui.alert('请求失败');
+					}
+				}
+			}); 
+		}
 	    function draw(show_num) {
 	        var canvas_width=$('#canvas').width();
 	        var canvas_height=$('#canvas').height();
@@ -225,6 +256,112 @@
 					}, 1000);
 					return false;
 				};
+				
+				document.getElementById("loginType").addEventListener("tap",function () {
+					if (mui.os.plus) {
+						var buttonTit = [{
+							title: "账号登录"
+						}, {
+							title: "手势登录"
+						}, {
+							title: "指纹登录"
+						}];
+				
+						plus.nativeUI.actionSheet({
+							title: "选择登录方式", 
+							cancel: "取消",
+							buttons: buttonTit
+						}, function(b) { /*actionSheet 按钮点击事件*/
+							switch (b.index) {
+								case 0:
+									break;
+								case 1:
+									document.getElementById("accountLogin").style.display="block";
+									document.getElementById("shouShiLogin").style.display="none";
+									break;
+								case 2:
+									document.getElementById("accountLogin").style.display="none";
+									document.getElementById("shouShiLogin").style.display="block";
+									break;
+								case 3:
+									plusReady();
+									break;
+								default:
+									break;
+							}
+						})
+					}
+				})
+				
+				//手势
+				var holder = doc.querySelector('#holder'),
+					alert = doc.querySelector('#alert'),
+					record = [];
+				//处理事件
+				holder.addEventListener('done', function(event) {
+					var rs = event.detail;
+					record.push(rs.points.join(''));
+					console.log("手势密码是=="+record[0]);
+					var loginAccount = localStorage.getItem("djdUserid");
+					loginMethod(loginAccount,record[0],'hand');
+					rs.sender.clear();
+					record = [];
+				});
+				
+				// 检查是否支持指纹识别
+				function plusReady() {
+					if (plus.fingerprint) {
+						if (!plus.fingerprint.isSupport()) {
+							mui.toast('此设备不支持指纹识别');
+							return;
+						}
+						if (!plus.fingerprint.isKeyguardSecure()) {
+							mui.toast('此设备未设置密码锁屏，无法使用指纹识别');
+							return;
+						}
+						if (!plus.fingerprint.isEnrolledFingerprints()) {
+							mui.toast('此设备未录入指纹，请到设置中开启');
+							return;
+						}
+						console.log('此设备支持指纹识别');
+						fingerpring();
+					} else {
+						mui.toast('当前环境不支持指纹识别API，请更新到最新版本');
+					}
+				}
+				
+				// 指纹识别认证
+				function fingerpring() {
+					var waiting = null;
+					plus.fingerprint.authenticate(
+						function() {
+							plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+							console.log('指纹识别成功');
+							var loginAccount = localStorage.getItem("djdUserid");
+							var password = localStorage.getItem("djdPassword");
+							loginMethod(loginAccount,password,"zhiWen");
+						},
+						function(e) {
+							switch (e.code) {
+								case e.AUTHENTICATE_MISMATCH:
+									plus.nativeUI.toast('指纹匹配失败，请重新输入');
+									break;
+								case e.AUTHENTICATE_OVERLIMIT:
+									plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+									plus.nativeUI.alert('指纹识别失败次数超出限制，请使用其它方式进行认证');
+									break;
+								default:
+									plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+									plus.nativeUI.alert('指纹识别失败(' + e.code + ')，请重试');
+									break;
+							}
+						}
+					);
+					// Android平台弹出等待提示框
+					if ('Android' == plus.os.name) {
+						plus.nativeUI.showWaiting('指纹识别中...');
+					}
+				}
 			});
 		}(mui, document));
 	</script>

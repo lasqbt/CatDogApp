@@ -108,6 +108,38 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 				console.log("点击了不")
 			}
 		  });
+	  }else if(clickId == 'shouShi'){
+		  var id = generateUUID()+"-handLocker";
+		  mui.openWindow({
+		  	url: '../childPage/hand-locker.html',
+		  	id: id,
+		  	show: {
+		  		aniShow: 'pop-in'
+		  	},
+		  	styles: {
+		  		popGesture: 'hide'
+		  	},
+		  	waiting: {
+		  		autoShow: false
+		  	},
+		  	createNew:false
+		  });
+	  }else if(clickId == 'zhiWen'){
+		  var id = generateUUID()+"-zhiWen";
+		  mui.openWindow({
+		  	url: '../childPage/zhiWen.html',
+		  	id: id,
+		  	show: {
+		  		aniShow: 'pop-in'
+		  	},
+		  	styles: {
+		  		popGesture: 'hide'
+		  	},
+		  	waiting: {
+		  		autoShow: false
+		  	},
+		  	createNew:false
+		  });
 	  }
 })
 
