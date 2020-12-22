@@ -303,7 +303,11 @@
 					record.push(rs.points.join(''));
 					console.log("手势密码是=="+record[0]);
 					var loginAccount = localStorage.getItem("djdUserid");
-					loginMethod(loginAccount,record[0],'hand');
+					if(loginAccount == '' || loginAccount == null){
+						mui.alert("用户账号为空，请先用账号密码登录后，在使用手势或者指纹进行登录！");
+					}else{
+						loginMethod(loginAccount,record[0],'hand');
+					}
 					rs.sender.clear();
 					record = [];
 				});

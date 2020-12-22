@@ -65,7 +65,7 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  	}
 		  })
 	  }else if(clickId == 'clearCooKie'){
-		  var msg = '缓存数据大小:'+r+'KB,清除缓存后你需要重新登录！确认开始清除吗？';
+		  var msg = '缓存数据大小:'+r+'KB,清除缓存后你需要重新用账号密码登录后方可正常使用手势或者指纹登录！确认开始清除吗？';
 		  clearStart(msg);
 	  }else if(clickId == 'versionInfo'){
 		  var oldVersion = parseFloat(version);
