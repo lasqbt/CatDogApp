@@ -310,23 +310,28 @@
 				
 				// 检查是否支持指纹识别
 				function plusReady() {
-					if (plus.fingerprint) {
-						if (!plus.fingerprint.isSupport()) {
-							mui.toast('此设备不支持指纹识别');
-							return;
+					var isOpen = localStorage.getItem("zhiWenIsOpen");
+					if(isOpen != '1'){
+						mui.alert('尚未开启指纹登录,请在"我的-指纹设置"里面进行设置!');
+					}else{
+						if (plus.fingerprint) {
+							if (!plus.fingerprint.isSupport()) {
+								mui.toast('此设备不支持指纹识别');
+								return;
+							}
+							if (!plus.fingerprint.isKeyguardSecure()) {
+								mui.toast('此设备未设置密码锁屏，无法使用指纹识别');
+								return;
+							}
+							if (!plus.fingerprint.isEnrolledFingerprints()) {
+								mui.toast('此设备未录入指纹，请到设置中开启');
+								return;
+							}
+							console.log('此设备支持指纹识别');
+							fingerpring();
+						} else {
+							mui.toast('当前环境不支持指纹识别API，请更新到最新版本');
 						}
-						if (!plus.fingerprint.isKeyguardSecure()) {
-							mui.toast('此设备未设置密码锁屏，无法使用指纹识别');
-							return;
-						}
-						if (!plus.fingerprint.isEnrolledFingerprints()) {
-							mui.toast('此设备未录入指纹，请到设置中开启');
-							return;
-						}
-						console.log('此设备支持指纹识别');
-						fingerpring();
-					} else {
-						mui.toast('当前环境不支持指纹识别API，请更新到最新版本');
 					}
 				}
 				

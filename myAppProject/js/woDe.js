@@ -125,9 +125,9 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  	createNew:false
 		  });
 	  }else if(clickId == 'zhiWen'){
-		  var id = generateUUID()+"-zhiWen";
+		  var id = generateUUID()+"-zhiWenSwitches";
 		  mui.openWindow({
-		  	url: '../childPage/zhiWen.html',
+		  	url: '../childPage/zhiWen_switches.html',
 		  	id: id,
 		  	show: {
 		  		aniShow: 'pop-in'
