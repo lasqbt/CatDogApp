@@ -68,6 +68,7 @@
 		<script src="../js/mui.locker.js"></script>
 		<script src="../js/config.js"></script>
 		<script src="../js/showLoading.js"></script>
+		<script src="../js/common.js"></script>
 		<script>
 			(function($, doc) {
 				$.init();
@@ -146,7 +147,7 @@
 								success:function(data){
 									mui.hideLoading();
 									if(data.code=='0'){
-										var id = generateUUID()+"-login";
+										var id = generateUUID()+"-SetShouShiTologin";
 										mui.openWindow({
 											url: '/login.html',
 											id: id,
