@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>手势锁屏示例</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/showLoading.css">
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				background-color: #efeff4;
+			}
+			#holder {
+				width: 300px;
+				height: 300px;
+				border: solid 1px #bbb;
+				border-radius: 5px;
+				margin: 50px auto;
+				background-color: #fff;
+			}
+			#alert {
+				text-align: center;
+				padding: 20px 10px;
+			}
+			
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0; */
+			}
+		</style>
+	</head>
+
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">		
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">手势设置</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="mui-content" style="background-color: transparent;margin-top: 150px;">
+				<div id='holder' style="background-color: transparent;border: none;" class="mui-locker" data-locker-options='{"ringColor":"blue","fillColor":"rgba(50,205,50,1)","pointColor":"red","lineColor":"yellow"}' data-locker-width='300' data-locker-height='300'></div>
+				<div id='alert'></div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.locker.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/showLoading.js"></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				var holder = doc.querySelector('#holder'),
+					alert = doc.querySelector('#alert'),
+					record = [];
+				//处理事件
+				holder.addEventListener('done', function(event) {
+					var rs = event.detail;
+					if (rs.points.length < 4) {
+						mui.toast('设定的手势太简单了');
+						record = [];
+						rs.sender.clear();
+						return;
+					}
+					console.log(rs.points.join(''));
+					record.push(rs.points.join(''));
+					if (record.length >= 2) {
+						if (record[0] == record[1]) {
+							console.log("手势密码是=="+record[0]);
+							var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+							var djdUserObjId = localStorage.getItem("djdUserObjId");
+							mui.showLoading("设置中,请稍后...","div"); 
+							var url = path2+'/user/updateuserInfoForMyApp';
+							console.log("设置手势密码=="+url);
+							mui.ajax(url,{
+							    data:{id:djdUserObjId,remark2: record[0],appSessionIdInfo:appSessionIdInfo},
+								async:true,
+								dataType:'json',   
+								type:'post',
+								success:function(data){
+									mui.hideLoading();
+									var code = data.code;
+									console.log(JSON.stringify(data));
+									if(code=='0'){
+										logout();
+									}else{
+										mui.alert(data.msg);
+									} 
+								},
+								error:function(xhr,type,errorThrown){
+									mui.hideLoading();
+									if(type=='timeout'){
+										mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+									}else{
+										mui.alert('请求失败');
+									}
+								}
+							}); 
+						} else {
+							mui.toast('两次手势设定不一致');
+						}
+						rs.sender.clear();
+						record = [];
+					} else {
+						mui.toast('请确认手势设定');
+						rs.sender.clear();
+					}
+				});
+				
+				function logout(){
+					mui.alert('手势设定完成,退出重新登录!', '提示', ['确定'], function(e) {
+						if (e.index == 0) {
+							var url = path1+"/logoutForApp";
+							var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+							console.log("退出登录=="+url);
+							mui.showLoading("退出中,请稍后...","div"); 
+							mui.ajax(url,{
+								data:{
+										 appSessionIdInfo:appSessionIdInfo
+									},
+								async:true,
+								dataType:'json',   
+								type:'post',
+								timeout:5000,
+								success:function(data){
+									mui.hideLoading();
+									if(data.code=='0'){
+										var id = generateUUID()+"-login";
+										mui.openWindow({
+											url: '/login.html',
+											id: id,
+											show: {
+												aniShow: 'pop-in'
+											},
+											styles: {
+												popGesture: 'hide'
+											},
+											waiting: {
+												autoShow: false
+											},
+											createNew:false
+										});
+									}else{
+										mui.alert(data.msg);
+									}
+								},
+								error:function(xhr,type,errorThrown){
+									mui.hideLoading();
+									if(type=='timeout'){
+										mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+									}else{
+										mui.alert('请求失败');
+									}
+								}
+							}); 
+						}else{
+							console.log("点击了不退出")
+						}
+					});
+				}
+			}(mui, document));
+		</script>
+	</body>
+
+</html>
