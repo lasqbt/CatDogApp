@@ -1,9 +1,7 @@
 //上传图片 批量上传 start
-var files = [];		
-
+	
 // checkPicNum可上传照片张数，picType照片类型，appSessionIdInfo移动端的请求唯一标识
-function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId,newfiles){
-	files = newfiles;
+function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId){
 	if (mui.os.plus) {
 		var buttonTit = [{
 			title: "我要拍照美美哒"
@@ -36,14 +34,22 @@ function getImage(picType,appSessionIdInfo,taskId,menuId) {
 	var c = plus.camera.getCamera();
 	c.captureImage(function(e) {
 		plus.io.resolveLocalFileSystemURL(e, function(entry) {
-			var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径  
+			//拿到图片路径  
+			var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); 
+			//唯一标识
 			var imgId = getUid();
+			//数组
+			var newfiles = [];
+			//页面显示
 			if(picType!=9){//非上传头像
 				setHtml(imgSrc,imgId);
 			}
-			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
-			compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
-			appendFile(dstname, imgSrc);
+			//设置压缩后图片的路径
+			var dstname = "_downloads/" + imgId + ".jpg"; 
+			//把照片属性加入json数组 并返回json数组
+			var f = appendFile(dstname, imgSrc,newfiles);
+			//开始压缩
+			compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId,imgId,f);
 		}, function(e) {
 			console.log("读取拍照文件错误：" + e.message);
 		});
@@ -57,14 +63,22 @@ function getImage(picType,appSessionIdInfo,taskId,menuId) {
 function galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId) {
 	plus.gallery.pick(function(e) {
 		for (var i in e.files) {
+			//数组
+			var newfiles = [];
+			//取选择的照片对象
 			var fileSrc = e.files[i];
+			//唯一标识
 			var imgId = getUid();
+			//页面显示
 			if(picType!=9){//非上传头像
 				setHtml(fileSrc,imgId);
 			}
-			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
-			compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
-			appendFile(dstname, fileSrc,imgId);
+			//设置压缩后图片的路径 
+			var dstname = "_downloads/" + imgId + ".jpg"; 
+			//把照片属性加入json数组 并返回json数组
+			var f = appendFile(dstname, fileSrc,imgId,newfiles);
+			//开始压缩照片
+			compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId,imgId,f);
 		}
 	}, function(e) {
 		console.log("取消选择图片");
@@ -119,7 +133,7 @@ function setHtml(e,imgId) {
 	$("#imgList").append(html);
 }
 //压缩图片，无return 
-function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId) {
+function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId,f) {
 	plus.zip.compressImage({
 			src: src,
 			dst: dstname,
@@ -128,7 +142,8 @@ function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId
 		},
 		function(event) {
 			console.log("压缩一张照片成功:"+event.target); 
-			upload(picType,appSessionIdInfo,taskId,menuId,imgId);
+			//调用上传
+			upload(picType,appSessionIdInfo,taskId,menuId,imgId,f);
 			return event.target;
 		},
 		function(error) {
@@ -138,23 +153,24 @@ function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId
 }
 // 产生一个随机数 
 function getUid() {
-	//return Math.floor(Math.random() * 100000000 + 10000000).toString();
 	return generateUUID();
 }
 							
-function appendFile(p, fileSrc,imgId) {
+function appendFile(p, fileSrc,imgId,newfiles) {
 	console.log("path=="+p);
-	files.push({
+	newfiles.push({
 		name: imgId, //这个值服务器会用到，作为file的key 					
 		path: p,					
 		fileSrc: fileSrc
-	});					
+	});
+	return newfiles;
 }
 
 //上传文件
-function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
+function upload(picType,appSessionIdInfo,taskId,menuId,imgId,files) {
 	var url = "";
 	if(picType == 9){
+		mui.showLoading("上传中,请稍后...","div");
 		url = path1 + "/uploadPic/uploadImageForHead?appSessionIdInfo="+appSessionIdInfo;
 	}else{
 		url = path1 + "/uploadPic/uploadImageForMyApp?appSessionIdInfo="+appSessionIdInfo;
@@ -171,9 +187,8 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 				var rPicName = JSON.parse(eval(t).responseText).picName;
 				var rMsg = JSON.parse(eval(t).responseText).msg;
 				var picIdInfo = JSON.parse(eval(t).responseText).picId;
-				//var imgId = JSON.parse(eval(t).responseText).picName;
 				if(picType == '9'){//上传头像一张
-					files = [];
+					mui.hideLoading();
 					if(rCode=='0'){
 						mui.alert(rMsg);
 						$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+rPicName+"&appSessionIdInfo="+appSessionIdInfo);
@@ -187,7 +202,7 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 						mui.toast(rMsg);
 					}else{
 						$("#"+imgId+"Div").empty();
-						var h ='<div style="color: yellow;line-height: 158px;height: 30px;width: 100%;text-align: center;">上传失败，一个检修任务最多上传10张照片</div>';
+						var h ='<div style="color: yellow;line-height: 158px;height: 30px;width: 100%;text-align: center;">'+rMsg+'</div>';
 						$("#"+imgId+"Div").append(h);
 						mui.toast(rMsg);
 					}

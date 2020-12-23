@@ -204,12 +204,10 @@
 				},true);
 				//加载需要上传的照片list列表
 				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				var newfiles = [];
-				choosePhoto(o,10,0,appSessionIdInfo,taskId,null,newfiles);
+				choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
 				
 				document.getElementById("uploadImg").addEventListener('tap',function() {
-					var newfiles = [];
-					choosePhoto(o,10,0,appSessionIdInfo,taskId,null,newfiles);
+					choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
 				}) 
 				
 				//保存描述
