@@ -1,6 +1,5 @@
 //上传图片 批量上传 start
-var files = [];			
-var index = 1;			
+		
 var newUrlAfterCompress;
 // checkPicNum可上传照片张数，picType照片类型，appSessionIdInfo移动端的请求唯一标识
 function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId){
@@ -141,7 +140,8 @@ function getUid() {
 	//return Math.floor(Math.random() * 100000000 + 10000000).toString();
 	return generateUUID();
 }
-						
+var files = [];			
+var index = 1;							
 function appendFile(p, fileSrc) {
 	console.log("name=="+"img" + index);
 	console.log("path=="+p);
@@ -177,6 +177,8 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 					if(rCode=='0'){
 						mui.alert(rMsg);
 						$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+rPicName+"&appSessionIdInfo="+appSessionIdInfo);
+						files = [];	
+						index = 1;
 					}else{
 						mui.alert(rMsg);
 					}
