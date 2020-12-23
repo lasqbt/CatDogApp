@@ -127,12 +127,12 @@ function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId
 		},
 		function(event) {
 			console.log("压缩一张照片成功:"+event.target); 
-			upload(picType,appSessionIdInfo,taskId,menuId,imgId);
-			//return event.target;
+			//upload(picType,appSessionIdInfo,taskId,menuId,imgId);
+			return event.target;
 		},
 		function(error) {
 			console.log("压缩一张照片出错:"+event.target); 
-			//return src;
+			return src;
 		});
 }
 // 产生一个随机数 
@@ -153,7 +153,6 @@ function appendFile(p, fileSrc) {
 }
 //上传文件
 function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
-	//mui.showLoading("上传中,请稍后...","div");
 	var url = "";
 	if(picType == 9){
 		url = path1 + "/uploadPic/uploadImageForHead?appSessionIdInfo="+appSessionIdInfo;
@@ -165,7 +164,6 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 			method: "POST"
 		},
 		function(t, status) {
-			//mui.hideLoading();
 			if (status == 200) {
 				console.log("上传成功，状态码=="+status+",t=="+JSON.stringify(t));
 				var rCode = JSON.parse(eval(t).responseText).code;
@@ -193,7 +191,6 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 					}
 				}
 				
-
 			} else {
 				console.log("请求失败，状态码=="+status);
 			}
