@@ -141,16 +141,15 @@ function getUid() {
 	return generateUUID();
 }
 var files = [];			
-var index = 1;							
+						
 function appendFile(p, fileSrc) {
-	console.log("name=="+"img" + index);
 	console.log("path=="+p);
 	files.push({
-		name: "img" + index, //这个值服务器会用到，作为file的key 					
+		name: "name"+getUid(), //这个值服务器会用到，作为file的key 					
 		path: p,					
 		fileSrc: fileSrc
 	});				
-	index++;			
+			
 }
 //上传文件
 function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
@@ -174,18 +173,17 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 				var rMsg = JSON.parse(eval(t).responseText).msg;
 				var picIdInfo = JSON.parse(eval(t).responseText).picId;
 				if(picType == '9'){//上传头像一张
+					files = [];
 					if(rCode=='0'){
 						mui.alert(rMsg);
 						$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+rPicName+"&appSessionIdInfo="+appSessionIdInfo);
-						files = [];	
-						index = 1;
 					}else{
 						mui.alert(rMsg);
 					}
 				}else{//上传多张检修照片
 					if(rCode=='0'){
 						$("#"+imgId+"Div").css("display","none");
-						$("#"+imgId+"picId").value(picIdInfo);
+						$("#"+imgId+"picId").val(picIdInfo);
 						mui.toast(rMsg);
 					}else{
 						$("#"+imgId+"Div").empty();
@@ -195,6 +193,7 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 					}
 				}
 				
+
 			} else {
 				console.log("请求失败，状态码=="+status);
 			}
@@ -204,7 +203,7 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 	for (var i = 0; i < files.length; i++) {
 		var f = files[i];
 		task.addFile(f.path, {
-			key: "imgFile"+i
+			key: f.name
 		});
 	}
 	
