@@ -127,7 +127,8 @@
 						<span class="fontSpanCss">上传照片</span>
 					</div>
 					<div class="title"></div>
-				</header>					
+				</header>	
+				
 				<div id="refreshContainerForWoDe" class="mui-content mui-scroll-wrapper" style="height: 90%; background:none;border-bottom: none;margin-top: 40px;">
 					<div class="">
 						<ul id="imgList" class="mui-table-view mui-table-view-chevron"  style="height: 94%; background:none;border-bottom: none;">
@@ -203,10 +204,12 @@
 				},true);
 				//加载需要上传的照片list列表
 				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
+				var newfiles = [];
+				choosePhoto(o,10,0,appSessionIdInfo,taskId,null,newfiles);
 				
 				document.getElementById("uploadImg").addEventListener('tap',function() {
-					choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
+					var newfiles = [];
+					choosePhoto(o,10,0,appSessionIdInfo,taskId,null,newfiles);
 				}) 
 				
 				//保存描述

@@ -1,8 +1,9 @@
 //上传图片 批量上传 start
-		
-var newUrlAfterCompress;
+var files = [];		
+
 // checkPicNum可上传照片张数，picType照片类型，appSessionIdInfo移动端的请求唯一标识
-function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId){
+function choosePhoto(event,checkPicNum,picType,appSessionIdInfo,taskId,menuId,newfiles){
+	files = newfiles;
 	if (mui.os.plus) {
 		var buttonTit = [{
 			title: "我要拍照美美哒"
@@ -41,7 +42,7 @@ function getImage(picType,appSessionIdInfo,taskId,menuId) {
 				setHtml(imgSrc,imgId);
 			}
 			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
+			compressImage(imgSrc, dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
 			appendFile(dstname, imgSrc);
 		}, function(e) {
 			console.log("读取拍照文件错误：" + e.message);
@@ -62,8 +63,8 @@ function galleryImg(checkPicNum,picType,appSessionIdInfo,taskId,menuId) {
 				setHtml(fileSrc,imgId);
 			}
 			var dstname = "_downloads/" + imgId + ".jpg"; //设置压缩后图片的路径 
-			newUrlAfterCompress = compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
-			appendFile(dstname, fileSrc);
+			compressImage(e.files[i], dstname,picType,appSessionIdInfo,taskId,menuId,imgId);
+			appendFile(dstname, fileSrc,imgId);
 		}
 	}, function(e) {
 		console.log("取消选择图片");
@@ -127,7 +128,7 @@ function compressImage(src, dstname,picType,appSessionIdInfo,taskId,menuId,imgId
 		},
 		function(event) {
 			console.log("压缩一张照片成功:"+event.target); 
-			//upload(picType,appSessionIdInfo,taskId,menuId,imgId);
+			upload(picType,appSessionIdInfo,taskId,menuId,imgId);
 			return event.target;
 		},
 		function(error) {
@@ -140,17 +141,16 @@ function getUid() {
 	//return Math.floor(Math.random() * 100000000 + 10000000).toString();
 	return generateUUID();
 }
-var files = [];			
-						
-function appendFile(p, fileSrc) {
+							
+function appendFile(p, fileSrc,imgId) {
 	console.log("path=="+p);
 	files.push({
-		name: "name"+getUid(), //这个值服务器会用到，作为file的key 					
+		name: imgId, //这个值服务器会用到，作为file的key 					
 		path: p,					
 		fileSrc: fileSrc
-	});				
-			
+	});					
 }
+
 //上传文件
 function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 	var url = "";
@@ -161,7 +161,8 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 	}
 	console.log("上传照片=="+url);
 	var task = plus.uploader.createUpload(url, {
-			method: "POST"
+			method: "POST",
+			multiple: true
 		},
 		function(t, status) {
 			if (status == 200) {
@@ -170,6 +171,7 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 				var rPicName = JSON.parse(eval(t).responseText).picName;
 				var rMsg = JSON.parse(eval(t).responseText).msg;
 				var picIdInfo = JSON.parse(eval(t).responseText).picId;
+				//var imgId = JSON.parse(eval(t).responseText).picName;
 				if(picType == '9'){//上传头像一张
 					files = [];
 					if(rCode=='0'){
@@ -199,6 +201,7 @@ function upload(picType,appSessionIdInfo,taskId,menuId,imgId) {
 	//添加其他参数
 	for (var i = 0; i < files.length; i++) {
 		var f = files[i];
+		console.log(f.fileSrc)
 		task.addFile(f.path, {
 			key: f.name
 		});
