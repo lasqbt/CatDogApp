@@ -214,7 +214,7 @@
 										html = html + '<img data-preview-src="" data-preview-group="1" src="'+url2+'" id="imgInfo" class="imgCss"/>';
 										html = html + '</td>';
 										html = html + '<td style="width: 55%;text-align: right;">';
-										html = html + '<textarea class="textareaCss">'+mainListArr[v].pictureDescription+'</textarea>';
+										html = html + '<textarea class="textareaCss" readOnly="readOnly">'+mainListArr[v].pictureDescription+'</textarea>';
 										html = html + '</td>';
 										html = html + '</tr>';
 										html = html + '<tr style="height: 50px;">';
@@ -285,7 +285,7 @@
 										li.parentNode.removeChild(li);
 										imgCount --;
 										if(imgCount<=0){
-											$("#imgList").append("<div class='noImg'>尚未上传照片...</div>");
+											$("#imgList").append("<div class='noImg'><img src='../images/noData3.png' class='noImgCss'></div>");
 										}
 									}else{
 										mui.toast(data.msg);

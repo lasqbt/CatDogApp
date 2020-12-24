@@ -236,12 +236,42 @@
 					mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
 						if (e.index == 0) {
 							console.log("点击了删除");
-							li.parentNode.removeChild(li);
+							var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+							var url = path1+'/uploadPic/deletePicInfo?appSessionIdInfo='+appSessionIdInfo;
+							console.log("删除日检或者定检照片信息=="+url);
+							mui.showLoading("删除中,请稍后...","div");
+							mui.ajax(url,{
+								data:{id:li.id},
+								dataType:'json',   
+								type:'post',
+								success:function(data){
+									console.log("返回码是"+data.code);
+									mui.hideLoading();
+									if(data.code=='0'){
+										mui.toast(data.msg);
+										li.parentNode.removeChild(li);
+										imgCount --;
+										if(imgCount<=0){
+											$("#imgList").append("<div class='noImg'><img src='../images/noData3.png' class='noImgCss'></div>");
+										}
+									}else{
+										mui.toast(data.msg);
+									}
+								},
+								error:function(xhr,type,errorThrown){
+									mui.hideLoading();
+									if(type=='timeout'){
+										mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+									}else{
+										mui.alert('请求失败');
+									}
+								}
+							}); 
 						}else{
 							console.log("点击了不删除");
-							setTimeout(function() {
+							/* setTimeout(function() {
 								$.swipeoutClose(li);
-							}, 0);
+							}, 0); */
 						}
 					})
 				}
