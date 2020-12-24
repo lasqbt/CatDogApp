@@ -133,7 +133,6 @@
 			<div class="mainDiv" style="height:100%;width:100%;position:absolute;" id="myDiv">
 				<header style="width: 100%;height: 4%;z-index: 99999999;">
 					<span class="us_uer4" onclick="mui.back();"></span>
-					<span class="mui-icon mui-icon-trash" id="deleteAll" style="float: right;color: #929292;margin-right: 10px;"></span>
 					<div class="fontCss">
 						<span class="fontSpanCss">照片列表</span>
 					</div>
@@ -309,18 +308,6 @@
 						}
 					})
 				}
-				
-				document.getElementById("deleteAll").addEventListener('tap',function() {
-					mui.confirm('确认删除所有照片吗？', '提示', btnArray, function(e) {
-						if (e.index == 0) {
-							console.log("点击了删除");
-							
-						}else{
-							console.log("点击了不删除");
-							
-						}
-					})
-				})
 			});
 		})(mui);
 	</script>
