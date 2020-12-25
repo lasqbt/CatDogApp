@@ -79,6 +79,7 @@
 				box-shadow: 0px 0px 5px #929292 inset;
 				font-size: 0.8rem;
 				margin: 0 auto;
+				color: #929292;
 			}
 			
 			.imgCss{
@@ -213,7 +214,41 @@
 				//保存描述
 				$('#imgList').on('tap', '.saveDescriptionCss', function(event) {
 					var elem = this;
-					console.log("保存=="+elem.parentNode.parentNode.parentNode.parentNode.parentNode.id);
+					console.log("保存=="+elem.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id);
+					var liId = elem.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+					var picId = $("#"+liId+"picId").val();
+					var field = "modifyDescription";
+					var description = $("#"+liId+"description").val();
+					if(description == null || description.trim().length==0){
+						mui.toast("照片描述信息为空");
+						return;
+					}
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					var url = path1+'/uploadPic/updatePictureInfo?appSessionIdInfo='+appSessionIdInfo;
+					console.log("开始更新照片描述信息=="+url);
+					mui.showLoading("更新中,请稍后...","div");
+					mui.ajax(url,{
+						data:{
+							id:picId,
+							field:field,
+							newValue:description
+							},
+						dataType:'json',   
+						type:'post',
+						success:function(data){
+							console.log("返回码是"+data.code);
+							mui.hideLoading();
+							mui.toast(data.msg);
+						},
+						error:function(xhr,type,errorThrown){
+							mui.hideLoading();
+							if(type=='timeout'){
+								mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+							}else{
+								mui.alert('请求失败');
+							}
+						}
+					}); 
 				})
 				
 				//按钮删除照片
@@ -249,7 +284,7 @@
 								console.log("删除日检或者定检照片信息=="+url);
 								mui.showLoading("删除中,请稍后...","div");
 								mui.ajax(url,{
-									data:{id:li.id},
+									data:{id:picId},
 									dataType:'json',   
 									type:'post',
 									success:function(data){
