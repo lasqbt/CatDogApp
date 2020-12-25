@@ -7,6 +7,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="../css/mui.min.css">
 		<!--App自定义的css-->
@@ -71,8 +72,11 @@
 				</ul>
 			</div>
 		</div>
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/config.js"></script>
+		<script type="text/javascript" src="../js/showLoading.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
 		<script>
 			mui.init({
 				swipeBack:false //启用右滑关闭功能
@@ -115,12 +119,41 @@
 					//event.detail.isActive 可直接获取当前状态
 					//this.parentNode.querySelector('span').innerText = '指纹登录：' + (event.detail.isActive ? 'true' : 'false');
 					plusReady();
+					var zhiWenIsOpen;
 					if(event.detail.isActive){
 						//console.log(true);
-						localStorage.setItem("zhiWenIsOpen","1");
+						zhiWenIsOpen = "1";
+						console.log("启用指纹登录");
 					}else{
-						localStorage.setItem("zhiWenIsOpen","0");
+						zhiWenIsOpen = "0";
+						console.log("关闭指纹登录");
 					}
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					var djdUserObjId = localStorage.getItem("djdUserObjId");
+					mui.showLoading("设置中,请稍后...","div"); 
+					var url = path2+'/user/updateuserInfoForMyApp';
+					console.log("设置手势密码=="+url);
+					mui.ajax(url,{
+					    data:{id:djdUserObjId,remark1:zhiWenIsOpen,appSessionIdInfo:appSessionIdInfo},
+						async:true,
+						dataType:'json',   
+						type:'post',
+						success:function(data){
+							mui.hideLoading();
+							var code = data.code;
+							console.log(JSON.stringify(data));
+							mui.alert(data.msg);
+							localStorage.setItem("zhiWenIsOpen",zhiWenIsOpen);
+						},
+						error:function(xhr,type,errorThrown){
+							mui.hideLoading();
+							if(type=='timeout'){
+								mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+							}else{
+								mui.alert('请求失败');
+							}
+						}
+					}); 
 				});
 			});
 		</script>

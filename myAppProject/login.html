@@ -110,6 +110,8 @@
 						localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
 						localStorage.setItem("headPic",data.headPic);
 						localStorage.setItem("djdUserid",loginAccount);
+						//console.log("data.zhiWenIsOpen="+data.zhiWenIsOpen);
+						localStorage.setItem("zhiWenIsOpen",data.zhiWenIsOpen);
 						if(flag=="account"){
 							localStorage.setItem("djdPassword",password);
 						}
@@ -315,6 +317,7 @@
 				// 检查是否支持指纹识别
 				function plusReady() {
 					var isOpen = localStorage.getItem("zhiWenIsOpen");
+					console.log(isOpen);
 					if(isOpen != '1'){
 						mui.alert('尚未开启指纹登录,请在"我的-指纹设置"里面进行设置!');
 					}else{
