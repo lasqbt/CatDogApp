@@ -175,6 +175,12 @@
 		(function (mui) {
 			mui.init(); 
 			mui.plusReady(function(){
+				//全局变量
+				var needSignNum;
+				var readlNeedSignNum;
+				var userRoleInfo;
+				var repairProjectId;
+					  
 				var projectIdArr = new Array();
 				var self = plus.webview.currentWebview();
 				var taskId = self.taskId;
@@ -197,7 +203,7 @@
 						mui.hideLoading();
 						if(data.code=='0'){
 							mui.toast("数据加载成功");
-							//console.log(JSON.stringify(data));
+							console.log(JSON.stringify(data));
 							var mainListArr = data.mainList;
 							cacheData = mainListArr;
 							if(mainListArr!=null){
@@ -216,6 +222,7 @@
 										  dHtml = dHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectDetail+'</span><br>';
 										  sHtml = sHtml + '<span class="detailCss">'+(b+1)+'、'+detailListArr[b].repairProjectStandard+'</span><br>';
 										} 
+										$("#qianMingInfo").val(mainListArr[0].auditUserName);
 										flag = false;
 									}
 								}
@@ -225,7 +232,13 @@
 								
 								//默认显示第一个检修项目
 								$("#"+projectIdArr[0]).addClass("bottomSpan");
-								menuId = projectIdArr[0];
+								repairProjectId = projectIdArr[0];
+								
+								readlNeedSignNum = data.readlNeedSignNum;
+								needSignNum = data.needSignNum;
+								userRoleInfo = data.userRole;
+								remarkInfoCache = data.remarkInfo;
+								
 							}
 							
 						}else{
@@ -253,6 +266,10 @@
 				document.getElementById("remarkInfo").addEventListener('tap',function() {
 					var a = mui.prompt('请输入备注信息','','备注',['取消','保存'],function(e){
 						if(e.index==1){
+							if(userRoleInfo != '1'){
+								mui.toast("只有车长能操作");
+								return;
+							}
 							var text = document.querySelector('.mui-popup-input textarea').value.trim();
 							console.log(text);
 							remarkInfoCache = text;
@@ -298,8 +315,60 @@
 					$("#lookPic").css("background-color","transparent");
 					$("#uploadPic").css("background-color","transparent");
 					$("#submitAudit").css("background-color","transparent");
-					console.log(3);
+					
+					var qmInfo = $("#qianMingInfo").val();
+					// 是否领导审批 0否1是
+					var isLeaderAudit = "0";
+					// 0领导  1车长  2普工  3技术员
+					if(userRoleInfo == '0'){
+						isLeaderAudit = "1";
+					}
+					if(qmInfo.trim().length==0){
+						mui.toast("请输入签名信息");
+						return;
+					}
+					if(userRoleInfo == '1'){
+						saveQianMingInfo(repairProjectId,qmInfo,isLeaderAudit,"1");
+					}else{
+						mui.toast("只有车长能操作");
+						return;
+					}
+					
 				})
+				
+				//保存签名信息
+				function saveQianMingInfo(repairProjectConfigId,qmInfo,isLeaderAudit,operationStatus){
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					var url = path1+'/task/auditRepairTask?appSessionIdInfo='+appSessionIdInfo;
+					console.log("保存签名信息数据=="+url);
+					mui.showLoading("保存中,请稍后...","div");
+					mui.ajax(url,{
+						data:{
+								taskId:taskId,
+								repairProjectConfigId: repairProjectConfigId,
+								isLeaderAudit:isLeaderAudit,
+								operationUser:qmInfo,
+								remark1:remarkInfoCache,
+								operationStatus:operationStatus
+							},
+						dataType:'json',   
+						type:'POST',
+						success:function(data){
+							console.log("返回码是"+data.code);
+							mui.hideLoading();
+							mui.toast(data.msg);
+						},
+						error:function(xhr,type,errorThrown){
+							mui.hideLoading();
+							if(type=='timeout'){
+								mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+							}else{
+								mui.alert('请求失败');
+							}
+						}
+					}); 
+				}
+				
 				//提交签名
 				document.getElementById("submitAudit").addEventListener('tap',function() {
 					$("#submitAudit").css("background-color","#007AFF");
@@ -307,7 +376,12 @@
 					$("#lookPic").css("background-color","transparent");
 					$("#saveName").css("background-color","transparent");
 					$("#uploadPic").css("background-color","transparent");
-					console.log(4);
+					
+					if(readlNeedSignNum === needSignNum){
+						mui.toast("可以执行提交审核操作");
+					}else{
+						mui.toast("尚有检修项目未签名，请全部签名完毕在提交审核");
+					}
 				})
 				
 				//上传照片
@@ -317,6 +391,11 @@
 					$("#lookPic").css("background-color","transparent");
 					$("#saveName").css("background-color","transparent");
 					$("#submitAudit").css("background-color","transparent");
+					
+					if(userRoleInfo != '1'){
+						mui.toast("只有车长能操作");
+						return;
+					}
 					
 					var id = generateUUID()+"-dayRepairUploadingImg";
 					mui.openWindow({
@@ -360,8 +439,11 @@
 									} 
 									$("#byProject").append(dHtml);
 									$("#byStandard").append(sHtml); 
+									repairProjectId = clickId;
+									$("#qianMingInfo").val(cacheData[m].auditUserName);
 								}
 							} 
+							
 						}else{
 							//删除样式
 							$("#"+projectIdArr[v]).removeClass("bottomSpan");
