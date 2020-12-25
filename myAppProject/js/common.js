@@ -107,7 +107,7 @@ function setHtml(e,imgId) {
 	html = html + '<img data-preview-src="" data-preview-group="1" src="'+encodeURI(e)+'" id="imgInfo" class="imgCss"/>';
 	html = html + '</td>';
 	html = html + '<td style="width: 55%;text-align: right;">';
-	html = html + '<textarea id="'+imgId+'description" placeholder="请输入照片描述,100个字符以内..." class="textareaCss"></textarea>';
+	html = html + '<div><textarea id="'+imgId+'description" maxLength="100" placeholder="请输入照片描述,100个字符以内..." class="textareaCss"></textarea></div>';
 	html = html + '</td>';
 	html = html + '</tr>';
 	html = html + '<tr style="height: 50px;">';
