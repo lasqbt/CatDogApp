@@ -280,8 +280,16 @@
 					var url = path1+'/task/addRepairTaskInfo?appSessionIdInfo='+appSessionIdInfo;
 					console.log("开始创建车辆运用信息=="+url);
 				 	mui.ajax(url,{
-						data:JSON.stringify(d),
-						contentType: "application/json;charset=UTF-8",   // http content type
+						//data:JSON.stringify(d),
+						//contentType: "application/json;charset=UTF-8",   // http content type
+						data:{
+							auditLeaderRoleId: $("#auditLeaderRoleId").val(),
+							taskTrainTypeStr: $("#taskTrainTypeStr").val(),
+							taskTrainType: $("#taskTrainType").val(),
+							remark1: $("#remark1").val(),
+							remark2: $("#remark2").val(),
+							taskType: $("#taskType").val()
+						},
 				 		dataType:'json',   
 				 		type:'post',
 				 		success:function(data){
