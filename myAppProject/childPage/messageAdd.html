@@ -173,8 +173,13 @@
 				 	mui.showLoading("发送中,请稍后...","div"); 
 					console.log("发送单条消息=="+url);
 				 	mui.ajax(url,{
-						data:JSON.stringify(d),
-						contentType: "application/json;charset=UTF-8",   // http content type
+						//data:JSON.stringify(d),
+						//contentType: "application/json;charset=UTF-8",   // http content type
+						data:{
+							msgInfo: $("#msgInfo").val(),
+							userTo: $("#userTo").val(),
+							userFrom: $("#userFrom").val()
+						},
 				 		dataType:'json',   
 				 		type:'post',
 				 		success:function(data){
