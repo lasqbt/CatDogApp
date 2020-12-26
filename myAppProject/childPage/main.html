@@ -531,7 +531,9 @@
 				if(headPicName != 'no'){
 					$("#imgInfo").attr("src",path1+"/uploadPic/showPic?pictureName="+headPicName+"&appSessionIdInfo="+localStorage.getItem("appSessionIdInfo"));
 				}
+				
 				/****消息推送  start****/
+				
 				var socket;
 				if (typeof (WebSocket) == "undefined") {
 				    layer.msg("遗憾：您的手机不支持WebSocket");
@@ -543,6 +545,33 @@
 				    //无法使用wss，浏览器打开WebSocket时报错
 				    //ws对应http、wss对应https。
 				    socket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
+					
+					//心跳检测
+					var heartCheck = {
+						timeout: 5000,//毫秒
+						timeoutObj: null,
+						serverTimeoutObj: null,
+						reset: function(){
+							clearTimeout(this.timeoutObj);
+							clearTimeout(this.serverTimeoutObj);
+							return this;
+						},
+						start: function(){
+							var self = this;
+							this.timeoutObj = setTimeout(function(){
+								//这里发送一个心跳，后端收到后，返回一个心跳消息，
+								//onmessage拿到返回的心跳就说明连接正常
+								socket.send("HeartBeat--5s一次");
+								console.log("5秒一次发送心跳包--HeartBeat");
+								//如果超过一定时间还没重置，说明后端主动断开了
+								self.serverTimeoutObj = setTimeout(function(){
+									//如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+									socket.close();
+								}, self.timeout)
+							}, this.timeout)
+						}
+					}
+					
 				    //连接打开事件
 				    socket.onopen = function() {
 				        console.log("Socket 已打开");
@@ -553,18 +582,19 @@
 				        var d = msg.data;
 						if(d!=null && d!=''){
 							getMsgInfo(1,1,limit);
+							plus.push.createMessage("啦啦啦，我是卖报小行家！一二三四五，上山打老虎！玫瑰花香", "LocalMSG", {cover:false,sound: 'system', title: '通知'});
 						}
 				        
 				    };
 				    //连接关闭事件
 				    socket.onclose = function() {
-				        console.log("Socket已关闭");
+				        mui.alert("Socket已关闭");
 				    };
 				    //发生了错误事件
-				    socket.onerror = function() {
-				        alert("Socket发生了错误");
+				    socket.onerror = function(e) {
+						mui.alert("socket发生错误");
+						
 				    }
-					
 				    //窗口关闭时，关闭连接
 				    //jquery1.8中已经被废弃，3.0中已经移除
 				    window.unload=function() {
