@@ -533,8 +533,7 @@
 				}
 				
 				/****消息推送  start****/
-				
-				var socket;
+				//var socket;
 				if (typeof (WebSocket) == "undefined") {
 				    layer.msg("遗憾：您的手机不支持WebSocket");
 				} else {
@@ -544,64 +543,129 @@
 				    //注意ws、wss使用不同的端口。我使用自签名的证书测试，
 				    //无法使用wss，浏览器打开WebSocket时报错
 				    //ws对应http、wss对应https。
-				    socket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
+				    //socket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
 					
-					//心跳检测
+					//Socket通讯工具类
 					var heartCheck = {
-						timeout: 5000,//毫秒
-						timeoutObj: null,
-						serverTimeoutObj: null,
-						reset: function(){
+					timeout: 10000, //5秒发一次心跳
+					timeoutObj: null,
+					serverTimeoutObj: null,
+					servetInterval:null,
+						reset: function() {
 							clearTimeout(this.timeoutObj);
 							clearTimeout(this.serverTimeoutObj);
 							return this;
 						},
-						start: function(){
+					start: function(websocket) {
 							var self = this;
-							this.timeoutObj = setTimeout(function(){
-								//这里发送一个心跳，后端收到后，返回一个心跳消息，
-								//onmessage拿到返回的心跳就说明连接正常
-								socket.send("HeartBeat--5s一次");
-								console.log("5秒一次发送心跳包--HeartBeat");
-								//如果超过一定时间还没重置，说明后端主动断开了
-								self.serverTimeoutObj = setTimeout(function(){
-									//如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
-									socket.close();
-								}, self.timeout)
+							this.timeoutObj = setTimeout(function() {
+									//这里发送一个心跳，后端收到后，返回一个心跳消息，
+									//onmessage拿到返回的心跳就说明连接正常
+									console.log('发送了心跳数据');
+									var msg = {};
+									msg.messageType = -1;
+									msg.message = 'websocket测试心跳包';
+									websocket.send(msg);
+									self.serverTimeoutObj = setTimeout(function() { //如果超过一定时间还没重置，说明后端主动断开了
+											websocket.close();
+									}, self.timeout)
 							}, this.timeout)
-						}
+						},
 					}
+			 
+
+					var websocket = null;
+					var lockReconnect = false;
+					reconnect();
 					
-				    //连接打开事件
-				    socket.onopen = function() {
-				        console.log("Socket 已打开");
-				        socket.send("向后台发消息==这是来自客户端的消息");
-				    };
-				    //收到消息事件
-				    socket.onmessage = function(msg) {
-				        var d = msg.data;
-						if(d!=null && d!=''){
-							getMsgInfo(1,1,limit);
-							plus.push.createMessage("啦啦啦，我是卖报小行家！一二三四五，上山打老虎！玫瑰花香", "LocalMSG", {cover:false,sound: 'system', title: '通知'});
+					//重新链接
+					function reconnect() {
+						var context = this;
+						if (context.lockReconnect) return;
+						context.lockReconnect = true;
+						//setTimeout(function() { //没连接上会一直重连，设置延迟避免请求过多
+								console.log("重链了");
+								if('WebSocket' in window) {
+										websocket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
+								}else{
+										mui.alert("该浏览器不支持实时通信功能");
+								}
+								context.lockReconnect = false;
+								
+								//监听窗口关闭事件
+								window.onbeforeunload = function() {
+									console.log("窗口关闭");
+									websocket.close();
+								}
+								
+								websocket.onopen= function() {
+									//重置心跳检测
+									heartCheck.reset().start(websocket);
+									console.log("websocket连接成功");
+								}
+								
+								websocket.onclose= function(e) {
+									//链接断开后重连
+									console.log("websocket连接关闭=="+heartCheck.servetInterval);
+									/* console.log('websocket 关闭: ' + e.code + ' ' + e.reason + ' ' + e.wasClean); */
+									console.log('websocket 关闭: ' +JSON.stringify(e));
+									if(heartCheck.servetInterval == null){
+										heartCheck.servetInterval = setInterval(function(){
+											//0 ：对应常量CONNECTING (numeric value 0)，正在建立连接连接，还没有完成。
+											//1 ：对应常量OPEN (numeric value 1)，连接成功建立，可以进行通信。
+											//2 ：对应常量CLOSING (numeric value 2)连接正在进行关闭握手，即将关闭。
+											//3 : 对应常量CLOSED (numeric value 3)连接已经关闭或者根本没有建立
+											console.log('当前链接状态'+websocket.readyState);
+											if(websocket.readyState != 1){
+												websocket.close();
+												//若为未链接状态则尝试重新链接未连接状态
+												reconnect();
+											}else{
+												clearInterval(heartCheck.servetInterval);
+												heartCheck.servetInterval = null;
+												heartCheck.reset().start(websocket);
+											}
+										},1000);
+									}
+								}
+								
+								websocket.onmessage= function(event) {
+										//重置心跳检测
+										console.log('接收到了消息:'+event);
+										heartCheck.reset().start(websocket);
+										var d = event.data;
+										if(d!=null && d!=''){
+											getMsgInfo(1,1,limit);
+											plus.push.createMessage("啦啦啦，我是卖报小行家！一二三四五，上山打老虎！玫瑰花香", "LocalMSG", {cover:false,sound: 'system', title: '通知'});
+										}
+								}
+								websocket.onerror = function(e) {
+									/* console.log('websocket 出错: ' + e.code + ' ' + e.reason + ' ' + e.wasClean); */
+									console.log('websocket 出错: ' +JSON.stringify(e));
+									reconnect();
+								};
+
 						}
-				        
-				    };
-				    //连接关闭事件
-				    socket.onclose = function() {
-				        mui.alert("Socket已关闭");
-				    };
-				    //发生了错误事件
-				    socket.onerror = function(e) {
-						mui.alert("socket发生错误");
-						
-				    }
-				    //窗口关闭时，关闭连接
-				    //jquery1.8中已经被废弃，3.0中已经移除
-				    window.unload=function() {
-				        socket.close();
-				    };
+
+						this.sendMsg = function sendMsg(message) {
+							try{
+								console.log('发送消息了');
+								websocket.send(message);
+							}catch(err){
+								console.log('消息发送失败'+err);
+							}
+						}
+						   
+						this.close = function closeWebSocket(){
+								websocket.close();
+								reconnect();
+						}
+						window.onbeforeunload = function(event) {
+								websocket.close();
+						}
+					//}
 				}
-				
+				/****消息推送  end****/
 				document.getElementById("msgManager").addEventListener('tap', function() {
 					document.getElementById("msgDiv").style.display='block';
 					document.getElementById("repairDiv").style.display='none';
