@@ -67,7 +67,7 @@ function pulluploadingForRepair(self){
 
 //监听自定义事件，用于子页面向父页面进行传值  子页面：jieShouRen.html
 window.addEventListener("createRepairAfterQueryInfo", function(e) {
-	console.log("发送完毕信息后，触发主页面的信息管理页面刷新操作");
+	console.log("创建检修任务主信息后，触发主页面的信息管理页面刷新操作");
 	setTimeout(function(){
 		//执行新的查询操作
 		getRepairInfo(1,1,limitForRepair);
