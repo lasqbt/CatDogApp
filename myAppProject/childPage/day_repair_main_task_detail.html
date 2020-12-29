@@ -195,7 +195,9 @@
 				var projectIdArr = new Array();
 				var self = plus.webview.currentWebview();
 				var taskId = self.taskId;
+				var taskStatus = self.taskStatus;
 				console.log("编辑的任务ID=="+taskId);
+				console.log("编辑的任务状态=="+taskStatus);
 				//备注信息
 				var remarkInfoCache = "";
 				// 缓存数据
@@ -343,6 +345,10 @@
 						mui.toast("请输入签名信息");
 						return;
 					}
+					if(taskStatus != '1'){
+						mui.toast("只有待提交的任务才能此操作");
+						return;
+					}
 					if(userRoleInfo == '1'){
 						saveQianMingInfo(repairProjectId,qmInfo,isLeaderAudit,"1");
 					}else{
@@ -394,18 +400,24 @@
 					$("#uploadPic").css("background-color","transparent");
 					$("#saveCheZhangName").css("background-color","transparent");
 					
-					if(readlNeedSignNum === needSignNum){
-						saveQianMingInfo(99999999,"",0,"4");
-						
-						//获取父页面main.html
-						var list = plus.webview.currentWebview().opener();
-						//自定义事件,事件名为getValueFromChild
-						mui.fire(list,'createRepairAfterQueryInfo',null);
-						// 返回父页面
-						//mui.back();
+					if(userRoleInfo == '1' && taskStatus == '1'){
+						if(readlNeedSignNum === needSignNum){
+							saveQianMingInfo(99999999,"",0,"4");
+							
+							//获取父页面main.html
+							var list = plus.webview.currentWebview().opener();
+							//自定义事件,事件名为getValueFromChild
+							mui.fire(list,'createRepairAfterQueryInfo',null);
+							// 返回父页面
+							//mui.back();
+							taskStatus="4";
+						}else{
+							mui.toast("尚有检修项目未签名，请全部签名完毕在提交审核");
+						}
 					}else{
-						mui.toast("尚有检修项目未签名，请全部签名完毕在提交审核");
+						mui.toast("该任务已经处于审核中状态");
 					}
+					
 				})
 				
 				//车长签名
@@ -419,6 +431,10 @@
 					
 					var a = mui.prompt('请车长输入签名信息','','提示',['不签','签名'],function(e){
 						if(e.index==1){
+							if(taskStatus != '1'){
+								mui.toast("只有待提交的任务才能此操作");
+								return;
+							}
 							if(userRoleInfo != '1'){
 								mui.toast("只有车长能操作");
 								return;

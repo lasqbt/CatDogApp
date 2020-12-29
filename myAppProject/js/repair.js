@@ -141,11 +141,11 @@ function getRepairInfo(flag,pageNumV,limitV){
 					if(dataInfo[v].taskStatus == '1'){
 						html = html + "<img src='../images/daiTiJao.png' style='width:50px;height:50px;'>";
 					}else if(dataInfo[v].taskStatus == '2'){
-						html = html + "<img src='../images/success-1.png' style='width:50px;height:50px;'>";
+						html = html + "<img src='../images/success-2.png' style='width:50px;height:50px;'>";
 					}else if(dataInfo[v].taskStatus == '3'){
-						html = html + "<img src='../images/refuse-1.png' style='width:50px;height:50px;'>";
+						html = html + "<img src='../images/refuse-2.png' style='width:50px;height:50px;'>";
 					}else if(dataInfo[v].taskStatus == '4'){
-						html = html + "<img src='../images/shenHeZhong-1.png' style='width:50px;height:50px;'>";
+						html = html + "<img src='../images/shenHeZhong-2.png' style='width:50px;height:50px;'>";
 					}
 					html = html + "</td></tr>";
 					html = html + "<tr><td>车辆编号：</td><td>"+dataInfo[v].trainNo+"</td>";
@@ -155,7 +155,7 @@ function getRepairInfo(flag,pageNumV,limitV){
 					}else if(dataInfo[v].taskType == '2'){
 						html = html + '<tr><td>检修类型：</td><td colspan="2">定期检修</td>';
 					}
-					html = html + '<td><input type="hidden" id="'+dataInfo[v].id+'hidden" value="'+dataInfo[v].remark1+';'+dataInfo[v].taskType+'"></td></tr>';
+					html = html + '<td><input type="hidden" id="'+dataInfo[v].id+'hidden" value="'+dataInfo[v].remark1+';'+dataInfo[v].taskType+';'+dataInfo[v].taskStatus+'"></td></tr>';
 					html = html + '</table></a>';
 					html = html + '</li>';
 				 }
@@ -252,6 +252,9 @@ mui('#ulInfoForRepair').on('tap','li',function(v){
 	  var taskId = this.id;
 	  console.log("点击的主任务信息主键ID："+taskId);
 	  var id = generateUUID()+"-dayRepairTableDetail";
+	  
+	  var idInfo= taskId+"hidden";
+	  var arr = $("#"+idInfo).val().split(";");
 	  mui.openWindow({
 		url: '../childPage/day_repair_main_task_detail.html',
 		id: id,
@@ -265,7 +268,8 @@ mui('#ulInfoForRepair').on('tap','li',function(v){
 			autoShow: false
 		},
 		extras: {
-			taskId: taskId
+			taskId: taskId,
+			taskStatus:arr[2]
 		},
 		createNew:false
 	  });
