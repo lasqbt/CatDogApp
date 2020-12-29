@@ -212,8 +212,7 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 	  var msgId = this.id;
 	  console.log("点击的信息主键ID："+msgId);
 	  var id = generateUUID()+"-messageDetail";
-	  mui.alert("开发中");
-	  /* mui.openWindow({
+	  mui.openWindow({
 		url: '../childPage/messageDetail.html',
 		id: id,
 		show: {
@@ -229,6 +228,6 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 			msgId: msgId
 		},
 		createNew:false
-	  }); */
+	  });
 })
 /********运用管理部分的js end*******/

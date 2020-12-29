@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mui-bar-popover {
+				width: 30%;
+			}
+			.aCss:hover{
+				color: blue;
+			}
+			
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0; */
+			}
+			
+			.mui-badge1{
+				padding:0px; 
+				width:65%; 
+				float:right; 
+				line-height:40px; 
+				font-size:14px;
+			}
+			.lableCss{
+				color: #929292;
+			}
+			.mui-table-view-cell:after{	
+			    background-color: transparent; /*ul的背景颜色*/
+			}
+			.mui-table-view:after{
+			    background-color: transparent; /*ul最下面的横线  liu aishen*/
+			}
+			.mui-table-view:before{
+			    background-color: transparent; /*ul最上面的横线  liu aishen*/
+			}
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			textarea::-webkit-input-placeholder{
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			textarea::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			textarea::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			textarea::-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			
+			input::-webkit-input-placeholder{
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+				font-size: 0.8rem;
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				border-radius: 5px;
+				width: 96%;
+				margin: 0 auto;
+				/* border: 1px solid #929292; */
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">发送消息</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="liCss">
+				<form>
+					<div class="mui-input-row">  
+						<label class="lableCss">发起人</label>	
+						<a class="mui-navigate-right">
+							<span class="mui-badge1" style="border: 1px solid #929292;height: 40px;border-radius: 3px;">
+								<select class="mui-h5" id="userFrom" name="userFrom" style="background-color: transparent;font-size: 0.9rem;"></select>
+							</span>
+						</a>
+					</div> 
+					<div class="mui-input-row">
+						<label class="lableCss">接收人</label>
+						<input readonly="readonly" class="lableCss" placeholder=" 请选择接收人" type="text" value="" id="userToName" style="background-color: transparent;border: 1px solid #929292;margin-top: 5px;font-size: 0.9rem;">  
+						<input type="hidden" value="" id="userTo">  
+						<input type="hidden" value="" id="userToNameHidden">
+					</div> 
+					<div class="mui-input-row">
+						<label class="lableCss">消息内容</label>
+						<textarea class="lableCss" placeholder=" 消息内容,80个字符以内..." maxlength="80" style="background-color: transparent;border: 1px solid #929292;margin-top: 5px;font-size: 0.9rem;height: 125px;" id="msgInfo"></textarea>
+					</div> 
+				</form>
+				<div style="text-align: center;margin-top: 17px;">
+					<button type="button" id="send" class="mui-btn mui-btn-primary">
+						发送消息
+					</button>
+				</div>
+				<br />
+			</div>
+			
+		</div>
+	</body>
+	<script src="../js/jquery.min.js" type="text/javascript" ></script>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript"> </script>
+	<script src="../js/app.js" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"> </script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+	<script>
+		(function (mui) {
+			mui.init(); 
+			//初始加载下拉框数据
+			var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+			var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			var html="<option value='"+userInfo.userid+"'>"+userInfo.username;
+			html = html+"</option>";
+			$("#userFrom").append(html);
+			  
+			 mui.plusReady(function(){
+				 //发送消息
+				 document.getElementById("send").addEventListener('tap',function() { 
+					var d = {};
+					d.msgInfo = $("#msgInfo").val();
+					d.userTo = $("#userTo").val();
+					d.userFrom = $("#userFrom").val();
+					var url = path1+'/msg/addMsgInfo?appSessionIdInfo='+appSessionIdInfo;
+				 	mui.showLoading("发送中,请稍后...","div"); 
+					console.log("发送单条消息=="+url);
+				 	mui.ajax(url,{
+						//data:JSON.stringify(d),
+						//contentType: "application/json;charset=UTF-8",   // http content type
+						data:{
+							msgInfo: $("#msgInfo").val(),
+							userTo: $("#userTo").val(),
+							userFrom: $("#userFrom").val()
+						},
+				 		dataType:'json',   
+				 		type:'post',
+				 		success:function(data){
+							console.log("返回码是"+data.code);
+							mui.hideLoading();
+							if(data.code=='0'){
+								mui.toast("发送成功");
+								//获取父页面main.html
+								var list = plus.webview.currentWebview().opener();
+								//自定义事件,事件名为getValueFromChild
+								mui.fire(list,'sendMsgAfterQueryInfo',null);
+								// 返回父页面
+								mui.back();
+							}else{
+								mui.toast(data.msg);
+							}
+				 		},
+				 		error:function(xhr,type,errorThrown){
+				 			mui.hideLoading();
+				 			if(type=='timeout'){
+				 				mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+				 			}else{
+				 				mui.alert('请求失败');
+				 			}
+				 		}
+				 	}); 
+				 });
+				 
+				 //选择接收人
+				 document.getElementById("userToName").addEventListener('tap',function() {
+				 	var id = generateUUID()+"-jieShouRen";
+					var checkedUserIds= $("#userTo").val();
+					var checkedUserNames= $("#userToName").val();
+					var checkUserToNameHidden= $("#userToNameHidden").val();
+					var checkUserNums = 0;
+					if(checkedUserIds.length>0){
+						checkUserNums = checkedUserIds.split(",").length;
+						checkedUserIds = checkedUserIds+",";
+						checkedUserNames = checkedUserNames +",";
+						checkUserToNameHidden = checkUserToNameHidden + ",";
+					}
+				 	mui.openWindow({
+				 		url: '../childPage/jieShouRen.html',
+				 		id: id,
+				 		show: {
+				 			aniShow: 'pop-in'
+				 		},
+				 		styles: {
+				 			popGesture: 'hide'
+				 		},
+				 		waiting: {
+				 			autoShow: false
+				 		},
+						extras: {
+							checkedUserIds: checkedUserIds,
+							checkedUserNames:checkedUserNames,
+							checkUserNums:checkUserNums,
+							checkUserToNameHidden:checkUserToNameHidden
+							
+						}, 
+				 		createNew:false
+				 	});
+				 });
+				 
+				 //监听自定义事件，用于子页面向父页面进行传值  子页面：jieShouRen.html
+				 window.addEventListener("getValueFromChild", function(e) {
+				 	document.getElementById("userToName").value = e.detail.checkUserToName;
+					document.getElementById("userTo").value = e.detail.checkUserToIds;
+					document.getElementById("userToNameHidden").value = e.detail.checkUserToNameHidden;
+				 });
+			})
+		})(mui);
+	</script>
+</html>

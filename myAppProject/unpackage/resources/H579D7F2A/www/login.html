@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>检修管理平台</title>
+	<!--必要样式-->
+	<link type="text/css" rel="stylesheet" href="css/mui.css" />
+	<link type="text/css" rel="stylesheet" href="css/component.css" />
+	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
+	<link type="text/css" rel="stylesheet" href="../css/app.css" />
+	<script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	<style>
+		.changeLogin{
+			color: #008DF3;
+			font-size: 0.9rem;
+			text-decoration: underline;
+		}
+		.changeLogin:active{
+			color: red;
+		}
+	</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<div class="logo_box">
+				<h3 style="font-size: 1.5rem;">乌鲁木齐检修管理平台</h3>
+				<div style="margin-left: 5%;margin-top: 30px;display: block;" id="accountLogin">
+					<div class="input_outer" id="accountDiv">
+						<span class="u_user"></span>
+						<input name="loginAccount" id="loginAccount" onfocus="$('#accountDiv').addClass('shineCss')" onblur="$('#accountDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px;" type="text" maxlength="15" placeholder="请输入账号">
+					</div>
+					<div class="input_outer" id="pwdDiv">
+						<span class="us_uer2"></span>
+						<input name="password" id="password" onfocus="$('#pwdDiv').addClass('shineCss')" onblur="$('#pwdDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px; "value="" maxlength="15" type="password" placeholder="请输入密码">
+					</div>
+					<div class="input_outer" id="codeDiv">
+						<span class="us_uer3"></span>
+						<input type="text" id="codeInfo" onfocus="$('#codeDiv').addClass('shineCss')" onblur="$('#codeDiv').removeClass('shineCss')" autocomplete="off" name="codeInfo" value="" style="background: none;border: none;margin-top: 2px;" placeholder="请输入验证码" class="input-val" maxlength="6">
+						<canvas id="canvas"  class="canvasCss"></canvas>
+					</div>
+					<div class="mb2"><a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">登录</a></div>
+				</div>
+				
+				<div style="background-color: transparent;margin-left: 13%;display: none;" id="shouShiLogin">
+					<div id='holder' style="background-color: transparent;border: none;" class="mui-locker" data-locker-options='{"ringColor":"blue","fillColor":"rgba(50,205,50,1)","pointColor":"red","lineColor":"yellow"}' data-locker-width='300' data-locker-height='300'></div>
+					<div id='alert'></div>
+				</div>
+				<div style="width: 90%;height: 30px;margin-left: 5%;text-align: center;">
+					<a id="loginType" class="changeLogin">切换登录方式</a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.js"></script>
+	<script type="text/javascript" src="js/showLoading.js"></script>
+	<script type="text/javascript" src="js/mui.enterfocus.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/mui.locker.js"></script>
+	<script type="text/javascript"> 
+		// 验证码的生成和提交验证
+        var show_num = [];
+        draw(show_num);
+        $("#canvas").on('click',function(){
+            draw(show_num);
+        })
+        function login(){
+            var val = $("#codeInfo").val().toLowerCase();
+            var password = $("#password").val();
+            var loginAccount = $("#loginAccount").val();
+            var num = show_num.join("");
+            if(loginAccount==''){
+				mui.alert('请输入用户账号');
+            }else if(password==''){
+				mui.alert('请输入用户密码');
+            }else if(val==''){
+                mui.alert('请输入六位验证码');
+            }else if(val == num){
+				loginMethod(loginAccount,password,"account");
+            }else{
+				mui.alert('验证码错误！请重新输入！');
+                $(".input-val").val('');
+                draw(show_num);
+            }
+        }
+		window.loginMethod = function(loginAccount,password,flag){
+			var appSessionIdInfo = generateUUID()+"sid";
+			mui.showLoading("登录中,请稍后...","div"); 
+			var url = "";
+			if(flag=="hand"){
+				url = path2+'/loginValidateForMyApp';
+			}else{
+				url = path2+'/loginValidate';
+			}
+			console.log("登录=="+url);
+			mui.ajax(url,{
+			    data:{userid:loginAccount,password: password,appSessionIdInfo:appSessionIdInfo},
+				async:true,
+				dataType:'json',   
+				type:'post',
+				success:function(data){
+					mui.hideLoading();
+					var code = data.code;
+					console.log(JSON.stringify(data));
+					if(code=='0'){
+						//放入共享池
+						localStorage.setItem("userInfo",JSON.stringify(data.userInfo));
+						localStorage.setItem("appSessionIdInfo",appSessionIdInfo);
+						localStorage.setItem("headPic",data.headPic);
+						localStorage.setItem("djdUserid",loginAccount);
+						//console.log("data.zhiWenIsOpen="+data.zhiWenIsOpen);
+						localStorage.setItem("zhiWenIsOpen",data.zhiWenIsOpen);
+						if(flag=="account"){
+							localStorage.setItem("djdPassword",password);
+						}
+						localStorage.setItem("djdUserObjId",data.userInfo.id);
+						var id = generateUUID()+"-checkPage";
+						mui.openWindow({
+							url: 'checkPage.html',
+							id: id,
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							},
+							createNew:false
+						}); 
+					}else{
+						mui.alert(data.msg);
+					} 
+				},
+				error:function(xhr,type,errorThrown){
+					mui.hideLoading();
+					if(type=='timeout'){
+						mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+					}else{
+						mui.alert('请求失败');
+					}
+				}
+			}); 
+		}
+	    function draw(show_num) {
+	        var canvas_width=$('#canvas').width();
+	        var canvas_height=$('#canvas').height();
+	        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+	        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+	        canvas.width = canvas_width;
+	        canvas.height = canvas_height;
+	        //var sCode = "A,B,C,E,F,G,H,K,L,M,N,P,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9";
+	        var sCode = "1,2,3,4,5,6,7,8,9,0";
+	        var aCode = sCode.split(",");
+	        var aLength = aCode.length;//获取到数组的长度
+	        
+	        for (var i = 0; i <= 5; i++) {
+	            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+	            var deg = Math.random() * 30 * Math.PI / 180;//0-30
+	            var txt = aCode[j];//得到随机的一个内容
+	            show_num[i] = txt.toLowerCase();
+	            var x = 10 + i * 20;//文字在canvas上的x坐标
+	            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+	            context.font = "bold 23px 微软雅黑";
+	 
+	            context.translate(x, y);
+	            context.rotate(deg);
+	 
+	            context.fillStyle = randomColor();
+	            context.fillText(txt, 0, 0);
+	 
+	            context.rotate(-deg);
+	            context.translate(-x, -y);
+	        }
+	        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.stroke();
+	        }
+	        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            var x = Math.random() * canvas_width;
+	            var y = Math.random() * canvas_height;
+	            context.moveTo(x, y);
+	            context.lineTo(x + 1, y + 1);
+	            context.stroke();
+	        }
+	    }
+	 
+	    function randomColor() {//得到随机的颜色值
+	        var r = Math.floor(Math.random() * 256);
+	        var g = Math.floor(Math.random() * 256);
+	        var b = Math.floor(Math.random() * 256);
+	        return "rgb(" + r + "," + g + "," + b + ")";
+	    }
+		
+		
+		
+		(function($, doc) {
+			$.init({
+				statusBarBackground: '#f7f7f7'
+			});
+			$.plusReady(function() {
+				plus.screen.lockOrientation("portrait-primary");
+				var settings = app.getSettings();
+				var state = app.getState();
+				var mainPage = plus.webview.getWebviewById("main");
+				var main_loaded_flag = false;
+				if(!mainPage){
+					mainPage = $.preload({
+						"id": 'main',
+						"url": 'main.html'
+					});
+				}else{
+					main_loaded_flag = true;
+				}
+				
+				mainPage.addEventListener("loaded",function () {
+					main_loaded_flag = true;
+				});
+				var toMain = function() {
+					//使用定时器的原因：
+					//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
+					var id = setInterval(function () {
+						if(main_loaded_flag){
+							clearInterval(id);
+							$.fire(mainPage, 'show', null);
+							mainPage.show("pop-in");
+						}
+					},20);
+				};
+				// close splash
+				setTimeout(function() {
+					//关闭 splash
+					plus.navigator.closeSplashscreen();
+				}, 600);
+				//
+				window.addEventListener('resize', function() {
+					oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+				}, false);
+				//
+				var backButtonPress = 0;
+				$.back = function(event) {
+					backButtonPress++;
+					if (backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+				
+				document.getElementById("loginType").addEventListener("tap",function () {
+					if (mui.os.plus) {
+						var buttonTit = [{
+							title: "账号登录"
+						}, {
+							title: "手势登录"
+						}, {
+							title: "指纹登录"
+						}];
+				
+						plus.nativeUI.actionSheet({
+							title: "选择登录方式", 
+							cancel: "取消",
+							buttons: buttonTit
+						}, function(b) { /*actionSheet 按钮点击事件*/
+							switch (b.index) {
+								case 0:
+									break;
+								case 1:
+									document.getElementById("accountLogin").style.display="block";
+									document.getElementById("shouShiLogin").style.display="none";
+									break;
+								case 2:
+									document.getElementById("accountLogin").style.display="none";
+									document.getElementById("shouShiLogin").style.display="block";
+									break;
+								case 3:
+									plusReady();
+									break;
+								default:
+									break;
+							}
+						})
+					}
+				})
+				
+				//手势
+				var holder = doc.querySelector('#holder'),
+					alert = doc.querySelector('#alert'),
+					record = [];
+				//处理事件
+				holder.addEventListener('done', function(event) {
+					var rs = event.detail;
+					record.push(rs.points.join(''));
+					console.log("手势密码是=="+record[0]);
+					var loginAccount = localStorage.getItem("djdUserid");
+					if(loginAccount == '' || loginAccount == null){
+						mui.alert("用户账号为空，请先用账号密码登录后，在使用手势或者指纹进行登录！");
+					}else{
+						loginMethod(loginAccount,record[0],'hand');
+					}
+					rs.sender.clear();
+					record = [];
+				});
+				
+				// 检查是否支持指纹识别
+				function plusReady() {
+					var isOpen = localStorage.getItem("zhiWenIsOpen");
+					console.log(isOpen);
+					if(isOpen != '1'){
+						mui.alert('尚未开启指纹登录,请在"我的-指纹设置"里面进行设置!');
+					}else{
+						if (plus.fingerprint) {
+							if (!plus.fingerprint.isSupport()) {
+								mui.toast('此设备不支持指纹识别');
+								return;
+							}
+							if (!plus.fingerprint.isKeyguardSecure()) {
+								mui.toast('此设备未设置密码锁屏，无法使用指纹识别');
+								return;
+							}
+							if (!plus.fingerprint.isEnrolledFingerprints()) {
+								mui.toast('此设备未录入指纹，请到设置中开启');
+								return;
+							}
+							console.log('此设备支持指纹识别');
+							fingerpring();
+						} else {
+							mui.toast('当前环境不支持指纹识别API，请更新到最新版本');
+						}
+					}
+				}
+				
+				// 指纹识别认证
+				function fingerpring() {
+					var waiting = null;
+					plus.fingerprint.authenticate(
+						function() {
+							plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+							console.log('指纹识别成功');
+							var loginAccount = localStorage.getItem("djdUserid");
+							var password = localStorage.getItem("djdPassword");
+							loginMethod(loginAccount,password,"zhiWen");
+						},
+						function(e) {
+							switch (e.code) {
+								case e.AUTHENTICATE_MISMATCH:
+									plus.nativeUI.toast('指纹匹配失败，请重新输入');
+									break;
+								case e.AUTHENTICATE_OVERLIMIT:
+									plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+									plus.nativeUI.alert('指纹识别失败次数超出限制，请使用其它方式进行认证');
+									break;
+								default:
+									plus.nativeUI.closeWaiting(); //兼容Android平台关闭等待框
+									plus.nativeUI.alert('指纹识别失败(' + e.code + ')，请重试');
+									break;
+							}
+						}
+					);
+					// Android平台弹出等待提示框
+					if ('Android' == plus.os.name) {
+						plus.nativeUI.showWaiting('指纹识别中...');
+					}
+				}
+			});
+		}(mui, document));
+	</script>
+</html>

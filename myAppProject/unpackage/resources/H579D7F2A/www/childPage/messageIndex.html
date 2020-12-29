@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.css">
+		<link rel="stylesheet" href="../css/messageIndex.css">
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+	</head>
+
+	<body style="background-color:transparent;margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="goBack();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">消息管理</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="liCss">
+				<div class="mui-input-row">
+					<label class="lableCss">消息类型</label>
+					<a class="mui-navigate-right">
+						<span class="mui-badge1">
+							<select class="mui-h5" id="queryUserFlag" style="margin:auto;border-radius: 5px;background-color: transparent;">
+								<option value="">我发送的和我接收的</option>
+								<option value="2">我发送的</option>
+								<option value="3">我接收的</option>
+							</select>
+						</span>
+					</a>
+				</div> 
+				<div class="mui-input-row">
+					<label class="lableCss">开始时间</label>
+					<input readonly="readonly" type="text" value="" id="start_date" placeholder="请选择开始时间">  
+				</div>  
+				<div class="mui-input-row">  
+					<label class="lableCss">结束时间</label>
+					<input readonly="readonly" type="text" value="" id="end_date" placeholder="请选择结束时间">  
+				</div> 
+				<div class="mui-input-row">
+					<label class="lableCss">是否已读</label>
+					<select class="mui-h5" id="isRead" style="float: left; width: 100px;margin:auto;border-radius: 5px;background-color: transparent;">
+						<option value="">全部</option>
+						<option value="1">已读</option>
+						<option value="0">未读</option>
+					</select>
+				</div> 
+				<div style="float: right;margin-top: -40px;margin-right: 20px;">
+					<button type="button" id="search" class="mui-btn mui-btn-primary mui-icon mui-icon-search">
+						搜索
+					</button>
+				</div>
+			</div>
+			<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="background:none;border-bottom: none;margin-top: 200px;">
+				<div class="mui-scroll">
+					<ul id="ulInfo" class="mui-table-view mui-table-view-chevron"  style="background:none;border-bottom: none;">
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<style>
+		.mui-badge1{
+			padding:0px; 
+			width:65%; 
+			float:right; 
+			line-height:42px; 
+			font-size:14px;
+		}
+		.lableCss{
+			color: #929292;
+		}
+		.mui-table-view-cell:after{	
+		    background-color: transparent; /*ul的背景颜色*/
+		}
+		.mui-table-view:after{
+		    background-color: transparent; /*ul最下面的横线  liu aishen*/
+		}
+		.mui-table-view:before{
+		    background-color: transparent; /*ul最上面的横线  liu aishen*/
+		}
+		.mui-input-group::after{
+			background-color: transparent;
+		}
+		.mui-input-group::before{
+			background-color: transparent;
+		}
+		.liCss{
+			background-color:rgba(39,40,34,0.2);
+			border-radius: 5px;
+			width: 96%;
+			margin: 0 auto;
+			/* border: 1px solid #929292; */
+			margin-top: 2px;
+		}
+		
+		input::-webkit-input-placeholder{
+		    color:#929292;
+		}
+		input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+		    color:#929292;
+		}
+		input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+		    color:#929292;
+		}
+		input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+		    color:#929292;
+		}
+	</style>
+	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="../css/commonFontCss.css">
+	<script>
+		// 分页初始参数
+		var pageNum = 1;
+		var totalPage = 0;
+		var limit = 11;
+
+		//列表上下滑动带有弹力的效果
+		(function (mui) {
+			//阻尼系数
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			mui(".mui-scroll-wrapper").scroll({
+				bounce: true,//滚动条是否有弹力默认是true
+				indicators: false, //是否显示滚动条,默认是true
+				deceleration: deceleration
+			});
+			pulluploading();
+		
+			mui.init({ 
+			 pullRefresh : {
+			　　 swipeBack: false, //关闭左滑关闭功能
+				container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down : {
+				  style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				  color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				  height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				  range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				  offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				  auto: false,//可选,默认false.首次加载自动上拉刷新一次
+				  callback :function(){
+					  mui.alert(111);
+				  } //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			   },
+			　　up:{
+				   auto: false ,//可选,默认false.首次加载自动上拉加载一次
+			　　　　contentrefresh: '正在加载中...',
+			　　　　contentnomore:'没有更多数据了',
+			　　　　callback:pulluploading //上拉加载下一页
+			　　},
+			}
+			});
+			 
+			 function pulluploading(){
+				 var url = path1+"/msg/getMsgDataListByPage";
+				 var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+				 console.log(url);
+				 mui.ajax(url, {
+					 type: "get",
+					 dataType: "json",
+					 data:{
+						 queryUserId:"",
+						 page:pageNum,
+						 limit:limit,
+						 appSessionIdInfo:appSessionIdInfo
+					 },
+					 success: function(data){
+						 console.log(data);
+						 if(data.code == 1){
+							 mui.toast(data.msg);
+						 }else{
+							 var html = "";
+							 var dataInfo = data.data;
+							 var count = data.count;
+							 for(var v=0; v<dataInfo.length;v++){
+								 html = html + '<li class="mui-table-view-cell liCss" id='+dataInfo[v].id+'>';
+								 html = html + '<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">';
+								 if(dataInfo[v].msgInfo.length>6){
+									 html = html + dataInfo[v].msgInfo.substring(0,6)+"...<span style='float:right;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd hh:mm:ss")+"</span>";
+								 }else{
+									 html = html + dataInfo[v].msgInfo+"<span style='float:right;'>"+Format(dataInfo[v].createTime,"yyyy-MM-dd hh:mm:ss")+"</span>";;
+								 }
+								 html = html + '</a>';
+								 html = html + '</li>';
+							 }
+							 if(totalPage==0){
+								 if(count%limit==0){
+									totalPage = count/limit; 
+								 }else{
+									 totalPage = parseInt(count/limit)+1
+								 }
+							 }
+							 //mui.toast(totalPage +"=="+pageNum);
+							 if(totalPage == pageNum){
+								  mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+								  //mui.toast('没有更多数据了！');
+								  //mui.querySelector(".mui-pull-bottom-pocket .mui-pull-caption").innerHTML = "没有更多数据了";
+							 }else{
+								 mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+								 pageNum = pageNum + 1;
+							 }
+							 $("#ulInfo").append(html);
+						 }
+					 }
+				 }); 
+			 }
+			function pulldownRefresh(){
+				console.log("下拉一下");
+			}
+		
+		
+			//搜索
+			document.getElementById("search").addEventListener('tap',function() {
+				var isRead = $("#isRead").val();
+				var queryUserFlag = $("#queryUserFlag").val();
+				var startTime = $("#start_date").val();
+				var endTime = $("#end_date").val();
+				mui.alert(isRead);
+				mui.alert(queryUserFlag);
+				mui.alert(startTime);
+				mui.alert(endTime);
+			});
+			
+			mui('#ulInfo').on('tap','li',function(v){
+				var targetUrl = this.id;
+				console.log("你要跳转的地址是："+targetUrl);
+				  /* var id = generateUUID()+"-messageDetail";
+				  mui.openWindow({
+				  	url: '../childPage/main.html',
+				  	id: id,
+				  	show: {
+				  		aniShow: 'pop-in'
+				  	},
+				  	styles: {
+				  		popGesture: 'hide'
+				  	},
+				  	waiting: {
+				  		autoShow: false
+				  	},
+					extras: {
+						tid: id
+					}
+				  }); */
+			})
+			
+			//日期选择
+			document.getElementById("start_date").addEventListener('tap',function() {
+				getDate('start_date');
+			});
+			document.getElementById("end_date").addEventListener('tap',function() {
+				getDate('end_date');
+			});
+			//获取文本框中的值
+			var start_date = $('#start_date').val();
+			var end_date = $('#end_date').val();
+			//日期js控件
+			function getDate(obj) {
+				var dDate = new Date();
+				//设置当前日期（不设置默认当前日期）
+				dDate.setFullYear(dDate.getFullYear(), dDate.getMonth(), dDate.getDate());
+				var minDate = new Date();
+				//最小时间
+				minDate.setFullYear(1900, 0, 1);
+				var maxDate = new Date();
+				//最大时间
+				maxDate.setFullYear(3000, 12, 31);
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					var objData = d.getFullYear() + "-" + (d.getMonth() < 9 ? '0': '') + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? '0': '') + d.getDate();
+					pickTime(obj, objData);
+				},
+				function(e) {
+					console.log("您没有选择日期");
+				},
+				{
+					title: '请选择日期',
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+			}
+			function pickTime(obj, objData) {
+				plus.nativeUI.pickTime(function(e) {
+					var d = e.date;
+					console.log("选择的时间：" + d.getHours() + ":" + d.getMinutes());
+					document.getElementById(obj).value = objData + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes() + ":" + (d.getSeconds() < 10 ? '0': '') + d.getSeconds();
+			
+				},
+				function(e) {
+					console.log("未选择时间：" + e.message);
+				});
+			}
+			
+			function goBack(){
+				var id = generateUUID()+"-main";
+				mui.openWindow({
+					url: '../childPage/main.html',
+					id: id,
+					show: {
+						aniShow: 'pop-in'
+					},
+					styles: {
+						popGesture: 'hide'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			}
+		})(mui);
+	</script>
+</html>
