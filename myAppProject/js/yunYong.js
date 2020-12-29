@@ -212,7 +212,7 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 	  var msgId = this.id;
 	  console.log("点击的信息主键ID："+msgId);
 	  var id = generateUUID()+"-messageDetail";
-	  mui.alert("开发中");
+	  mui.alert("啦啦啦，我是卖报小行家！");
 	  /* mui.openWindow({
 		url: '../childPage/messageDetail.html',
 		id: id,

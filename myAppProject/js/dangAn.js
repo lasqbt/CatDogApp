@@ -112,13 +112,11 @@ function getDangAnInfo(flag,pageNumV,limitV){
 }
 		
 mui('#ulInfoForDangAn').on('tap','li',function(v){
-	  mui.alert("开发中");
-	  return false;
-	  var msgId = this.id;
-	  console.log("点击的信息主键ID："+msgId);
-	  var id = generateUUID()+"-messageDetail";
+	  var trainId = this.id;
+	  console.log("点击的车辆信息主键ID："+trainId);
+	  var id = generateUUID()+"-trainDangAn";
 	  mui.openWindow({
-		url: '../childPage/messageDetail.html',
+		url: '../childPage/train_dang_an.html',
 		id: id,
 		show: {
 			aniShow: 'pop-in'
@@ -130,7 +128,7 @@ mui('#ulInfoForDangAn').on('tap','li',function(v){
 			autoShow: false
 		},
 		extras: {
-			msgId: msgId
+			trainId: trainId
 		},
 		createNew:false
 	  });
