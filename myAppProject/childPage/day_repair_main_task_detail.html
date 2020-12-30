@@ -463,7 +463,10 @@
 					$("#saveName").css("background-color","transparent");
 					$("#submitAudit").css("background-color","transparent");
 					$("#saveCheZhangName").css("background-color","transparent");
-					
+					if(taskStatus != '1'){
+						mui.toast("只有待提交的任务才能此操作");
+						return;
+					}
 					if(userRoleInfo != '1'){
 						mui.toast("只有车长能操作");
 						return;
