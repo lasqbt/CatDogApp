@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0;
+			}
+			
+			.mui-table-view-cell:after{
+			    background-color: transparent; /*ul的背景颜色*/
+			}
+			.mui-table-view:after{
+			    background-color: transparent; /*ul最下面的横线  liu aishen*/
+			}
+			.mui-table-view:before{
+			    background-color: transparent; /*ul最上面的横线  liu aishen*/
+			}
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				position: fixed;
+				bottom: 0;
+			}
+			/*div隐藏滚动条 并且仍能滚动*/
+			::-webkit-scrollbar{
+				display: none;
+			}		
+			
+			.detailBtnCss{
+				width: 95%;
+				height: 40px;
+				background-color: transparent;
+				box-shadow: 0px 0px 3px #929292 inset;
+				border-radius: 5px;
+				border: 0;
+				color: #929292;
+			}
+
+			.bottomSpan{
+				border-radius:5px;
+				color: red;
+				background-color: #007AFF;
+			}
+			
+			.trCss{
+				height: 35px;
+			}
+			
+			.tdCss{
+				font-size: 1rem;
+			}
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<span class="mui-icon mui-icon-camera" id="uploadImg" style="float: right;color: #929292;margin-right: 10px;"></span>
+				<div class="fontCss" style="margin-left: 10%;">
+					<span class="fontSpanCss">道岔捣固车--运用日志</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div class="mui-content" style="background-color: transparent;">
+				<div class="mui-card"  style="background-color: transparent;">
+					<ul class="mui-table-view"  style="background-color: transparent;">
+						<li class="mui-table-view-cell mui-collapse" style="box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;">
+							<a class="mui-navigate-right" href="#" >表单1</a>
+							<div class="mui-collapse-content" style="background-color: transparent;">
+								<form class="mui-input-group" style="background-color: transparent;">
+									<div class="mui-input-row">
+										<label style="background-color: transparent;">Input</label>
+										<input type="text" placeholder="普通输入框" style="background-color: transparent;">
+									</div>
+								</form>
+							</div>
+						</li>
+						
+						<li class="mui-table-view-cell mui-collapse" style="box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;margin-top: 1px;">
+							<a class="mui-navigate-right" href="#">表单2</a>
+							<div class="mui-collapse-content">
+								<form class="mui-input-group">
+									<div class="mui-input-row">
+										<label>Input</label>
+										<input type="text" placeholder="普通输入框">
+									</div>
+									<div class="mui-input-row">
+										<label>Input</label>
+										<input type="text" class="mui-input-clear" placeholder="带清除按钮的输入框">
+									</div>
+									
+									<div class="mui-input-row mui-plus-visible">
+										<label>Input</label>
+										<input type="text" class="mui-input-speech mui-input-clear" placeholder="语音输入">
+									</div>
+									<div class="mui-button-row">
+										<button class="mui-btn mui-btn-primary" type="button" onclick="return false;">确认</button>&nbsp;&nbsp;
+										<button class="mui-btn mui-btn-primary" type="button" onclick="return false;">取消</button>
+									</div>
+								</form>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-collapse" style="box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;margin-top: 1px;">
+							<a class="mui-navigate-right" href="#">表单3</a>
+							<div class="mui-collapse-content">
+								<form class="mui-input-group">
+									<div class="mui-input-row">
+										<label>Input</label>
+										<input type="text" placeholder="普通输入框">
+									</div>
+									<div class="mui-input-row">
+										<label>Input</label>
+										<input type="text" class="mui-input-clear" placeholder="带清除按钮的输入框">
+									</div>
+									
+									<div class="mui-input-row mui-plus-visible">
+										<label>Input</label>
+										<input type="text" class="mui-input-speech mui-input-clear" placeholder="语音输入">
+									</div>
+									<div class="mui-button-row">
+										<button class="mui-btn mui-btn-primary" type="button" onclick="return false;">确认</button>&nbsp;&nbsp;
+										<button class="mui-btn mui-btn-primary" type="button" onclick="return false;">取消</button>
+									</div>
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+<!-- 			<div style="width: 95%;height: 80%;margin-top: 8px;margin-left: 2.5%;">
+				<div style="width: 100%;height: 50%;box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;">
+					<div style="width: 100%;text-align: center;height: 12%;font-size:18px;padding: 8px;">
+						<img src="../images/d-55.png"  style="width: 10px;height: 10px;float: left;"/>
+						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+					<div style="width: 100%;overflow-y: auto;height: 79%;margin-left: 5px;" id="byProject">
+						<table style="width: 100%;text-align: center;">
+							<tr class="trCss">
+								<td class="tdCss" style="width: 40%;">车辆编号：</td>
+								<td class="tdCss" style="width: 60%;" id="trainNo"></td>
+							</tr>
+							<tr class="trCss">
+								<td class="tdCss" >车辆类型：</td>
+								<td class="tdCss" id="trainTypeName"></td>
+							</tr>
+						</table>
+					</div>
+					<div style="width: 100%;text-align: center;font-size:18px;padding: 8px;">
+						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
+						<img src="../images/d-22.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+				</div>
+
+				<div style="width: 100%;height: 5%;text-align: center;margin-top: 17px;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 25%;">
+								<button type="button" id="day" class="mui-btn mui-btn-primary detailBtnCss">
+									日检记录
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="ding" class="mui-btn mui-btn-primary detailBtnCss">
+									定检记录
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="year" class="mui-btn mui-btn-primary detailBtnCss">
+									年检记录
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="yong" class="mui-btn mui-btn-primary detailBtnCss">
+									运用日志
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> -->
+			
+		</div>
+	</body>
+	<script src="../js/jquery.min.js" type="text/javascript" ></script>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript"> </script>
+	<script src="../js/app.js" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"> </script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+
+	<script>
+		(function (mui) {
+			mui.init(); 
+			mui.plusReady(function(){
+				//全局变量
+				var self = plus.webview.currentWebview();
+				var trainId = self.trainId;
+				console.log("车辆ID=="+trainId);
+
+				
+				//日检
+				document.getElementById("day").addEventListener('tap',function() {
+					$("#day").css("background-color","#007AFF");
+					
+					$("#ding").css("background-color","transparent");
+					$("#year").css("background-color","transparent");
+					$("#yong").css("background-color","transparent");
+					mui.alert("好了，余下功能没啥技术含量了，不往下写了，就这样吧");
+				})
+				//定检
+				document.getElementById("ding").addEventListener('tap',function() {
+					$("#ding").css("background-color","#007AFF");
+					
+					$("#yong").css("background-color","transparent");
+					$("#day").css("background-color","transparent");
+					$("#year").css("background-color","transparent");
+					mui.alert("好了，余下功能没啥技术含量了，不往下写了，就这样吧");
+				})
+				
+				//年检
+				document.getElementById("year").addEventListener('tap',function() {
+					$("#year").css("background-color","#007AFF");
+					
+					$("#yong").css("background-color","transparent");
+					$("#day").css("background-color","transparent");
+					$("#ding").css("background-color","transparent");
+					mui.alert("好了，余下功能没啥技术含量了，不往下写了，就这样吧");
+				})
+				
+				//运用
+				document.getElementById("yong").addEventListener('tap',function() {
+					$("#yong").css("background-color","#007AFF");
+					
+					$("#day").css("background-color","transparent");
+					$("#ding").css("background-color","transparent");
+					$("#year").css("background-color","transparent");
+					mui.alert("好了，余下功能没啥技术含量了，不往下写了，就这样吧");
+				})
+
+			})
+		})(mui);
+	</script>
+	
+	
+</html>

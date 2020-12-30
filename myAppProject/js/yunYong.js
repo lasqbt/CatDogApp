@@ -146,7 +146,7 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 }
 					 
 					 html = html + "</td></tr>";
-					 html = html + "<tr><td>车辆编号：</td><td>"+dataInfo[v].trainNo+"</td>";
+					 html = html + "<tr><td>车辆编号：<input type='hidden' id='"+dataInfo[v].id+"hidden' value='"+dataInfo[v].trainTypeId+";"+dataInfo[v].trainMode+";"+dataInfo[v].taskStatus+"' /></td><td>"+dataInfo[v].trainNo+"</td>";
 					 html = html + "<td>创建时间：</td><td>"+Format(dataInfo[v].createTime,"yyyy-MM-dd")+"</td></tr>";
 					 html = html + '</tr></table></a>';
 					 html = html + '</li>';
@@ -209,26 +209,38 @@ document.getElementById("addForYunYong").addEventListener('tap',function() {
 });
 		
 mui('#ulInfoForYunYong').on('tap','li',function(v){
-	  var msgId = this.id;
-	  console.log("点击的信息主键ID："+msgId);
-	  var id = generateUUID()+"-messageDetail";
-	  mui.alert("啦啦啦，我是卖报小行家！");
-	  /* mui.openWindow({
-		url: '../childPage/messageDetail.html',
-		id: id,
-		show: {
-			aniShow: 'pop-in'
-		},
-		styles: {
-			popGesture: 'hide'
-		},
-		waiting: {
-			autoShow: false
-		},
-		extras: {
-			msgId: msgId
-		},
-		createNew:false
-	  }); */
+	  var taskId = this.id;
+	  var idInfo = taskId+"hidden";
+	  var arr = $("#"+idInfo).val().split(";");
+	  var trainType = arr[0];
+	  var trainMode = arr[1];
+	  var trainStatus = arr[2];
+	   console.log("点击的运用信息主键ID："+taskId+"，trainType="+trainType+"，trainMode="+trainMode+"，trainStatus="+trainStatus);
+	  if(trainType == '52'){
+		  var id = generateUUID()+"-yunYongdcdgc";
+		  mui.openWindow({
+		  		url: '../childPage/yun_yong_dcdgc.html',
+		  		id: id,
+		  		show: {
+		  			aniShow: 'pop-in'
+		  		},
+		  		styles: {
+		  			popGesture: 'hide'
+		  		},
+		  		waiting: {
+		  			autoShow: false
+		  		},
+		  		extras: {
+		  			taskId: taskId,
+					trainType:trainType,
+					trainMode:trainMode,
+					trainStatus:trainStatus
+		  		},
+		  		createNew:false
+		  }); 
+	  }else{
+		   mui.alert("只做了道岔捣固车，其他车没做，没什么技术含量了！");
+	  }
+	  
 })
 /********运用管理部分的js end*******/

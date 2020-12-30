@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="../js/config.js"></script>
+
+		<!--标准mui.css-->
+		<link type="text/css" rel="stylesheet" href="../css/headerCss.css" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.css">
+		<link type="text/css" rel="stylesheet" href="../css/showLoading.css" />
+		<style>
+			.mainDiv{
+				background-image: url(../images/121234.png);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				zoom: 1; 
+				background-color: #fff;
+				background-repeat: no-repeat;
+				background-size: cover;
+				-webkit-background-size: cover;
+				-o-background-size: cover;
+				background-position: center 0;
+			}
+			
+			.liCss{
+				background-color:rgba(39,40,34,0.2);
+				position: fixed;
+				bottom: 0;
+			}
+			/*div隐藏滚动条 并且仍能滚动*/
+			::-webkit-scrollbar{
+				display: none;
+			}
+			
+			.tdCss{
+				width: 10%;
+				border-radius: 5px;
+			}
+			
+			input{
+				color: #929292;
+				font-size: 1rem;
+			}
+			input::-webkit-input-placeholder{
+			    color:#929292;
+			}
+			input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+			    color:#929292;
+			}
+			input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+			    color:#929292;
+			}
+			input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+			    color:#929292;
+			}
+			
+			.mui-input-group::after{
+				background-color: transparent;
+			}
+			.mui-input-group::before{
+				background-color: transparent;
+			}
+			
+			.detailCss{
+				padding: 8px;
+				font-size: 0.9rem;
+			}
+			
+			.detailBtnCss{
+				width: 95%;
+				height: 40px;
+				background-color: transparent;
+				box-shadow: 0px 0px 3px #929292 inset;
+				border-radius: 5px;
+				border: 0;
+				color: #929292;
+			}
+			
+		</style>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">				
+			<header style="width: 100%;height: 4%;z-index: 99999999;">
+				<span class="us_uer4" onclick="mui.back();"></span>
+				<div class="fontCss">
+					<span class="fontSpanCss">道岔捣固车--运用日志</span>
+				</div>
+				<div class="title"></div>
+			</header>
+			<div style="width: 95%;height: 80.5%;margin-top: 8px;margin-left: 2.5%;">
+				<div style="width: 100%;height: 100%;box-shadow: 0px 0px 5px #929292 inset;border-radius: 5px;color: #929292;">
+					<div style="width: 100%;text-align: center;height: 5%;font-size:18px;padding: 8px;">
+						<img src="../images/d-55.png"  style="width: 10px;height: 10px;float: left;"/>
+						<span style="color: blueviolet;">表单信息</span>
+						<img src="../images/d-44.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+					<div style="width: 100%;overflow-y: auto;height: 92%;margin-left: 5px;" id="byProject">
+						<form style="font-size: 1rem;margin-top: 0px;background-color: transparent;border: none;">
+							<div style="width: 100%;">
+								<label style="float: left;width: 80px;">日期时间：</label>
+								<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+							</div>
+							<div style="width: 100%;">
+								<label style="float: left;width: 80px;">工程名称：</label>
+								<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 250px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+							</div>
+							
+							<div id="1div" style="display: block;">
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">天窗时间：</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>h</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>min至</label>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>h</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>min,计</label>
+									</div>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>min</label>
+									</div>
+								</div>
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">作业线路：</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>线</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>站至</label>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>站</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>行</label>
+									</div>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>km</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>m至</label>
+									</div>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>km</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>m</label>
+									</div>
+								</div>
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">作业道岔：</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>线</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>站至</label>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>道</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>、</label>
+									</div>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>、</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>、</label>
+									</div>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 75%;margin-left: 80px;">
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>、</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>号道岔</label>
+									</div>
+								</div>
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">线路捣固：</label>
+									<label>延长</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>km</label>
+									<label>累计</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>km</label>
+								</div>
+								<div style="width: 100%;" style="border: 1px solid yellow;">
+									<div style="width: 77%;margin-left: 80px;">
+										<label>复捣</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>km</label>
+										<label>累计</label>
+										<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<label>km</label>
+									</div>
+								</div>
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">道岔捣固：</label>
+									<label>当日</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>km</label>
+									<label>累计</label>
+									<input type="text" id="projectName" name="projectName" maxlength="20" style="background-color: transparent;width: 70px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>km</label>
+								</div>
+							</div>
+							<div id="2div" style="display: none;"></div>
+							<div id="3div" style="display: none;"></div>
+							<div id="4div" style="display: none;"></div>
+							<div id="5div" style="display: none;"></div>
+							<div id="6div" style="display: none;"></div>
+							<div id="7div" style="display: none;"></div>
+						</form>
+					</div>
+					<div style="width: 100%;text-align: center;height: 5%;font-size:18px;padding: 8px;margin-top: -5px;">
+						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
+						<img src="../images/d-22.png"  style="width: 10px;height: 10px;float: right;"/>
+					</div>
+				</div>
+
+				<div style="width: 100%;height: 5%;text-align: center;margin-top: 1.1%;">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width: 25%;">
+								<button type="button" id="uploadPic" class="mui-btn mui-btn-primary detailBtnCss">
+									上传照片
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="lookPic" class="mui-btn mui-btn-primary detailBtnCss">
+									查看照片
+								</button>
+							</td>
+							<td style="width: 25%;">
+								<button type="button" id="submitAudit" class="mui-btn mui-btn-primary detailBtnCss">
+									提交审核
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="liCss" style="width: 100%;overflow-x: auto;position: fixed;bottom: 0;height: 7%;">
+					<table style="width: 1000px;text-align: center;left: 0;">
+						<tr id="repairProject" style="background-color: #502171;color: #929292;font-size: 0.8rem;height: 50px;">
+							<td class="tdCss" id="1td" style="background-color: #007AFF;">基本信息</td>
+							<td class="tdCss" id="2td">捣固车</td>
+							<td class="tdCss" id="3td">操作人员</td>
+							<td class="tdCss" id="4td">燃油加注</td>
+							<td class="tdCss" id="5td">故障处理</td>
+							<td class="tdCss" id="6td">材料消耗</td>
+							<td class="tdCss" id="7td">燃油加注</td>
+						</tr>
+					</table>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery.min.js" type="text/javascript" ></script>
+	<script src="../js/mui.min.js" type="text/javascript"></script>
+	<script src="../js/mui.enterfocus.js" type="text/javascript"> </script>
+	<script src="../js/app.js" type="text/javascript"></script>
+	<script src="../js/common.js" type="text/javascript"> </script>
+	<script src="../js/mui.pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/commonUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/showLoading.js" type="text/javascript"></script>
+
+	<script>
+		(function (mui) {
+			mui.init(); 
+			mui.plusReady(function(){					  
+				var projectIdArr = new Array();
+				var self = plus.webview.currentWebview();
+				var taskId = self.taskId;
+				var taskStatus = self.taskStatus;
+				var trainType = self.trainType;
+				var trainMode = self.trainMode;
+				console.log("编辑的任务ID=="+taskId);
+				
+				document.getElementById("1td").addEventListener('tap',function() {
+					changColor(1);
+				});
+				
+				document.getElementById("2td").addEventListener('tap',function() {
+					changColor(2);
+				});
+				
+				document.getElementById("3td").addEventListener('tap',function() {
+					changColor(3);
+				});
+				
+				document.getElementById("4td").addEventListener('tap',function() {
+					changColor(4);
+				});
+				
+				document.getElementById("5td").addEventListener('tap',function() {
+					changColor(5);
+				});
+				
+				document.getElementById("6td").addEventListener('tap',function() {
+					changColor(6);
+				});
+				
+				document.getElementById("7td").addEventListener('tap',function() {
+					changColor(7);
+				});
+				
+				function changColor(num){
+					for(var v=1;v<8;v++){
+						if(v==num){
+							$("#"+v+"td").css("background-color","#007AFF");
+						}else{
+							$("#"+v+"td").css("background-color","transparent");
+						}
+					}
+				}
+				
+			})
+		})(mui);
+	</script>
+	
+	
+</html>
