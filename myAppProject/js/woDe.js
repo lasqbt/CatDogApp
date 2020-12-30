@@ -27,7 +27,7 @@ var show = setInterval(function(){
  }, 0.1) */
 //判断已使用本地存储大小
 if(!window.localStorage) {
-		 console.log('浏览器不支持localStorage');
+	console.log('浏览器不支持localStorage');
 }
 var size = 0;
  for(item in window.localStorage) {
@@ -68,45 +68,72 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  var msg = '缓存数据大小:'+r+'KB,清除缓存后你需要重新用账号密码登录后方可正常使用手势或者指纹登录！确认开始清除吗？';
 		  clearStart(msg);
 	  }else if(clickId == 'versionInfo'){
-		  var oldVersion = parseFloat(version);
-		  mui.confirm('当前版本号：'+ version, '提示', ['检查更新','取消'], function(e) {
-			if (e.index == 0) {
-				var url = path2+"/version/getTheNewVersionInfo";
-				console.log("获取版本号=="+url);
-				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				mui.showLoading("检测中,请稍后...","div"); 
-				mui.ajax(url,{
-					data:{
-							 appSessionIdInfo:appSessionIdInfo
-						},
-					async:true,
-					dataType:'json',   
-					type:'get',
-					success:function(data){
-						mui.hideLoading();
-						if(data.code=='0'){
-							var newVersion = parseFloat(data.versionInfo);
-							if(newVersion>oldVersion){
-								mui.alert("新版本已经发布，可以卸载并更新，功能开发中...");
+		  //var oldVersion = plus.runtime.version;
+		  var oldVersion ;
+		  plus.runtime.getProperty(plus.runtime.appid,function(inf){
+  　　　　　　oldVersion=inf.version;
+  　　　　　　console.log("当前应用版本："+oldVersion);
+			 mui.toast("更新后的当前应用版本："+oldVersion);
+			  mui.confirm('当前版本号：'+ oldVersion, '提示', ['检查更新','取消'], function(e) {
+				if (e.index == 0) {
+					var url = path2+"/version/getTheNewVersionInfo";
+					console.log("获取版本号=="+url);
+					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+					mui.showLoading("检测中,请稍后...","div"); 
+					mui.ajax(url,{
+						data:{
+								 appSessionIdInfo:appSessionIdInfo
+							},
+						async:true,
+						dataType:'json',   
+						type:'get',
+						success:function(data){
+							mui.hideLoading();
+							if(data.code=='0'){
+								var newVersion = parseFloat(data.versionInfo);
+								if(newVersion>oldVersion){
+									// 下载文件地址
+									var url = path2+"/createErWeiMa/downFile";   
+									plus.nativeUI.showWaiting("升级中...");
+									var dtask = plus.downloader.createDownload( url, {method:"GET"}, function ( d, status ) {  
+										plus.nativeUI.closeWaiting();
+										// 下载成功
+										if ( status == 200 ) {   
+											var path = d.filename;  
+											console.log(d.filename);  
+											if(mui.os.ios){
+												// 应用在appstore的地址
+												url='itms-apps://itunes.apple.com/cn/app/hello-h5+/id682211190?l=zh&mt=8';
+												plus.runtime.openURL(url);
+											}else{
+												// 安装下载的apk文件
+												plus.runtime.install(path); 
+											}
+										} else {//下载失败  
+											alert( "更新失败，请重新来过，北鼻！失败状态== " + status );   
+										}    
+									});  
+									dtask.start(); 
+								}else{
+									mui.alert("当前安装的已经是最新版本！无需更新");
+								}
 							}else{
-								mui.alert("当前安装的已经是最新版本！无需更新");
+								mui.alert(data.msg);
 							}
-						}else{
-							mui.alert(data.msg);
+						},
+						error:function(xhr,type,errorThrown){
+							mui.hideLoading();
+							if(type=='timeout'){
+								mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+							}else{
+								mui.alert('请求失败');
+							}
 						}
-					},
-					error:function(xhr,type,errorThrown){
-						mui.hideLoading();
-						if(type=='timeout'){
-							mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
-						}else{
-							mui.alert('请求失败');
-						}
-					}
-				}); 
-			}else{
-				console.log("点击了不")
-			}
+					}); 
+				}else{
+					console.log("点击了不")
+				}
+			  });
 		  });
 	  }else if(clickId == 'shouShi'){
 		  var id = generateUUID()+"-handLocker";
