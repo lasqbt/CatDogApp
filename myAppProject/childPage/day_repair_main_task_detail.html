@@ -282,10 +282,15 @@
 				document.getElementById("remarkInfo").addEventListener('tap',function() {
 					var a = mui.prompt('请输入备注信息','','备注',['取消','保存'],function(e){
 						if(e.index==1){
+							if(taskStatus != '1'){
+								mui.toast("只有待提交的任务才能此操作");
+								return;
+							}
 							if(userRoleInfo != '1'){
 								mui.toast("只有车长能操作");
 								return;
 							}
+							
 							var text = document.querySelector('.mui-popup-input textarea').value.trim();
 							console.log(text);
 							remarkInfoCache = text;
