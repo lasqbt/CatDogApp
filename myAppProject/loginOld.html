@@ -6,61 +6,12 @@
 	<title>检修管理平台</title>
 	<!--必要样式-->
 	<link type="text/css" rel="stylesheet" href="css/mui.css" />
-	<!-- <link type="text/css" rel="stylesheet" href="css/component.css" /> -->
+	<link type="text/css" rel="stylesheet" href="css/component.css" />
 	<link type="text/css" rel="stylesheet" href="css/showLoading.css" />
 	<link type="text/css" rel="stylesheet" href="../css/app.css" />
 	<script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
 	<style>
-		.mainDiv{
-			background-image: url(images/121234.png);
-			top: 0;
-			left: 0;
-			overflow: hidden;
-			zoom: 1; 
-			background-color: #fff;
-			background-repeat: no-repeat;
-			background-size: cover;
-			-webkit-background-size: cover;
-			-o-background-size: cover;
-			background-position: center 0;
-			height:100%;
-			width:100%;
-			position:absolute;
-			display: flex;
-		}
-		
-		.loginBox{
-			width: 100%;
-			height: 300px;
-			margin: auto;
-		}
-		
-		input{
-			color: #929292;
-			font-size: 0.8rem;
-		}
-		input::-webkit-input-placeholder{
-		    color:#929292;
-		}
-		input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-		    color:#929292;
-		}
-		input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-		    color:#929292;
-		}
-		input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
-		    color:#929292;
-		}
-		
-		.canvasCss{
-			width: 34%;
-			height: 40px; 
-			float: right;
-			margin-right: 6%;
-			margin-top: -55px;
-		}
-		
 		.changeLogin{
 			color: #008DF3;
 			font-size: 0.9rem;
@@ -72,33 +23,31 @@
 	</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
-		<div class="mainDiv">
-			<div class="loginBox">
-				<div style="height: 16.5%;text-align: center;font-size: 2rem;color: #007AFF;font-weight: 800;">
-					大机段检修管理平台
-				</div>
-				<div style="display: block;" id="accountLogin">
-					<div style="height: 16.5%;text-align: center;">
-						<input class="mui-input-clear" onfocus="changeBorder('loginAccount','1')" onblur="changeBorder('loginAccount','2')" autocomplete="off" type="text" value="" name="loginAccount" id="loginAccount" maxlength="20" placeholder="请输入用户账号" style="width: 90%; background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 7px;">
+		<div class="mainDiv" style="height:100%;width:100%;position:absolute;">
+			<div class="logo_box">
+				<h3 style="font-size: 1.5rem;">乌鲁木齐检修管理平台</h3>
+				<div style="margin-left: 5%;margin-top: 30px;display: block;" id="accountLogin">
+					<div class="input_outer" id="accountDiv">
+						<span class="u_user"></span>
+						<input name="loginAccount" id="loginAccount" onfocus="$('#accountDiv').addClass('shineCss')" onblur="$('#accountDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px;" type="text" maxlength="15" placeholder="请输入账号">
 					</div>
-					<div style="height: 16.5%;text-align: center;">
-						<input onfocus="changeBorder('password','1')" onblur="changeBorder('password','2')" autocomplete="off" type="password" value="" name="password" id="password" maxlength="20" placeholder="请输入用户密码" style="width: 90%; background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 7px;">
+					<div class="input_outer" id="pwdDiv">
+						<span class="us_uer2"></span>
+						<input name="password" id="password" onfocus="$('#pwdDiv').addClass('shineCss')" onblur="$('#pwdDiv').removeClass('shineCss')" autocomplete="off" class="text" style="color: #008DF3 !important;background: none;border: none;margin-top: 2px; "value="" maxlength="15" type="password" placeholder="请输入密码">
 					</div>
-					<div style="height: 16.5%;text-align: center;">
-						<input onfocus="changeBorder('codeInfo','1')" onblur="changeBorder('codeInfo','2')" autocomplete="off" type="text" value="" name="codeInfo" id="codeInfo" maxlength="6"  placeholder="请输入六位验证码" style="width: 90%; background-color: transparent;box-shadow: 0px 0px 3px #929292 inset;border-radius: 7px;">
+					<div class="input_outer" id="codeDiv">
+						<span class="us_uer3"></span>
+						<input type="text" id="codeInfo" onfocus="$('#codeDiv').addClass('shineCss')" onblur="$('#codeDiv').removeClass('shineCss')" autocomplete="off" name="codeInfo" value="" style="background: none;border: none;margin-top: 2px;" placeholder="请输入验证码" class="input-val" maxlength="6">
 						<canvas id="canvas"  class="canvasCss"></canvas>
 					</div>
-					<div style="height: 16.5%;text-align: center;">
-						<button type="button" id="saveName" onclick="login()" class="mui-btn mui-btn-primary" style="width: 90%; background-color: #007AFF;box-shadow: 0px 0px 3px #929292 inset;color: border-radius: 7px;border: 0;color: white;font-size: 1.5rem;">
-							登录
-						</button>
-					</div>
+					<div class="mb2"><a class="act-but submit loginBox" href="javascript:void(0)" onclick="login()" style="color: #FFFFFF">登录</a></div>
 				</div>
-				<div style="background-color: transparent;display: none; center;margin-left: 15%;" id="shouShiLogin">
+				
+				<div style="background-color: transparent;margin-left: 13%;display: none;" id="shouShiLogin">
 					<div id='holder' style="background-color: transparent;border: none;" class="mui-locker" data-locker-options='{"ringColor":"blue","fillColor":"rgba(50,205,50,1)","pointColor":"red","lineColor":"yellow"}' data-locker-width='300' data-locker-height='300'></div>
 					<div id='alert'></div>
 				</div>
-				<div style="height: 16.5%;text-align: center;font-size: 2rem;color: blue;">
+				<div style="width: 90%;height: 30px;margin-left: 5%;text-align: center;">
 					<a id="loginType" class="changeLogin">切换登录方式</a>
 				</div>
 			</div>
@@ -111,15 +60,6 @@
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/mui.locker.js"></script>
 	<script type="text/javascript"> 
-		function changeBorder(id,flag){
-			if(flag=='1'){
-				$('#'+id).css("box-shadow","0px 0px 3px #007AFF inset");
-			}else{
-				$('#'+id).css("box-shadow","0px 0px 3px #929292 inset");
-			}
-			
-		}
-	
 		// 验证码的生成和提交验证
         var show_num = [];
         draw(show_num);
