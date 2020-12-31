@@ -82,6 +82,13 @@
 				color: #929292;
 			}
 			
+			/**单选框，复选框圈圈大小**/
+			.mui-radio input[type='radio']:before, .mui-checkbox input[type='checkbox']:before{
+				font-size: 20px;
+				padding: 7px;
+				/* margin: 0px 0px -1000px 0px; */
+				line-height: 1.5;
+			}
 		</style>
 	</head>
 	<body style="margin:0px; padding:0px;">
@@ -111,7 +118,7 @@
 								<input type="text" id="projectName" name="projectName" maxlength="20" style="padding: 0px 0px; background-color: transparent;width: 250px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 							</div>
 							
-							<div id="1div" style="display: block;">
+							<div id="1div" style="display: none;">
 								<div style="width: 100%;">
 									<label style="float: left;width: 80px;">天窗时间：</label>
 									<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
@@ -132,6 +139,11 @@
 										<input type="text" id="tianchuang5" name="tianchuang5" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>min</label>
 									</div>
+								</div>
+								<div style="width: 100%;">
+									<label style="float: left;width: 80px;">作业时间：</label>
+									<input type="text" id="workTime" name="workTime" maxlength="20" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+									<label>min</label>
 								</div>
 								<div style="width: 100%;">
 									<label style="float: left;width: 80px;">作业线路：</label>
@@ -224,7 +236,7 @@
 									<label>km</label>
 								</div>
 							</div>
-							<div id="2div" style="display: none;">
+							<div id="2div" style="display: block;">
 								<div style="width: 100%;">
 									<label style="float: left;width: 100px;">发动机运转：</label>
 									<input type="text" id="fdjYunZhuan" name="fdjYunZhuan" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
@@ -236,10 +248,25 @@
 									<label>r/min</label>
 								</div>
 								<div style="width: 100%;">
-									<label style="float: left;width: 100px;">发动机温度：</label>
-									<input type="text" id="fdjWenDu" name="fdjWenDu" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
-									<input name="fdjWenDuIsNormal" id="fdjWenDuIsNormal" value="1" type="checkbox">
-									<label>正常</label>
+									<table style="width: 100%;">
+										<tr>
+											<td style="width: 25%;">
+												<label>发动机温度：</label>
+											</td>
+											<td style="width: 30%;">
+												<input type="text" id="fdjWenDu" name="fdjWenDu" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+											</td>
+											<td style="width: 30%;">
+												<div class="mui-input-row mui-checkbox mui-left" style="">
+													<label style="padding-left: 20px;">正常</label>
+													<input style="left: -8px;width: 5px;height: 5px;" name="fdjWenDuIsNormal" id="fdjWenDuIsNormal" value="1" type="checkbox" >
+												</div>
+											</td>
+											<td style="width: 15%;">
+												
+											</td>
+										</tr>
+									</table>
 								</div>
 								<div style="width: 100%;">
 									<label style="float: left;width: 100px;">机油压力：</label>
@@ -247,10 +274,25 @@
 									<label>bar</label>
 								</div>
 								<div style="width: 100%;">
-									<label style="float: left;width: 100px;">变扭器温度：</label>
-									<input type="text" id="bnqWenDu" name="bnqWenDu" maxlength="20" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
-									<input name="bnqWenDuIsNormal" id="bnqWenDuIsNormal" value="1" type="checkbox">
-									<label>正常</label>
+									<table style="width: 100%;">
+										<tr>
+											<td style="width: 25%;">
+												<label>变扭器温度：</label>
+											</td>
+											<td style="width: 30%;">
+												<input type="text" id="bnqWenDu" name="bnqWenDu" maxlength="20" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+											</td>
+											<td style="width: 30%;">
+												<div class="mui-input-row mui-checkbox mui-left" style="">
+													<label style="padding-left: 20px;">正常</label>
+													<input style="left: -8px;width: 5px;height: 5px;" name="bnqWenDuIsNormal" id="bnqWenDuIsNormal" value="1" type="checkbox" >
+												</div>
+											</td>
+											<td style="width: 15%;">
+												
+											</td>
+										</tr>
+									</table>
 								</div>
 								<div style="width: 100%;">
 									<label style="float: left;width: 100px;">变扭器压力：</label>
