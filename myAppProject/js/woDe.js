@@ -73,7 +73,7 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  plus.runtime.getProperty(plus.runtime.appid,function(inf){
   　　　　　　oldVersion=inf.version;
   　　　　　　console.log("当前应用版本："+oldVersion);
-			 mui.toast("更新后的当前应用版本："+oldVersion);
+			 //mui.toast("更新后的当前应用版本："+oldVersion);
 			  mui.confirm('当前版本号：'+ oldVersion, '提示', ['检查更新','取消'], function(e) {
 				if (e.index == 0) {
 					var url = path2+"/version/getTheNewVersionInfo";
