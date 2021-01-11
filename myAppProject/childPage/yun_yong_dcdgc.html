@@ -82,6 +82,16 @@
 				color: #929292;
 			}
 			
+			.addOrDelBtnCss{
+				width: 37px;
+				height: 30px;
+				background-color: transparent;
+				box-shadow: 0px 0px 3px #929292 inset;
+				border-radius: 5px;
+				border: 0;
+				color: #929292;
+			}
+			
 			/**单选框，复选框圈圈大小**/
 			.mui-radio input[type='radio']:before, .mui-checkbox input[type='checkbox']:before{
 				font-size: 20px;
@@ -92,7 +102,7 @@
 			
 			.textareaCss{
 				height: 100px;
-				width: 98%;
+				width: 97%;
 				background-color: transparent;
 				box-shadow: 0px 0px 5px #929292 inset;
 				font-size: 0.8rem;
@@ -128,7 +138,7 @@
 								<input type="text" id="projectName" name="projectName" maxlength="20" style="padding: 0px 0px; background-color: transparent;width: 250px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 							</div>
 							
-							<div id="1div" style="display: none;">
+							<div id="1div" style="display: block;">
 								<div style="width: 100%;">
 									<label style="float: left;width: 80px;">天窗时间：</label>
 									<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
@@ -436,61 +446,61 @@
 							<div id="3div" style="display: none;">
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">司机长：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="siJiZhang" name="siJiZhang" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>运行司机：</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="yunXingSiJi" name="yunXingSiJi" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">1号位：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="oneWei" name="oneWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>2号位：</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="twoWei" name="twoWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">3号位：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="threeWei" name="threeWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>4号位：</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="threeWei" name="threeWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">5号位：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="fiveWei" name="fiveWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>6号位：</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="sixWei" name="sixWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">柴油：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="caiYou" name="caiYou" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>#</label>
 										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>L</label>
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">齿轮油：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="chiLunYou" name="chiLunYou" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>#</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="chiLunYouSheng" name="chiLunYouSheng" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>L</label>
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">机油：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="jiYou" name="jiYou" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>#</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="jiYouSheng" name="jiYouSheng" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>L</label>
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">液压油：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="yeYaYou" name="yeYaYou" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>#</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="yeYaYouSheng" name="yeYaYouSheng" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>L</label>
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">润滑油：</label>
-										<input type="text" id="tianchuang1" name="tianchuang1" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="runHuaYou" name="runHuaYou" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>#</label>
-										<input type="text" id="tianchuang2" name="tianchuang2" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="runHuaYouSheng" name="runHuaYouSheng" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>L</label>
 									</div>
 									<div style="width: 100%;">
@@ -502,19 +512,19 @@
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="text-align: left;">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">正常作业</label>
-														<input style="left: -1px;width: 5px;height: 5px;" name="fuShuSheBeiArr" id="jiGuangZhunZhi" value="1" type="checkbox">
+														<input style="left: -1px;width: 5px;height: 5px;" name="zhengChangZuoYe" id="zhengChangZuoYe" value="1" type="checkbox">
 													</div>
 												</td>
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="">
 														<label style="padding-left: 8px;padding-right: 0px;text-align: center;">短途转场</label>
-														<input style="left: -2px;" name="fuShuSheBeiArr" id="jiLuYi" value="2" type="checkbox">
+														<input style="left: -2px;" name="duanTuZhuanChang" id="duanTuZhuanChang" value="1" type="checkbox">
 													</div>
 												</td>
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">停机检修</label>
-														<input style="left: -2px;" name="fuShuSheBeiArr" id="duLiZhouWenJianKong" value="6" type="checkbox">
+														<input style="left: -2px;" name="tingJiJianXiu" id="tingJiJianXiu" value="1" type="checkbox">
 													</div>
 												</td>
 											</tr>
@@ -529,19 +539,19 @@
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="text-align: left;">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">未批天窗</label>
-														<input style="left: -1px;" name="fuShuSheBeiArr" id="jiCheXinHao" value="3" type="checkbox">
+														<input style="left: -1px;" name="weiPiTianChuang" id="weiPiTianChuang" value="1" type="checkbox">
 													</div>
 												</td>
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">故障停机</label>
-														<input style="left: -2px;" name="fuShuSheBeiArr" id="wuXianLieTiao" value="4" type="checkbox">
+														<input style="left: -2px;" name="guZhangTingJi" id="guZhangTingJi" value="1" type="checkbox">
 													</div>
 												</td>
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">其他工况</label>
-														<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+														<input style="left: -2px;" name="otherGongKuang" id="otherGongKuang" value="1" type="checkbox">
 													</div>
 												</td>
 											</tr>
@@ -556,7 +566,7 @@
 												<td style="width: 25.5%;">
 													<div class="mui-input-row mui-checkbox mui-left" style="text-align: left;">
 														<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">长途转场</label>
-														<input style="left: -1px;" name="fuShuSheBeiArr" id="jiCheXinHao" value="3" type="checkbox">
+														<input style="left: -1px;" name="changTuZhuanChang" id="changTuZhuanChang" value="1" type="checkbox">
 													</div>
 												</td>
 												<td style="width: 25.5%;">
@@ -573,7 +583,7 @@
 										</table>
 									</div>
 							</div>
-							<div id="4div" style="display: block;border: 1px solod yellow;">
+							<div id="4div" style="display: none;">
 								<div style="width: 100%;">
 									<table style="width: 100%;">
 										<tr style="height: 100px;">
@@ -581,7 +591,7 @@
 												<label>运用情况记录</label>
 											</td>
 											<td style="width: 95%;">
-												<textarea id="" maxLength="200" placeholder="踩一踩,200个字符以内..." class="textareaCss"></textarea>
+												<textarea id="yunYongQingKuang" name="yunYongQingKuang" maxLength="200" placeholder="踩一踩,200个字符以内..." class="textareaCss"></textarea>
 											</td>
 										</tr>
 										<tr style="height: 100px;">
@@ -589,7 +599,7 @@
 												<label>发生时间及现象和原因</label>
 											</td>
 											<td style="width: 95%;">
-												<textarea id="" maxLength="200" placeholder="描一描,200个字符以内..." class="textareaCss"></textarea>
+												<textarea id="timeAndReason" name="timeAndReason" maxLength="200" placeholder="描一描,200个字符以内..." class="textareaCss"></textarea>
 											</td>
 										</tr>
 										<tr style="height: 100px;">
@@ -597,7 +607,7 @@
 												<label>处理过程已经结果</label>
 											</td>
 											<td style="width: 95%;">
-												<textarea id="" maxLength="200" placeholder="留一留,200个字符以内..." class="textareaCss"></textarea>
+												<textarea id="dealResult" name="dealResult" maxLength="200" placeholder="留一留,200个字符以内..." class="textareaCss"></textarea>
 											</td>
 										</tr>
 										<tr style="height: 100px;">
@@ -605,7 +615,7 @@
 												<label>处理故障人员</label>
 											</td>
 											<td style="width: 95%;">
-												<textarea id="" maxLength="200" placeholder="写一写,200个字符以内..." class="textareaCss"></textarea>
+												<textarea id="dealUsers" name="dealUsers" maxLength="200" placeholder="写一写,200个字符以内..." class="textareaCss"></textarea>
 											</td>
 										</tr>
 										<tr style="height: 100px;">
@@ -613,48 +623,48 @@
 												<label>故障分类以及等级</label>
 											</td>
 											<td style="width: 95%;">
-												<div style="box-shadow: 0px 0px 5px #929292 inset;height: 100px;width: 97.5%;border-radius: 2px;">
+												<div style="box-shadow: 0px 0px 5px #929292 inset;height: 100px;width: 97%;border-radius: 2px;">
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">电气故障</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="dianQi" value="1" type="checkbox">
 														</div>
 													</div>
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">液压故障</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="yeYa" value="2" type="checkbox">
 														</div>
 													</div>
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">制动故障</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="zhiDong" value="3" type="checkbox">
 														</div>
 													</div>
 													
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">气动故障</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="qiDong" value="4" type="checkbox">
 														</div>
 													</div>
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">动力传动</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="dongLiChuanDong" value="5" type="checkbox">
 														</div>
 													</div>
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">走行故障</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="zouXing" value="6" type="checkbox">
 														</div>
 													</div>
 													<div style="width: 33%;height: 30px;float: left;">
 														<div class="mui-input-row mui-checkbox mui-left" style="">
 															<label style="padding-left: 0px;padding-right: 0px;text-align: center;margin-left: 5px;">工作装置</label>
-															<input style="left: -2px;" name="fuShuSheBeiArr" id="yunXingJianKong" value="5" type="checkbox">
+															<input style="left: -2px;" name="guZhangLeveLtypeArr" id="gongZuoZhuangZhi" value="7" type="checkbox">
 														</div>
 													</div>
 												</div>
@@ -664,8 +674,34 @@
 								</div>
 								
 							</div>
-							<div id="5div" style="display: none;"></div>
-							<div id="6div" style="display: none;"></div>
+							<div id="5div" style="display: none;">
+								<div style="background-color: transparent;box-shadow: 0px 0px 5px #929292 inset;width: 97%;height: 150px;border-radius: 5px;">
+									<div style="width: 86%;height: 150px;float: left;padding-top: 10px;padding-left: 10px;">
+										<label style="width: 50px;">材料名称：</label>
+										<input type="text" id="materialName" name="materialName" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+										</br>
+										<label style="width: 50px;">规格型号：</label>
+										<input type="text" id="materialType" name="materialType" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+										</br>
+										<label style="width: 50px;">单位：</label>
+										<input type="text" id="materialUnit" name="materialUnit" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
+										<label style="width: 50px;">数量：</label>
+										<input type="text" id="materialNum" name="materialNum" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
+										</br>
+										<label style="width: 50px;">完成人员：</label>
+										<input type="text" id="materialUser" name="materialUser" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+									</div>
+									<div style="width: 14%;height: 150px;float: left;padding-top: 9.5%;">
+										<div>
+										<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-plusempty addOrDelBtnCss"></button>
+										</div>
+										</br>
+										<div>
+										<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-trash addOrDelBtnCss"></button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</form>
 					</div>
 					<div style="width: 100%;text-align: center;height: 5%;font-size:18px;padding: 8px;margin-top: -5px;">
