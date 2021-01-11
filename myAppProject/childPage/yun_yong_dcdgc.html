@@ -674,35 +674,36 @@
 								</div>
 								
 							</div>
-							<div id="5div" style="display: none;">
-								<div style="background-color: transparent;box-shadow: 0px 0px 5px #929292 inset;width: 97%;height: 150px;border-radius: 5px;margin-top: 5px;">
-									<div style="width: 86%;height: 150px;float: left;padding-top: 10px;padding-left: 10px;">
-										<label style="width: 50px;">材料名称：</label>
-										<input type="text" id="materialName" name="materialName" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
-										</br>
-										<label style="width: 50px;">规格型号：</label>
-										<input type="text" id="materialType" name="materialType" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
-										</br>
-										<label style="width: 50px;">单位：</label>
-										<input type="text" id="materialUnit" name="materialUnit" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
-										<label style="width: 50px;">数量：</label>
-										<input type="text" id="materialNum" name="materialNum" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
-										</br>
-										<label style="width: 50px;">完成人员：</label>
-										<input type="text" id="materialUser" name="materialUser" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+						</form>
+						
+						<div id="5div" style="display: none;">
+							<div style="background-color: transparent;box-shadow: 0px 0px 5px #929292 inset;width: 97%;height: 150px;border-radius: 5px;margin-top: 5px;">
+								<div style="width: 86%;height: 150px;float: left;padding-top: 10px;padding-left: 10px;">
+									<label style="width: 50px;">材料名称：</label>
+									<input type="text" id="materialName" name="materialName" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+									</br>
+									<label style="width: 50px;">规格型号：</label>
+									<input type="text" id="materialType" name="materialType" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+									</br>
+									<label style="width: 50px;">单位：</label>
+									<input type="text" id="materialUnit" name="materialUnit" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
+									<label style="width: 50px;">数量：</label>
+									<input type="text" id="materialNum" name="materialNum" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">
+									</br>
+									<label style="width: 50px;">完成人员：</label>
+									<input type="text" id="materialUser" name="materialUser" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">
+								</div>
+								<div style="width: 14%;height: 150px;float: left;padding-top: 9.5%;">
+									<div>
+									<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-plusempty addOrDelBtnCss"></button>
 									</div>
-									<div style="width: 14%;height: 150px;float: left;padding-top: 9.5%;">
-										<div>
-										<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-plusempty addOrDelBtnCss"></button>
-										</div>
-										</br>
-										<div>
-										<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-trash addOrDelBtnCss"></button>
-										</div>
+									</br>
+									<div>
+									<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-trash addOrDelBtnCss"></button>
 									</div>
 								</div>
 							</div>
-						</form>
+						</div>
 					</div>
 					<div style="width: 100%;text-align: center;height: 5%;font-size:18px;padding: 8px;margin-top: -5px;">
 						<img src="../images/d-11.png"  style="width: 10px;height: 10px;float: left;"/>
@@ -811,41 +812,6 @@
 					materialDivNum++;
 					mui.toast("新增一行数据成功！");
 				})
-				
-/* 				document.getElementById("addCaiLiao").addEventListener('tap',function(e) {
-					var elem = this;
-					var li = elem.parentNode.parentNode;
-					console.log("==="+li.id);
-					var html = "";
-					html = html + '<div style="background-color: transparent;box-shadow: 0px 0px 5px #929292 inset;width: 97%;height: 150px;border-radius: 5px;">';
-					html = html + '<div style="width: 86%;height: 150px;float: left;padding-top: 10px;padding-left: 10px;">';
-					html = html + '<label style="width: 50px;">材料名称：</label>';
-					html = html + '<input type="text" id="materialName" name="materialName" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">';
-					html = html + '</br>';
-					html = html + '<label style="width: 50px;">规格型号：</label>';
-					html = html + '<input type="text" id="materialType" name="materialType" maxlength="15" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">';
-					html = html + '</br>';
-					html = html + '<label style="width: 50px;">单位：</label>';
-					html = html + '<input type="text" id="materialUnit" name="materialUnit" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">';
-					html = html + '<label style="width: 50px;">数量：</label>';
-					html = html + '<input type="text" id="materialNum" name="materialNum" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;width: 80px;">';
-					html = html + '</br>';
-					html = html + '<label style="width: 50px;">完成人员：</label>';
-					html = html + '<input type="text" id="materialUser" name="materialUser" maxlength="8" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;;width: 180px;">';
-					html = html + '</div>';
-					html = html + '<div style="width: 14%;height: 150px;float: left;padding-top: 9.5%;">';
-					html = html + '<div>';
-					html = html + '<button type="button" id="addCaiLiao" class="mui-btn mui-btn-primary mui-icon mui-icon-plusempty addOrDelBtnCss"></button>';
-					html = html + '</div>';
-					html = html + '</br>';
-					html = html + '<div>';
-					html = html + '<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-trash addOrDelBtnCss"></button>';
-					html = html + '</div>';
-					html = html + '</div>';
-					html = html + '</div>'; 
-					console.log(html);
-					$("#ccc").before(html);
-				}); */
 				
 				document.getElementById("1td").addEventListener('tap',function() {
 					changColor(1);
