@@ -825,62 +825,75 @@
 				document.getElementById("submitAudit").addEventListener('tap',function() {
 					// 取消耗材料的数据
 					//创建一个空的数组
-					var arr = [];
-					$('#5div').children().each(function (index,value) {    
-						var materialName = $(this).children("div").children("input[name=materialName]").val();
-						var materialType = $(this).children("div").children("input[name=materialType]").val();
-						var materialUnit = $(this).children("div").children("input[name=materialUnit]").val();
-						var materialNum = $(this).children("div").children("input[name=materialNum]").val();
-						var materialUser = $(this).children("div").children("input[name=materialUser]").val();
-						//创建一个空的json
-						var json = {};
-						if(checkStr(materialName) && checkStr(materialType) 
-						&& checkStr(materialUnit) &&checkStr(materialNum) 
-						&& checkStr(materialUser) ){
-							console.log("消耗材料中有全部为空的数据，直接舍弃掉！")
-						}else{
-							//组成json对象
-							json = {
-									'materialName':materialName,
-									'materialType':materialType,
-									'materialUnit':materialUnit,
-									'materialNum':materialNum,
-									'materialUser':materialUser
-									};
-							//放入数组中
-							arr.push(json);
-						}
-					});
-					console.log(JSON.stringify(arr));
-					var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-					var url = path1+'/trainUse/addTrainUseDetailInfoForApp?appSessionIdInfo='+appSessionIdInfo;
-					//mui.showLoading("提交中,请稍后...","div"); 
-					console.log("道岔捣固车运用信息新增提交=="+url);
-					var params = {};
-					params = {
-						'entity':$("#form").serializeJson(),
-						'arr':arr
-					}
-					console.log(JSON.stringify(params));
-					mui.ajax(url,{
-						data:JSON.stringify(params),
-						contentType: "application/json;charset=UTF-8",   // http content type
-						dataType:'json',   
-						type:'post',
-						success:function(data){
-							console.log("返回码是"+data.code);
-							mui.hideLoading();
-							mui.toast(data.msg);
-						},
-						error:function(xhr,type,errorThrown){
-							mui.hideLoading();
-							if(type=='timeout'){
-								mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+					if(userRoleInfo == '1' && taskStatus == '1'){
+						var arr = [];
+						$('#5div').children().each(function (index,value) {    
+							var materialName = $(this).children("div").children("input[name=materialName]").val();
+							var materialType = $(this).children("div").children("input[name=materialType]").val();
+							var materialUnit = $(this).children("div").children("input[name=materialUnit]").val();
+							var materialNum = $(this).children("div").children("input[name=materialNum]").val();
+							var materialUser = $(this).children("div").children("input[name=materialUser]").val();
+							//创建一个空的json
+							var json = {};
+							if(checkStr(materialName) && checkStr(materialType) 
+							&& checkStr(materialUnit) &&checkStr(materialNum) 
+							&& checkStr(materialUser) ){
+								console.log("消耗材料中有全部为空的数据，直接舍弃掉！")
 							}else{
-								mui.alert('请求失败');
+								//组成json对象
+								json = {
+										'materialName':materialName,
+										'materialType':materialType,
+										'materialUnit':materialUnit,
+										'materialNum':materialNum,
+										'materialUser':materialUser
+										};
+								//放入数组中
+								arr.push(json);
 							}
+						});
+						console.log(JSON.stringify(arr));
+						var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
+						var url = path1+'/trainUse/addTrainUseDetailInfoForApp?appSessionIdInfo='+appSessionIdInfo;
+						//mui.showLoading("提交中,请稍后...","div"); 
+						console.log("道岔捣固车运用信息新增提交=="+url);
+						var params = {};
+						params = {
+							'entity':$("#form").serializeJson(),
+							'arr':arr
 						}
-					}); 
+						console.log(JSON.stringify(params));
+						mui.ajax(url,{
+							data:JSON.stringify(params),
+							contentType: "application/json;charset=UTF-8",   // http content type
+							dataType:'json',   
+							type:'post',
+							success:function(data){
+								console.log("返回码是"+data.code);
+								mui.hideLoading();
+								if(data.code == '0'){
+									//获取父页面main.html
+									var list = plus.webview.currentWebview().opener();
+									//自定义事件,事件名为getValueFromChild
+									mui.fire(list,'createYunYongAfterQueryInfo',null);
+									// 返回父页面
+									//mui.back();
+									taskStatus="4";
+								}
+								mui.toast(data.msg);
+							},
+							error:function(xhr,type,errorThrown){
+								mui.hideLoading();
+								if(type=='timeout'){
+									mui.alert('链接服务器超时，请排查网络或者请求地址是否正确！');
+								}else{
+									mui.alert('请求失败');
+								}
+							}
+						}); 
+					}else{
+						mui.toast("该任务已经处于审核中状态");
+					}
 				});
 				
 				//上传照片
