@@ -214,8 +214,8 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 	  var arr = $("#"+idInfo).val().split(";");
 	  var trainType = arr[0];
 	  var trainMode = arr[1];
-	  var trainStatus = arr[2];
-	   console.log("点击的运用信息主键ID："+taskId+"，trainType="+trainType+"，trainMode="+trainMode+"，trainStatus="+trainStatus);
+	  var taskStatus = arr[2];
+	   console.log("点击的运用信息主键ID："+taskId+"，trainType="+trainType+"，trainMode="+trainMode+"，taskStatus="+taskStatus);
 	  if(trainType == '52'){
 		  var id = generateUUID()+"-yunYongdcdgc";
 		  mui.openWindow({
@@ -234,7 +234,7 @@ mui('#ulInfoForYunYong').on('tap','li',function(v){
 		  			taskId: taskId,
 					trainType:trainType,
 					trainMode:trainMode,
-					trainStatus:trainStatus
+					taskStatus:taskStatus
 		  		},
 		  		createNew:false
 		  }); 

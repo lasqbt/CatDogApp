@@ -193,6 +193,7 @@
 				//取参数
 				var self = plus.webview.currentWebview();
 				var taskId = self.taskId;
+				var pictureType = self.pictureType;
 				var o = self.obj;
 				//激活照片放大缩小功能
 				mui.previewImage();
@@ -205,11 +206,11 @@
 				},true);
 				//加载需要上传的照片list列表
 				var appSessionIdInfo = localStorage.getItem("appSessionIdInfo");
-				choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
+				choosePhoto(o,10,pictureType,appSessionIdInfo,taskId,null);
 				
 				document.getElementById("uploadImg").addEventListener('tap',function() {
 					//console.log(111);
-					choosePhoto(o,10,0,appSessionIdInfo,taskId,null);
+					choosePhoto(o,10,pictureType,appSessionIdInfo,taskId,null);
 				}) 
 				
 				//保存描述

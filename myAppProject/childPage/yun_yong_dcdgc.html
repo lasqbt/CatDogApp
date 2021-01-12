@@ -460,7 +460,7 @@
 										<label style="float: left;width: 80px;">3号位：</label>
 										<input type="text" id="threeWei" name="threeWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 										<label>4号位：</label>
-										<input type="text" id="threeWei" name="threeWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
+										<input type="text" id="fourWei" name="fourWei" maxlength="10" style="padding: 0px 0px; background-color: transparent;width: 100px;border-radius: 0px;height: 20px;border-color: #929292;border-top: none;border-left: none;border-right: none;">
 									</div>
 									<div style="width: 100%;">
 										<label style="float: left;width: 80px;">5号位：</label>
@@ -673,7 +673,7 @@
 									</table>
 								</div>
 							</div>
-							<input id="mainId" name="mainId" value="" />
+							<input id="mainId" name="mainId" value="" type="hidden"/>
 						</form>
 						
 						<div id="5div" style="display: none;">
@@ -765,7 +765,8 @@
 				var taskStatus = self.taskStatus;
 				var trainType = self.trainType;
 				var trainMode = self.trainMode;
-				console.log("编辑的任务ID=="+taskId);
+				var userRoleInfo = localStorage.getItem("isJsyRole");
+				console.log("编辑的任务ID=="+taskId+"状态=="+taskStatus);
 				var materialDivNum = 1;
 				
 				//mainId赋值
@@ -880,6 +881,62 @@
 							}
 						}
 					}); 
+				});
+				
+				//上传照片
+				document.getElementById("uploadPic").addEventListener('tap',function() {
+					if(taskStatus != '1'){
+						mui.toast("只有待提交的任务才能此操作");
+						return;
+					}
+					if(userRoleInfo != '1'){
+						mui.toast("只有车长能操作");
+						return;
+					}
+					
+					var id = generateUUID()+"-trainUseUploadingImg";
+					mui.openWindow({
+						url: '../childPage/day-repair-uploading-img.html',
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						},
+						extras:{
+							obj:this,
+							pictureType:"1",
+							taskId:taskId
+						},
+						createNew:false
+					});
+				});
+				
+				//查看照片
+				document.getElementById("lookPic").addEventListener('tap',function() {
+					var id = generateUUID()+"-trainUseImgList";
+					mui.openWindow({
+						url: '../childPage/day-repair-img-list.html',
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						},
+						extras:{
+							pictureType:"1",
+							taskId:taskId
+						},
+						createNew:false
+					});
 				});
 				
 				document.getElementById("1td").addEventListener('tap',function() {

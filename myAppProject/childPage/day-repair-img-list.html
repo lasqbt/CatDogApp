@@ -184,6 +184,7 @@
 				//取参数
 				var self = plus.webview.currentWebview();
 				var taskId = self.taskId;
+				var pictureType = self.pictureType;
 				//激活照片放大缩小功能
 				mui.previewImage();
 				//textarea 滚动条失效问题
@@ -201,7 +202,7 @@
 				console.log("初始化日检或者定检照片信息数据=="+url);
 				mui.showLoading("查询中,请稍后...","div");
 				mui.ajax(url,{
-					data:{taskId:taskId,pictureType:"0",menuId:""},
+					data:{taskId:taskId,pictureType:pictureType,menuId:""},
 					dataType:'json',   
 					type:'get',
 					success:function(data){
