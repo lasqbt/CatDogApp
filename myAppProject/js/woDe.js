@@ -167,6 +167,22 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  	},
 		  	createNew:false
 		  });
+	  }else if(clickId== 'saoYiSao'){
+		  var id = generateUUID()+"-saoYiSao";
+		  mui.openWindow({
+		  	url: '../childPage/saoYiSao.html',
+		  	id: id,
+		  	show: {
+		  		aniShow: 'pop-in'
+		  	},
+		  	styles: {
+		  		popGesture: 'hide'
+		  	},
+		  	waiting: {
+		  		autoShow: false
+		  	},
+		  	createNew:false
+		  });
 	  }
 })
 
