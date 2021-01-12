@@ -268,9 +268,17 @@
 				 	mui.showLoading("创建中,请稍后...","div"); 
 					var url = path1+'/trainUse/addTrainUseInfo?appSessionIdInfo='+appSessionIdInfo;
 					console.log("开始创建车辆运用信息=="+url);
+					console.log(JSON.stringify(d));
 				 	mui.ajax(url,{
-						data:JSON.stringify(d),
-						contentType: "application/json;charset=UTF-8",   // http content type
+						//data:JSON.stringify(d),
+						//contentType: "application/json;charset=UTF-8",   // http content type
+						data:{
+							auditLeaderRoleId:$("#auditLeaderRoleId").val(),
+							taskTrainTypeStr:$("#taskTrainTypeStr").val(),
+							taskTrainType:$("#taskTrainType").val(),
+							trainInfoId:$("#trainInfoId").val(),
+							deptNo:$("#deptNo").val()
+						},
 				 		dataType:'json',   
 				 		type:'post',
 				 		success:function(data){
