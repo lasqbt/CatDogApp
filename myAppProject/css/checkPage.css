@@ -109,7 +109,7 @@
 .mb2 a{
 	text-decoration: none;
 	outline: none;
-	width:50%;
+	width:38%;
 	margin: 0 auto;
 }
 .submit {
@@ -186,7 +186,7 @@ input:-webkit-autofill{ 　
 	-webkit-box-shadow:0 0 8px rgba(93,149,242,3);
 }
 .loginBox:hover{
-	height: 10%; width: 50%; background: #008DF3;
+	height: 10%; width: 45%; background: #008DF3;
 	box-shadow: 0 0 1rem gray;
 	cursor: pointer;
 	transition: all .3s;
