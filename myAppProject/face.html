@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>人脸识别</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			body {
+				text-align: center;
+				background-color: rgba(0, 0, 0, 0~1);
+			}
+			.contentcss {
+				text-align: center;
+				margin: 0 auto;
+				vertical-align: middle;
+				background-color: rgba(0, 0, 0, 0~1)
+			}
+			
+			.headcss {
+				border: 1px solid red;
+				width: 300px;
+				height: 300px;
+				background-color: wheat;
+				margin: 0 auto;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+			
+			#style{
+				font-size:25px;margin-top:20%;color: #FFFFFF;
+			}
+			.videocss {
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body style="background: rgb(2,2,2,0.5);">
+		<div class="mui-content contentcss" id="content" style="background: rgb(2,2,2,0);">
+			<div class="headcss" id="headdiv">
+				<video id="video" class="videocss" autoplay width="300" height="300"></video>
+				<canvas style="visibility:hidden;" id="canvas" width="300" height="300"></canvas>
+			</div>
+			<div id="style">请将头部对准摄像头</div>
+
+			<div id="tip" style="display: none;"></div>
+			<input type="hidden" id="result" />
+			<div id="msg" style="display: none;"></div>
+			<div id="positions"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/numeric.js"></script>
+	<script src="js/ccv.js"></script>
+	<script src="js/clmtrackr.js"></script>
+	<script src="js/model_pca_20_svm.js"></script>
+
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			keyEventBind: {
+				backbutton: false //关闭back按键监听
+			}
+		});
+
+
+		// 注意本例需要在HTTPS协议网站中运行，新版本Chrome中getUserMedia接口在http下不再支持。
+		// 设置事件监听器
+		var video, sinterval, pageid;
+		var showpos = false;
+		video = document.getElementById('video');
+
+		window.addEventListener("DOMContentLoaded", () => {
+			//获取屏幕长宽高定义摄像头出现位置
+			var width = document.documentElement.clientWidth;
+			var height = document.documentElement.clientHeight;
+			document.getElementById("content").style.height = (height - 200) + "px";
+			document.getElementById("content").style.width = width + "px";
+			document.getElementById("headdiv").style.marginTop = (height - 500) / 2 + "px";	
+
+			var constraints = {
+				video: true
+			};
+			var errBack = function(e) {
+				console.log('An error has occurred!', e)
+			};
+			console.log("start");
+			console.log("啊啊啊啊=="+plus.navigator.MediaDevices);
+			// 头像相机
+			if (navigator.mediaDevices === undefined) {
+				navigator.mediaDevices = {};
+			}
+			if (navigator.mediaDevices.getUserMedia === undefined) {
+				navigator.mediaDevices.getUserMedia = function (constraints) {
+					var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+					if (!getUserMedia) {
+						return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+					}
+					return new Promise(function (resolve, reject) {
+						getUserMedia.call(navigator, constraints, resolve, reject);
+					});
+				}
+			}
+			if (window.stream) {
+				window.stream.getTracks().forEach(track => {
+					track.stop();
+				});
+			}
+			var constraints = window.constraints = {
+				audio: false,
+				video: {
+					sourceId: 'default',
+					facingMode:  { exact: "user" } 
+				}
+			  };
+			navigator.mediaDevices.getUserMedia(constraints)
+				.then(function (stream) {
+					var video = document.getElementById('video');
+					try {
+						window.stream = stream;
+						video.srcObject = stream;
+					} catch (error) {
+						video.src = window.URL.createObjectURL(stream);
+					}
+					self.localMediaStream = stream;
+					video.play();
+				})
+				.catch(function (err) {
+					alert(err.name + ": " + err.message);
+				});
+		}, false);
+
+		function start(video){
+			video.onloadedmetadata = function(e) {
+				video.play();
+				setTimeout(() => {
+					alive_mouse();
+					var audio = document.createElement('audio');
+					var source = document.createElement('source');
+					source.type = "audio/mp3";
+					source.src = "mp3/alive_mouse.mp3";
+					source.autoplay = "autoplay";
+					source.controls = "controls";
+					audio.appendChild(source);
+					audio.play();
+					startTrack();
+				}, 1000)
+			};
+		}
+	</script>
+	<script type="text/javascript">
+		//活体
+		var last_time = 0; //时间因素
+		var last_nose_left = 0;
+		var last_nose_top = 0;
+
+		//张嘴动作
+		var is_mouse_ok = false;
+		var is_alive_mouse = false;
+		var last_dis_eye_norse = 0;
+		var last_dis_mouse = 0;
+		var last_dm = 0
+		var last_dis_header = 0;
+		var is_alive_header = false;
+		
+		var last_eye_x  = 0
+		var last_eye_y  = 0
+		var last_mouse_x  = 0 
+		var last_mouse_y  =0
+
+		//检测张嘴动作
+		function alive_mouse() {
+			document.getElementById("style").innerHTML = "请张合嘴巴";
+			document.getElementById('result').value = "";
+			is_mouse_ok = false;
+			last_dis_mouse = 0;
+			last_time = 0;
+			is_alive_mouse = true;
+			is_alive_header = false
+		}
+		//检测摇头动作
+		function alive_header() {
+			document.getElementById("style").innerHTML = "摇摇头";
+			document.getElementById('result').value = "";
+			is_header_ok = false;
+			last_dis_header = 0;
+			last_time = 0;
+			is_alive_header = true;
+		}
+
+		function startTrack() {
+
+			var videoInput = document.getElementById('video');
+			var ctracker = new clm.tracker();
+			ctracker.init(pModel);
+			ctracker.start(videoInput);
+
+			var canvasInput = document.getElementById('canvas');
+			var cc = canvasInput.getContext('2d');
+
+			function drawLoop() {
+				requestAnimationFrame(drawLoop);
+				//ctracker.draw(canvasInput );
+				var positions = ctracker.getCurrentPosition();
+				if (positions) {
+					//mouse 
+					if (is_alive_mouse == true) {
+						if (last_time == 0 || (new Date().getTime() - last_time > 500 && new Date().getTime() - last_time < 10000)) {
+							//眼睛和鼻子距离
+							var xdiff = positions[62][0] - positions[27][0];
+							var ydiff = positions[62][1] - positions[27][1];
+							var dis_eye_norse = Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);
+							//上次的眼鼻距离和这次的眼鼻距离差
+							var dn = Math.abs(dis_eye_norse - last_dis_eye_norse);
+							// console.log(dn)
+							//上嘴唇 和下嘴唇距离
+							var xdiff_mouse = positions[53][0] - positions[47][0];
+							var ydiff_mouse = positions[53][1] - positions[47][1];
+
+							var dis_mouse = Math.pow((xdiff_mouse * xdiff_mouse + ydiff_mouse * ydiff_mouse), 0.5);
+							var dm = Math.abs(dis_mouse - last_dis_mouse);
+						
+				// console.log ("鼻子左"+Math.abs(positions[62][0]) ,"鼻子左旧"+ last_nose_left,"左差"+Math.abs(positions[62][0] - last_nose_left))
+				// console.log ("鼻子上"+Math.abs(positions[62][1] ),"鼻子上旧"+  last_nose_top,"上差"+ Math.abs(positions[62][1] - last_nose_top))
+							//鼻子的位置确保变化不大
+							if (Math.floor(dn) == 0 &&last_nose_left > 0 && last_nose_top > 0 && Math.abs(positions[62][0] - last_nose_left) < 10 &&
+								Math.abs(positions[62][1] - last_nose_top) < 10) {
+									// console.log("旧两次距离差"+ Math.floor(last_dm))
+									// console.log("两次距离差"+ Math.floor(dm))	
+									document.getElementById("style").innerHTML = "请张合嘴巴";
+									console.log(dm-last_dm)
+								if (Math.floor(dm) >0  && last_dm>0 &&  ( dm-last_dm)>6){
+									document.getElementById('result').value = "通过";
+									var msg_mouse = document.getElementById('result');
+									if (msg_mouse.value == '通过') {
+										
+										is_alive_mouse = false;
+										is_mouse_ok = true;
+										//验证摇头
+										if (is_mouse_ok) {
+											setTimeout(() => {
+												alive_header();
+												var audio = document.createElement('audio');
+												var source = document.createElement('source');
+												source.type = "audio/mp3";
+												source.src = "mp3/alive_head.mp3";
+												source.autoplay = "autoplay";
+												source.controls = "controls";
+												audio.appendChild(source);
+												audio.play();
+												startTrack();
+												last_nose_left = 0
+												last_nose_top = 0
+												last_dis_eye_norse = 0
+												last_dis_mouse = 0
+												last_time = new Date().getTime();
+											}, 1000)
+										}
+									}
+								}
+								last_dis_mouse = dis_mouse;
+								last_dm = dm
+							}else {
+									document.getElementById("style").innerHTML = "请保持头部不动";
+								}
+
+							last_time = new Date().getTime();
+							last_dis_eye_norse = dis_eye_norse;
+							last_nose_left = positions[62][0];
+							last_nose_top = positions[62][1];
+
+						}
+					}
+					else if(is_alive_header){
+						
+						if (last_time == 0 || (new Date().getTime() - last_time > 500 && new Date().getTime() - last_time < 10000)) {
+							// console.log("鼻子" + Math.abs(positions[27][0] - last_nose_left  ) )
+							// console.log("嘴巴" + Math.abs( positions[53][0] - last_mouse_x)  )  	
+							// console.log("眼睛" + Math.abs(positions[62][0] - last_eye_x  )  )
+						if (last_nose_left >0 && last_nose_top >0  && last_eye_x >0 && last_eye_y >0 &&
+							last_mouse_x  > 0 && last_mouse_y >0  &&
+							Math.abs(positions[27][0] - last_nose_left  ) > 10 && 
+							Math.abs( positions[53][0] - last_mouse_x  ) > 10 &&  
+							Math.abs( positions[62][0] - last_eye_x  ) > 10
+							){
+									document.getElementById("style").innerHTML = "通过";
+									cc.drawImage(video, 0, 0, video.width, video.height);
+									var dataURL = canvasInput.toDataURL("image/jpeg		", 1.0); //第二个参数是质量
+									
+									}
+							
+						// 		last_time = new Date().getTime();
+								
+								last_nose_left = positions[27][0];
+								last_nose_top = positions[27][1];
+								last_eye_x =  positions[62][0];
+								last_eye_y = positions[62][1];
+								last_mouse_x =  positions[53][0] ;
+								last_mouse_y =  positions[53][1];
+								
+						}
+						
+					}
+
+				}
+
+				// requestAnimationFrame(drawLoop);
+
+			}
+
+			drawLoop();
+
+		}
+		startTrack()
+	</script>
+</html>
