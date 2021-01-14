@@ -138,11 +138,11 @@ function getYunYongInfo(flag,pageNumV,limitV){
 					 if(dataInfo[v].taskStatus == '1'){
 						 html = html + "<img src='../images/daiTiJao.png' style='width:50px;height:50px;'>";
 					 }else if(dataInfo[v].taskStatus == '2'){
-						 html = html + "<img src='../images/success-1.png' style='width:50px;height:50px;'>";
+						 html = html + "<img src='../images/success-2.png' style='width:50px;height:50px;'>";
 					 }else if(dataInfo[v].taskStatus == '3'){
-						 html = html + "<img src='../images/refuse-1.png' style='width:50px;height:50px;'>";
+						 html = html + "<img src='../images/refuse-2.png' style='width:50px;height:50px;'>";
 					 }else if(dataInfo[v].taskStatus == '4'){
-						 html = html + "<img src='../images/shenHeZhong-1.png' style='width:50px;height:50px;'>";
+						 html = html + "<img src='../images/shenHeZhong-2.png' style='width:50px;height:50px;'>";
 					 }
 					 
 					 html = html + "</td></tr>";

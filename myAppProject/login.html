@@ -328,7 +328,9 @@
 							title: "手势登录"
 						}, {
 							title: "指纹登录"
-						}];
+						}/* , {
+							title: "人脸登录"
+						} */];
 				
 						plus.nativeUI.actionSheet({
 							title: "选择登录方式", 
@@ -349,6 +351,23 @@
 								case 3:
 									plusReady();
 									break;
+								/* case 4:
+									var id = generateUUID()+"-face";
+									mui.openWindow({
+										url: 'face.html',
+										id: id,
+										show: {
+											aniShow: 'pop-in'
+										},
+										styles: {
+											popGesture: 'hide'
+										},
+										waiting: {
+											autoShow: false
+										},
+										createNew:false
+									}); 
+									break; */
 								default:
 									break;
 							}
