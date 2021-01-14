@@ -90,50 +90,38 @@
 			var errBack = function(e) {
 				console.log('An error has occurred!', e)
 			};
+			
 			console.log("start");
-			console.log("啊啊啊啊=="+plus.navigator.MediaDevices);
-			// 头像相机
-			if (navigator.mediaDevices === undefined) {
-				navigator.mediaDevices = {};
-			}
-			if (navigator.mediaDevices.getUserMedia === undefined) {
-				navigator.mediaDevices.getUserMedia = function (constraints) {
-					var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-					if (!getUserMedia) {
-						return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-					}
-					return new Promise(function (resolve, reject) {
-						getUserMedia.call(navigator, constraints, resolve, reject);
-					});
-				}
-			}
-			if (window.stream) {
-				window.stream.getTracks().forEach(track => {
-					track.stop();
+			
+			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices.getUserMedia(mediaConfig).then(function(stream) {
+					// video.src = window.URL.createObjectURL(stream);				
+					video.srcObject = stream;
+					start(video)
 				});
 			}
-			var constraints = window.constraints = {
-				audio: false,
-				video: {
-					sourceId: 'default',
-					facingMode:  { exact: "user" } 
-				}
-			  };
-			navigator.mediaDevices.getUserMedia(constraints)
-				.then(function (stream) {
-					var video = document.getElementById('video');
-					try {
-						window.stream = stream;
-						video.srcObject = stream;
-					} catch (error) {
-						video.src = window.URL.createObjectURL(stream);
-					}
-					self.localMediaStream = stream;
-					video.play();
-				})
-				.catch(function (err) {
-					alert(err.name + ": " + err.message);
-				});
+			/* 旧版代码如下! */
+			else if (navigator.getUserMedia) { // 标准
+				navigator.getUserMedia(mediaConfig, function(stream) {
+					video.src = stream;
+					start(video)
+				}, errBack);
+			} else if (navigator.mozGetUserMedia) { // Mozilla-prefixed
+				navigator.mozGetUserMedia(mediaConfig, function(stream) {
+					video.src = window.URL.createObjectURL(stream);
+					start(video)
+				}, errBack);
+			} else if (navigator.msGetUserMedia) { // Mozilla-prefixed
+				navigator.msGetUserMedia(mediaConfig, function(stream) {
+					video.src = window.URL.createObjectURL(stream);
+					start(video)
+				}, errBack);
+			} else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+				navigator.webkitGetUserMedia(mediaConfig, function(stream) {
+					video.src = window.webkitURL.createObjectURL(stream);
+					start(video)
+				}, errBack);
+			}
 		}, false);
 
 		function start(video){
