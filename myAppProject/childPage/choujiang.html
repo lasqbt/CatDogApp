@@ -218,9 +218,9 @@
 <script src="../js/jquery-2.2.4.min.js"></script>
 <script src="../js/rem2.js"></script>
 <script src="../js/html2canvas.js"></script>
-<script src="../js/canvas2Image.js"></script>
+<script src="../js/canvas2image.js"></script>
 <script>
-    $(function(){
+ $(function(){
         // 填写电话信息
         var phoneBoolean =  false;// 是否填写电话号码，防止在填写之前触发摇一摇事件
         var regPhone = /^1[356789][\d]{9}$/;
@@ -321,60 +321,6 @@
                 sharkBoolean = true;
             });
         }
-		
-	
-			mui.init( { 
-				gestureConfig:{
-			            longtap: true //默认为false
-			        },
-			});
-			mui.plusReady(function() {
-				document.addEventListener('longtap', function(e) {
-					var target = $(".f-full").src;
-					//savePic(target);
-					mui.msg(target);
-				});
-			});
-			
-
-			function savePic(target) {
-				//&& target.currentSrc.length > 0
-				if(target.tagName == 'IMG'  ) { //确保图片链接不为空
-					var imgUrl = target.src;
-					var suffix = cutImageSuffix(imgUrl);
-					mui.confirm("是否保存此图片", "", ["保存", "取消"], function(event) {
-						var index = event.index;
-						if(index == 0) {
-							var timestamp = (new Date()).valueOf();
-							var downLoader = plus.downloader.createDownload(imgUrl, {
-								method: 'GET',
-								filename: '_downloads/image/' + timestamp+'.png'
-							}, function(download, status) {
-								var fileName = download.filename;
-								/**
-								 * 保存至本地相册
-								 */
-								plus.gallery.save(fileName, function() {
-									mui.toast("保存成功" );
-		
-								});
-							});
-							/**
-							 * 开始下载任务
-							 */
-							downLoader.start();
-						}
-					});
-				}else{
-					mui.msg("保存截图失败");
-				}
-			}
-			// 截取图片后缀用于重命名图片，防止%E5%85%89%E6%98%8E%E8%A1%8C编码的文件不被系统相册识别；
-			function cutImageSuffix(imageUrl) {
-				var index = imageUrl.lastIndexOf('.');
-				return imageUrl.substring(index);
-			}
-		
         // 生成图片
         $(".createPicture").on("click",function() {
             $(".ewmShow").show();
@@ -405,8 +351,9 @@
                 context.msImageSmoothingEnabled = false;
                 context.imageSmoothingEnabled = false;
                 // 【重要】默认转化的格式为png,也可设置为其他格式
-                var img = Canvas2Image.saveAsPNG(canvas,true, canvas.width, canvas.height);
+                var img = Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height);
                 document.body.appendChild(img);
+                $(".save-txt").show();//显示长按保存
                 $(img).css({
                     "width": canvas.width / 2 + "px",
                     "height": canvas.height / 2 + "px",
@@ -416,13 +363,12 @@
                     "opacity":"1",
                     "z-index":222
                 }).addClass('f-full').on("click",function(){
+                    $(".save-txt").hide();
                     $(this).remove();
                     $(".ewmShow").hide();
                 });
-				savePic(img);
             });
         });
-
 
         // 摇一摇事件
         var shakeThreshold = 2000; // 定义一个摇动的阈值
