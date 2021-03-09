@@ -416,6 +416,9 @@
 								<li class="mui-table-view-cell liCss" id="saoYiSao">
 									<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">扫一扫<img src="../images/saoYiSao2.png" style="float: right;margin-right: -30px;width: 20px;height: 20px;"></a>
 								</li>
+								<li class="mui-table-view-cell liCss" id="chouJiang">
+									<a href="javascript:void(0)" class="mui-navigate-right" style="color: #929292;font-size: 1rem;">抽奖</a>
+								</li>
 							</ul>
 							
 							<div style="margin-top:80px ;text-align: center;">
@@ -593,7 +596,7 @@
 						//setTimeout(function() { //没连接上会一直重连，设置延迟避免请求过多
 								console.log("重链了");
 								if('WebSocket' in window) {
-										websocket = new WebSocket("ws://172.20.19.12:8086/websocket/"+userid);
+										websocket = new WebSocket("ws://172.20.19.16:8086/websocket/"+userid);
 								}else{
 										mui.alert("该浏览器不支持实时通信功能");
 								}

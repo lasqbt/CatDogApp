@@ -183,6 +183,22 @@ mui('#ulInfoForWoDe').on('tap','li',function(v){
 		  	},
 		  	createNew:false
 		  });
+	  }else if(clickId== 'chouJiang'){
+		  var id = generateUUID()+"-chouJiang";
+		  mui.openWindow({
+		  	url: '../childPage/choujiang.html',
+		  	id: id,
+		  	show: {
+		  		aniShow: 'pop-in'
+		  	},
+		  	styles: {
+		  		popGesture: 'hide'
+		  	},
+		  	waiting: {
+		  		autoShow: false
+		  	},
+		  	createNew:false
+		  });
 	  }
 })
 
