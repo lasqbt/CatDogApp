@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div>
+			<img src="../images/btn-bg.png" width="100%"  id="drawImg"/>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+			<p>dddd</p>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/drawScreen.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.plusReady(function() {
+				// 截屏图片比例 5:4
+				let descWidth = document.body.clientWidth;
+				//let descHeight = descWidth / (5 / 4);
+				let descHeight = document.body.clientHeight;
+				var options = {
+					successCB: function(e) {//截图返回本地路径
+						console.log(JSON.stringify(e))
+					},
+					errorCB: function(e) {//截图失败
+						console.log(JSON.stringify(e))
+					},
+					quality: 100,//截图清晰度 0~100，默认50
+					clip: {//截图区域
+						top: '20px',//iOS机型，bitmap.save时，clip的top参数无效，但在self.draw时，是有效的。
+						left: '0px',
+						width: descWidth,
+						height: descHeight
+					}
+				}
+				//触发截图
+				document.getElementById("drawImg").addEventListener('tap',function() {
+					drawScreen(options);
+				});
+			});
+		</script>
+	</body>
+</html>
