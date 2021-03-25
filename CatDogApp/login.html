@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title></title>
+		<!--必要样式-->
+		<link type="text/css" rel="stylesheet" href="./css/mui.css" />
+		<link type="text/css" rel="stylesheet" href="./css/app.css" />
+		<link type="text/css" rel="stylesheet" href="./css/showLoading.css" />
+		<link type="text/css" rel="stylesheet" href="./css/login.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body style="margin:0px; padding:0px;width: 100%;height: 100%;">
+		<div class="mainDiv">
+			<div class="loginDiv" id="accountLogin">
+				<div style="width: 100%;">
+					<img src="./images/mlmq3.png"/>
+				</div>
+				<div style="width: 100%;">
+					<div class="mui-input-row">
+						<input class="mui-input-clear" onfocus="changeBorder('userId','1')" onblur="changeBorder('userId','2')" style="width: 85%;border: 1px solid #B6B73F;background-color: transparent;border-radius: 7px;height: 45px;" autocomplete="off" type="text" name="userId" id="userId" maxlength="20" placeholder="请输入用户账号">
+					</div>
+				</div>
+				<div style="width: 100%;">
+					<div class="mui-input-row">
+						<input class="mui-input-password" onfocus="changeBorder('userPwd','1')" onblur="changeBorder('userPwd','2')" style="width: 85%;border: 1px solid #B6B73F;background-color: transparent;border-radius: 7px;height: 45px;"  autocomplete="off" type="password" name="userPwd" id="userPwd" maxlength="15" placeholder="请输入用户密码">
+					</div>
+				</div>
+				<div style="width: 100%;">
+					<input onfocus="changeBorder('codeInfo','1')" onblur="changeBorder('codeInfo','2')" autocomplete="off" type="text" value="" name="codeInfo" id="codeInfo" maxlength="6"  placeholder="请输入六位验证码" style="height: 45px;width: 85%;border: 1px solid #B6B73F;background-color: transparent;border-radius: 7px;">
+					<canvas id="canvas"  class="canvasCss"></canvas>
+				</div>
+				<div style="width: 100%;display: flex;justify-content: center;">
+					<div id="loinBtn" class="buttonCss">
+						登录
+					</div>
+				</div>
+				<div style="width: 100%;margin-top: 5px;">
+					<a href="#" class="aCss">注册账号</a>&nbsp;&nbsp;
+					<a href="#" class="aCss">忘记密码</a>&nbsp;&nbsp;
+					<a href="#" class="aCss">账号申诉</a>&nbsp;&nbsp;
+					<a class="aCss" id="loginType">登录方式</a>
+				</div>
+			</div>
+			
+			<div style="background-color: transparent;display: none; center;margin-left: 13%;" id="shouShiLogin">
+				<div id='holder' style="background-color: transparent;border: none;" class="mui-locker" data-locker-options='{"ringColor":"blue","fillColor":"rgba(50,205,50,1)","pointColor":"red","lineColor":"yellow"}' data-locker-width='300' data-locker-height='300'></div>
+				<div id='alert'></div>
+			</div>
+		</div>
+	</body>
+	
+	<script type="text/javascript" src="js/mui.js"></script>
+	<script type="text/javascript" src="js/showLoading.js"></script>
+	<script type="text/javascript" src="js/mui.enterfocus.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/commonUtils.js"></script>
+	<script type="text/javascript" src="js/mui.locker.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+</html>
